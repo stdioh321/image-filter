@@ -1,0 +1,21 @@
+.picture-filters-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  ::ng-deep .canvas-container {
+    height: 100% !important;
+    width: 100% !important;
+    position: relative;
+    canvas {
+      position: absolute;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%);
+      max-width: 100% !important;
+      max-height: 100% !important;
+      width: unset !important;
+      height: unset !important;
+    }
+  }
+}

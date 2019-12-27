@@ -1,0 +1,28 @@
+#main {
+  width: 100%;
+  height: 100vh;
+  // display: flex;
+  // align-items: center;
+  // justify-content: center;
+  #main-row {
+    height: 100%;
+    background-color: #eee;
+    border-radius: 5px;
+    .menu-wrap {
+      background: rgba(60, 65, 73, 0.8);
+    }
+    .content-wrap {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      .pictute-wrap {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        flex: 1;
+        // display: flex;
+        // justify-content: center;
+        // align-items: center;
+      }
+    }
+  }
+}
