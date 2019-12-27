@@ -11,6 +11,8 @@ import { PictureFiltersService } from './picture-filters/picture-filters.service
 })
 export class MainComponent implements OnInit {
   public imgUpload = null;
+  public currMenu = 1;
+  
   constructor(
     public spinner: NgxSpinnerService,
     public mainService: MainService,
@@ -36,8 +38,13 @@ export class MainComponent implements OnInit {
           this.pfService.loadBase64OnCanvas(img)
             .then(res => {
               this.spinner.hide();
-              this.mainService.original = img;
-              this.mainService.current = img;
+              this.mainService.original = null;
+              this.mainService.current = null;
+              setTimeout(() => {
+                this.mainService.original = img;
+                this.mainService.current = img;
+              }, 0);
+
 
             });
         }
