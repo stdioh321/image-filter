@@ -10,13 +10,14 @@ export class MainService implements OnInit {
   public current = null;
 
   public history: [] = [];
-  public picturesList: [] = [];
+  public picturesList: any = [];
   constructor() {
     console.log('mainService');
 
-    window['mainService'] = this;}
+    window['mainService'] = this;
+  }
 
   ngOnInit() {
-   
+
   }
 }

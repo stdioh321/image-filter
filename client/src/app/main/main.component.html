@@ -58,13 +58,31 @@
                 <div class="download-wrap" *ngIf="mainService?.current" (click)="downloadCurrentImage($event)">
                     <img src="assets/images/download.svg" alt="">
                 </div>
+                <div class="add-wrap ml-auto" *ngIf="mainService?.current" (click)="addCurrentImage($event)">
+                    <img src="assets/images/plus.svg" alt="">
+                </div>
             </div>
             <div class="pictute-wrap">
                 <!-- <img id="my-image" style="max-width: 100%; max-height: 100%;"> -->
                 <router-outlet></router-outlet>
             </div>
-            <div class="saved-pictures-wrap">
-                <h3>ABC</h3>
+            <div class="saved-pictures-wrap w-100">
+                <div class="row h-100">
+                <div class="col-11 h-100 overflow-hidden">
+                    <div class="saved-pictures-preview">
+                        <a href="{{item}}" *ngFor="let item of mainService?.picturesList;let idx =index"
+                            download="{{idx}}.png" target="_blank">
+                            <img src="{{item}}" />
+                        </a>
+                    </div>
+
+                </div>
+                <div class="col-1 bt-download d-flex align-items-center justify-content-center">
+                    <img src="assets/images/download-green.svg" (click)="downloadAllImage()" class="pointer"
+                        *ngIf="mainService?.picturesList?.length > 0">
+
+                </div>
+                </div>
             </div>
         </div>
     </div>

@@ -53,10 +53,14 @@
       flex-wrap: wrap;
       padding-top: 5px;
       padding-bottom: 5px;
+      & > * {
+        // width: 100% !important;
+      }
       .content-top {
         display: flex;
 
-        .download-wrap {
+        .download-wrap,
+        .add-wrap {
           & > img {
             width: 25px;
             height: 25px;
@@ -68,9 +72,47 @@
         margin-top: 10px;
         margin-bottom: 10px;
         flex: 1;
+      }
+      .saved-pictures-wrap {
+        height: 70px;
+        // border: solid rgba(0, 0, 0, 1) 1px;
+        // border-radius: 5px;
+        // overflow: auto;
+        padding: 3px;
         // display: flex;
-        // justify-content: center;
         // align-items: center;
+        .saved-pictures-preview {
+          height: 100%;
+          overflow-y: hidden;
+          overflow-x: auto;
+          width: 100% !important;
+          max-width: 100% !important;
+          display: flex;
+          // flex-wrap: nowrap;
+          & > a {
+            height: 100%;
+            max-width: 80px;
+            min-width: 40px;
+            margin: 0px 3px;
+            display: flex;
+            align-items: center;
+
+            & > img {
+              max-height: 100%;
+              max-width: 100%;
+              transition: all 0.2s;
+              &:hover {
+                transform: scale(1.1);
+              }
+            }
+          }
+        }
+        .bt-download {
+          & > img {
+            width: 30px;
+            height: 30px;
+          }
+        }
       }
     }
   }

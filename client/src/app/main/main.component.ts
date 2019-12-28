@@ -80,19 +80,43 @@ export class MainComponent implements OnInit {
   downloadCurrentImage(e) {
     let a = document.createElement("a");
     let href = null;
-    let currentCanvas: HTMLCanvasElement = document.querySelector("#picture-filters-canvas");
-    if (currentCanvas) {
-      a.href = currentCanvas.toDataURL();
-    } else {
-      a.href = this.mainService.current;
-    }
-
+    a.href = this.getCurrentImage();
     a.download = Date.now() + ".png";
     a.click();
   }
+  downloadAllImage(e = null) {
+    this.spinner.show();
+    this.mainService.picturesList.forEach((item, index) => {
+      let a = document.createElement("a");
+      // let href = item;
+      a.target = "_blank";
+      a.href = item;
+      a.download = index + "_" + Date.now() + ".png";
+      a.click();
+    });
+    this.spinner.hide();
+  }
+  addCurrentImage(e) {
+    this.spinner.show();
+    this.mainService.picturesList.push(this.getCurrentImage());
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 200);
+  }
+  getCurrentImage() {
+    let result = null;
+    let currentCanvas: HTMLCanvasElement = document.querySelector("#picture-filters-canvas");
+    if (currentCanvas) {
+      result = currentCanvas.toDataURL();
+    } else {
+      result = this.mainService.current;
+    }
+    return result;
+  }
+
   onFilterSelected(filterName = null, filterIndex = 0) {
-    if(this.currFilter == filterIndex)
-    return;
+    if (this.currFilter == filterIndex)
+      return;
     this.spinner.show();
     this.pfService.filterSelected(filterName)
       .then(res => {
