@@ -12,7 +12,8 @@ import { PictureFiltersService } from './picture-filters/picture-filters.service
 export class MainComponent implements OnInit {
   public imgUpload = null;
   public currMenu = 1;
-  
+  public currFilter = 0;
+
   constructor(
     public spinner: NgxSpinnerService,
     public mainService: MainService,
@@ -35,14 +36,22 @@ export class MainComponent implements OnInit {
 
           let img = e['target']['result'];
 
-          this.pfService.loadBase64OnCanvas(img)
+          this.pfService.loadImageOnCanvas(img)
             .then(res => {
               this.spinner.hide();
+              this.currFilter = 0;
+              this.currMenu = 1;
+              this.mainService.originalFile = null;
               this.mainService.original = null;
+              this.mainService.initial = null;
               this.mainService.current = null;
               setTimeout(() => {
+                this.mainService.originalFile = file;
                 this.mainService.original = img;
                 this.mainService.current = img;
+                this.mainService.initial = img;
+                console.log(file);
+
               }, 0);
 
 
@@ -63,11 +72,38 @@ export class MainComponent implements OnInit {
       return false;
     }
   }
-
-  onFilterHueChange(e) {
-    this.pfService.filterHue(e.target.value);
+  changeMenu(idx = 0) {
+    if (idx == this.currMenu) return;
+    this.currFilter = 0;
+    this.currMenu = idx;
   }
-  onFilterBlurChange(e) {
-    this.pfService.filterBlur(e.target.value);
+  downloadCurrentImage(e) {
+    let a = document.createElement("a");
+    let href = null;
+    let currentCanvas: HTMLCanvasElement = document.querySelector("#picture-filters-canvas");
+    if (currentCanvas) {
+      a.href = currentCanvas.toDataURL();
+    } else {
+      a.href = this.mainService.current;
+    }
+
+    a.download = Date.now() + ".png";
+    a.click();
+  }
+  onFilterSelected(filterName = null, filterIndex = 0) {
+    if(this.currFilter == filterIndex)
+    return;
+    this.spinner.show();
+    this.pfService.filterSelected(filterName)
+      .then(res => {
+        this.currFilter = filterIndex;
+        this.spinner.hide();
+      }).catch(err => {
+        this.spinner.hide();
+      });
+  }
+  onFilterRangeChange(e) {
+    let val = e.target.value || 0;
+    this.pfService.filterChangeIntensity(val);
   }
 }

@@ -27,6 +27,7 @@ export class PictureFiltersComponent implements OnInit {
     let canvas = new fabric.Canvas('picture-filters-canvas', {
     });
     this.pfService.canvas = canvas;
+    // window['pfService'] = this.pfService;
   }
   // console.log(canvas);
 

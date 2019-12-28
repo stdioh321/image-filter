@@ -3,25 +3,61 @@
         <div class="col-3 menu-wrap">
             <div class="row h-100" *ngIf="mainService?.current">
                 <div class="col-5  h-100 overflow-auto">
-                    <button class="btn btn-primary btn-block" (click)="currMenu = 1">Fitros</button>
-                    <button class="btn btn-primary btn-block" (click)="currMenu = 2">Art</button>
+                    <button class="btn btn-primary btn-block" (click)="changeMenu(1)">Fitros</button>
+                    <button class="btn btn-primary btn-block" (click)="changeMenu(2)">Art</button>
                 </div>
                 <div class="col-7">
                     <div class="current-menu" *ngIf="currMenu==1">
-                        <input type="range" [value]="-1" min="-1" max="1" step="0.1"
-                            (input)="onFilterHueChange($event)">
-                        <br />
-                            <input type="range" [value]="0" min="0" max="1" step="0.1"
-                            (input)="onFilterBlurChange($event)">
+                        <ul class="menu-filters">
+                            <li class="menu-filters-item">
+                                <div class="menu-filters-thumb" (click)="onFilterSelected('sepia',1)">
+                                    <img src="https://d3iqv7nekb4k6t.cloudfront.net/effects/265bd67f0e36fca511d0afeaef132935.jpg"
+                                        alt="">
+                                    <div class="text" [ngClass]="{'selected':currFilter ==1}">Sepia</div>
+                                </div>
+                                <div *ngIf="currFilter==1" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1"
+                                        (input)="onFilterRangeChange($event)" />
+                                </div>
+                            </li>
+                            <li class="menu-filters-item">
+                                <div class="menu-filters-thumb" (click)="onFilterSelected('bw',2)">
+                                    <img src="https://d3iqv7nekb4k6t.cloudfront.net/effects/b5c8747265611a46a094b2e53ed53ad5.jpg"
+                                        alt="">
+                                    <div class="text" [ngClass]="{'selected':currFilter ==2}">Black & White</div>
+                                </div>
+                                <div *ngIf="currFilter==2" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1"
+                                        (input)="onFilterRangeChange($event)" />
+                                </div>
+                            </li>
+                            <li class="menu-filters-item">
+                                <div class="menu-filters-thumb" (click)="onFilterSelected('vintage',3)">
+                                    <img src="https://d3iqv7nekb4k6t.cloudfront.net/effects/547858442e50ffaaa60feb6099c8b8c5.jpg"
+                                        alt="">
+                                    <div class="text" [ngClass]="{'selected':currFilter ==3}">Vintage</div>
+                                </div>
+                                <div *ngIf="currFilter==3" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1"
+                                        (input)="onFilterRangeChange($event)" />
+                                </div>
+                            </li>
+
+                        </ul>
                     </div>
                     <div class="current-menu" *ngIf="currMenu==2">ART</div>
                 </div>
             </div>
         </div>
         <div class="col-9 h-100 content-wrap">
-            <div class="select-picture">
-                <input type="file" (change)="onPictureUpload($event)" accept=".jpg,.jpeg,.png"
-                    [(ngModel)]="imgUpload" />
+            <div class="content-top">
+                <div class="choose-picute-wrap">
+                    <input type="file" (change)="onPictureUpload($event)" accept=".jpg,.jpeg,.png"
+                        [(ngModel)]="imgUpload" />
+                </div>
+                <div class="download-wrap" *ngIf="mainService?.current" (click)="downloadCurrentImage($event)">
+                    <img src="assets/images/download.svg" alt="">
+                </div>
             </div>
             <div class="pictute-wrap">
                 <!-- <img id="my-image" style="max-width: 100%; max-height: 100%;"> -->

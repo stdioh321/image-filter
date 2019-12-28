@@ -13,6 +13,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
 import { PictureFiltersComponent } from './main/picture-filters/picture-filters.component';
 import { MainService } from './main/main.service';
 import { PictureFiltersService } from './main/picture-filters/picture-filters.service';
+import { UcWidgetModule } from 'ngx-uploadcare-widget';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { PictureFiltersService } from './main/picture-filters/picture-filters.se
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    UcWidgetModule
   ],
   providers: [MainService, PictureFiltersService],
   bootstrap: [AppComponent]
