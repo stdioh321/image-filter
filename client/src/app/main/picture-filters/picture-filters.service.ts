@@ -5,6 +5,8 @@ import 'fabric';
 import { MainService } from '../main.service';
 declare const fabric: any;
 
+declare const photoAPIApplyFilter: any;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -15,57 +17,87 @@ export class PictureFiltersService {
 
   ) { }
 
-  loadImageOnCanvas(img = null) {
+  loadImageOnCanvas(img = null, crossOrigin = false) {
     return new Promise((res, rej) => {
       if (!img) {
         rej(false);
         return false;
       };
-      let tmpImg = document.createElement('img');
-      tmpImg.src = img;
-
-      tmpImg.onload = () => {
-        let imgInstance = new fabric.Image(tmpImg, {
-          "id": "original"
-        });
+      try {
+        // let c = document.querySelector("canvas");
+        // let ctx = c.getContext("2d");
         this.canvas.clear();
-        this.canvas.setBackgroundImage(imgInstance, this.canvas.renderAll.bind(this.canvas));
-        this.canvas.setWidth(tmpImg.width);
-        this.canvas.setHeight(tmpImg.height);
+        this.canvas.setBackgroundImage(img, (tmp) => {
+          this.canvas.setWidth(tmp.width);
+          this.canvas.setHeight(tmp.height);
+          this.canvas.renderAll();
+          res(true);
+        }, { crossOrigin: "anonymous" });
 
-        // this.canvas.add(imgInstance);
 
-        // this.canvas.setActiveObject(this.canvas.item(0));
-        // this.canvas.selection = false;
 
-        // this.canvas.item(0).selectable = false;
-        window['tmp'] = this.canvas;
-        res(true);
-      };
-      tmpImg.onerror = () => {
+
+        // if (crossOrigin)
+        //   tmpImg.crossOrigin = 'anonymous';
+        // tmpImg.onload = () => {
+        //   let f_img = new fabric.Image(tmpImg);
+        //   this.canvas.clear();
+        //   this.canvas.setBackgroundImage(f_img, () => {
+
+        //     this.canvas.setWidth(tmpImg.width);
+        //     this.canvas.setHeight(tmpImg.height);
+        //     this.canvas.renderAll();
+        //     res(true);
+        //   },{
+        //     crossBrowser:'anonymous'
+        //   });
+        // }
+
+        // fabric.Image.fromURL(img,
+        //   (imgInstance) => {
+        //     console.log(imgInstance);
+        //     this.canvas.clear();
+        //     this.canvas.setBackgroundImage(imgInstance, this.canvas.renderAll.bind(this.canvas));
+        //     this.canvas.setWidth(imgInstance.width);
+        //     this.canvas.setHeight(imgInstance.height);
+        //     res(true);
+        //   }, { crossOrigin: 'anonymous' });
+
+      } catch (error) {
+        console.log('FROMURL ERROR');
         rej(false);
       }
+
+      // let tmpImg = document.createElement('img');
+      // tmpImg['crossOrigin'] = "anonymous";
+      // tmpImg.src = img;
+      // console.log(tmpImg);
+
+      // tmpImg.onload = () => {
+      //   let imgInstance = new fabric.Image(tmpImg, {
+      //     "id": "original",
+      //     crossOrigin: 'anonymous'
+      //   });
+      //   this.canvas.clear();
+      //   this.canvas.setBackgroundImage(imgInstance, this.canvas.renderAll.bind(this.canvas));
+      //   this.canvas.setWidth(tmpImg.width);
+      //   this.canvas.setHeight(tmpImg.height);
+
+      // this.canvas.add(imgInstance);
+
+      // this.canvas.setActiveObject(this.canvas.item(0));
+      // this.canvas.selection = false;
+
+      // this.canvas.item(0).selectable = false;
+      // window['tmp'] = this.canvas;
+      // res(true);
+
     });
 
   }
-  filterHue(val = 0) {
-    let current = this.canvas.item(0);
-    // console.log(val);
-    current.filters = [new fabric.Image.filters.HueRotation({
-      rotation: val
-    })];
-    current.applyFilters();
-    this.canvas.renderAll();
-  }
-  filterBlur(val = 0) {
-    let current = this.canvas.item(0);
-    // console.log(val);
-    current.filters = [new fabric.Image.filters.Blur({
-      blur: val
-    })];
-    current.applyFilters();
-    this.canvas.renderAll();
-  }
+
+
+
   filterSelected(filterName = null) {
     return new Promise((resolve, reject) => {
       if (!filterName) {
@@ -75,8 +107,8 @@ export class PictureFiltersService {
 
       let tmpImgOriginal = this.mainService.original;
       let tmpImgResult = this.mainService.original;
-
-      this.loadImageOnCanvas(tmpImgOriginal)
+      // resolve(true);
+      this.loadImageOnCanvas(tmpImgOriginal, true)
         .then(res => {
           try {
             fabric.Image.fromURL(tmpImgResult, (img) => {
@@ -103,7 +135,7 @@ export class PictureFiltersService {
               this.mainService.current = this.canvas.toDataURL();
               this.canvas.renderAll();
               resolve(true);
-            });
+            }, { crossOrigin: 'anonymous' });
           } catch (error) {
             reject(false);
           }
@@ -113,11 +145,106 @@ export class PictureFiltersService {
     });
 
   }
+
+
+  filterPhotoSelected(filterName = null, canChangeIntensity = false) {
+    // console.log(photoAPIApplyFilter);
+
+    return new Promise(async (resolve, reject) => {
+      if (!filterName) {
+        reject(false);
+        return false;
+      };
+      // console.log(await this.getPhotoFIlter(filterName, this.mainService.original));
+
+      let tmpImgOriginal = null;
+      let tmpImgResult = null;
+
+      try {
+        let photoImg = await this.getPhotoFIlter(filterName, this.mainService.original);
+
+        if (canChangeIntensity) {
+          tmpImgOriginal = this.mainService.original;
+          tmpImgResult = photoImg;
+        } else {
+          tmpImgOriginal = photoImg;
+        }
+        this.loadImageOnCanvas(tmpImgOriginal)
+          .then(res => {
+            if (!tmpImgResult) {
+              resolve(true);
+              return;
+            }
+            fabric.Image.fromURL(tmpImgResult, (img) => {
+              img.set({ selectable: false });
+              // console.log(filterName);
+
+              img.applyFilters();
+              this.canvas.add(img);
+              // this.mainService.current = this.canvas.toDataURL();
+              this.canvas.renderAll();
+              resolve(true);
+            }, { crossOrigin: 'anonymous' });
+            
+          }).catch(err => {
+            reject(false);
+          });
+      } catch (error) {
+        reject(false);
+      }
+
+    });
+
+  }
+
   filterChangeIntensity(val = 0) {
     let current = this.canvas.item(0);
     current.set({ opacity: val });
     this.canvas.renderAll();
   }
 
-
+  getPhotoFIlter(template = null, imgUrl = null, effect = "trending") {
+    return new Promise((resolve, reject) => {
+      photoAPIApplyFilter(effect, template, imgUrl, {
+        before: function () {
+          // console.log('before');
+        }, success: (requestId, json) => {
+          // console.log(requestId, json);
+          this.getBase64FromImage(json['result_url'], (b64) => {
+            resolve(b64);
+          }, () => {
+            reject('getBase64FromImage');
+          })
+        }, ajaxError: function () {
+          reject('ajaxError');
+        }, apiError: function () {
+          reject('apiError');
+        }
+      })
+    });
+  }
+  getBase64FromImage(url, onSuccess, onError) {
+    var xhr = new XMLHttpRequest();
+    xhr.responseType = "arraybuffer";
+    xhr.open("GET", "https://cors-anywhere.herokuapp.com/" + url);
+    xhr.onload = function () {
+      var base64, binary, bytes, mediaType;
+      bytes = new Uint8Array(xhr.response);
+      //NOTE String.fromCharCode.apply(String, ...
+      //may cause "Maximum call stack size exceeded"
+      binary = [].map.call(bytes, function (byte) {
+        return String.fromCharCode(byte);
+      }).join('');
+      mediaType = xhr.getResponseHeader('content-type');
+      base64 = [
+        'data:',
+        mediaType ? mediaType + ';' : '',
+        'base64,',
+        btoa(binary)
+      ].join('');
+      onSuccess(base64);
+    };
+    xhr.onerror = onError;
+    xhr.send();
+  }
 }

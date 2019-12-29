@@ -11,6 +11,9 @@ export class MainService implements OnInit {
 
   public history: [] = [];
   public picturesList: any = [];
+
+
+  
   constructor() {
     console.log('mainService');
 

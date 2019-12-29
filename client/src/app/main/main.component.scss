@@ -12,6 +12,45 @@
       background: rgba(60, 65, 73, 0.8);
       height: 100%;
       padding-top: 5px;
+      .menu-items-wrap {
+        & > button {
+          &:hover {
+            background: #0158b4 !important;
+          }
+          &.selected {
+            text-transform: uppercase;
+            font-weight: 700;
+            background: #0158b4 !important;
+          }
+        }
+      }
+      .current-menu-wrap {
+        height: 100%;
+        overflow-x: hidden;
+        overflow-y: auto;
+        /* width */
+        &::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        /* Track */
+        &::-webkit-scrollbar-track {
+          background: #f1f1f1;
+        }
+
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+          background: #888;
+        }
+
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+          background: #555;
+        }
+      }
+      .current-menu {
+        height: 100%;
+      }
       .menu-filters {
         list-style: none;
         padding: 0px;
@@ -25,16 +64,17 @@
               height: auto;
             }
             & > .text {
-              transition: all 1s;
+              transition: background 0.5s;
               position: absolute;
               bottom: 0;
               left: 0;
               width: 100%;
               text-align: center;
-              background-color: rgba(91, 95, 100, 0.6);
+              background: rgba(91, 95, 100, 0.6);
               color: white;
               &.selected {
                 background-color: rgba(38, 74, 219, 0.801);
+                font-weight: 700;
               }
             }
           }
@@ -58,12 +98,12 @@
       }
       .content-top {
         display: flex;
-
+        align-items: center;
         .download-wrap,
         .add-wrap {
           & > img {
-            width: 25px;
-            height: 25px;
+            width: 30px;
+            height: 30px;
             cursor: pointer;
           }
         }
