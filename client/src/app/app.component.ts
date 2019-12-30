@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 // import * as photoApi from 'assets/js/photoapi.js';
-declare const photoAPIApplyFilter: any;
+// declare const photoAPIApplyFilter: any;
+// import { FilerobotImageEditor } from 'filerobot-image-editor';
+
 
 @Component({
   selector: 'app-root',
@@ -17,6 +19,7 @@ export class AppComponent {
   constructor(
     public http: HttpClient
   ) {
+    
     
     // let fData = new FormData();
     // fData.append("image", this.image);

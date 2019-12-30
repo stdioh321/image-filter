@@ -260,47 +260,56 @@ export class MainComponent implements OnInit {
     let config = {};
     config['translations'] = { 'en': { 'toolbar.download': 'Finalize' } };
     config['watermark'] = { fileUpload: true, opacity: 1, position: 'right-bottom' };
+
     // config['colorScheme'] = 'light';
-    let ImageEditor = new FilerobotImageEditor(config,
-      (result) => {
-        console.log('RESULT', result);
-        // window.alert("OK");
-        if (result['status'] == 'success') {
-          // console.log(result['canvas'].toDataURL());
-          this.spinner.show();
-          let tmpNewImage = result['canvas'].toDataURL();
-          tmpNewImage = tmpNewImage.split(",")[1];
-          this.uploadImageImgur(tmpNewImage, 'base64')
-            .subscribe(res => {
-              // this.spinner.hide();
-              // console.log(res);
-              let img = res['data']['link'];
-              this.pfService.loadImageOnCanvas(img)
-                .then(response => {
-                  this.spinner.hide();
-                  this.currFilter = null;
-                  this.currMenu = 1;
-                  this.mainService.original = null;
-                  this.mainService.current = null;
-                  setTimeout(() => {
-                    this.mainService.original = img;
-                    this.mainService.current = img;
-                  }, 0);
-                })
-                .catch(err => {
-                  this.spinner.hide();
-                  alert("Não foi possível carregar a imagem no canvas");
-                });
-            }, err => {
-              this.spinner.hide();
-              alert("Não foi possível fazer o upload da imagem");
-            });
-        }
-      });
+    let ImageEditor = new FilerobotImageEditor(config, { onBeforeComplete: this.onEditComplete.bind(this) });
 
     // let img = "https://scaleflex.airstore.io/demo/stephen-walker-unsplash.jpg"; 
     let img = this.mainService.original;
     ImageEditor.open(img);
+  }
+  onEditComplete(result) {
+    console.log('RESULT', result);
+    // return false;
+    // window.alert("OK");
+    if (result['status'] == 'before-complete') {
+      // console.log(result['canvas'].toDataURL());
+      this.spinner.show();
+      let tmpNewImage = result['canvas'].toDataURL();
+      tmpNewImage = tmpNewImage.split(",")[1];
+      this.uploadImageImgur(tmpNewImage, 'base64')
+        .subscribe(res => {
+          // this.spinner.hide();
+          // console.log(res);
+          let img = res['data']['link'];
+          this.pfService.loadImageOnCanvas(img)
+            .then(response => {
+              this.spinner.hide();
+              this.currFilter = null;
+              this.currMenu = 1;
+              this.mainService.original = null;
+              this.mainService.current = null;
+              setTimeout(() => {
+                this.mainService.original = img;
+                this.mainService.current = img;
+              }, 0);
+            })
+            .catch(err => {
+              this.spinner.hide();
+              alert("Não foi possível carregar a imagem no canvas");
+            });
+        }, err => {
+          this.spinner.hide();
+          alert("Não foi possível fazer o upload da imagem");
+        });
+    }else{
+      alert("Não foi possível editar a imagem");
+    }
+  }
+  onBeforeComplete(props) {
+    console.log('onBeforeComplete: ', props);
+    console.log(props.canvas.toDataURL());
+
   }
 }
 

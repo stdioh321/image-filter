@@ -38,7 +38,7 @@
               "src/assets/js/sha1.js",
               "src/assets/js/photoapi.js",
               "src/assets/js/download.js",
-              "src/assets/js/filerobot-image-editor.min.js"
+              "src/assets/js/filerobot-image-editor-3.6.1.min.js"
             ]
           },
           "configurations": {
