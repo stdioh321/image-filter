@@ -5,6 +5,9 @@ import { PictureFiltersService } from './picture-filters/picture-filters.service
 import { HttpClient } from '@angular/common/http';
 
 
+declare const FilerobotImageEditor: any;
+declare const download: any;
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -18,8 +21,8 @@ export class MainComponent implements OnInit {
     "trending": ['Soft Lilac', 'Lilac Dreams', 'Sweet Caramel', 'Light Bokeh', 'Antique Oil Painting', 'Old Style Bw', 'Washed Out Edges', 'Dreams Of Love', 'Tropical Butterflies', 'Vintage Card'],
     "stylized": ['Old Style Bw', 'Soft Lilac', 'Dramatic Bronze', 'Vintage Card', 'Old Photo', 'Retro Film', 'Triptych Effect', 'Sweet Caramel'],
     "lighting": ['Rainbow Rays', 'Dawn Light', 'Floodlights', 'Mysterious Rays', 'Moon Night', 'Romantic Landscape', 'Evening Light'],
-    "color": ['Poster Look', 'Dreamy Retro', 'Retro Sepia', 'Caramel Haze', 'Bronze Sepia', 'Dramatic Look', ' ', 'Fantasy Blue', 'Hdr', 'Hot Sunset', 'Dramatic Retro'],
-    "fancy_filters": ['Puzzle', 'Edge Detection', 'Cartoon', 'Dave Hill', 'Infrared', 'Neon', 'Crazy Fractal', 'Matrix', 'Fire', 'Kaleidoscope', 'Underwater','Plastic', 'Engraving', 'Cross Stitch', 'Circle Mosaic', 'Isolines', 'Mosaic', 'Image To Text Effect', 'Pixelation'],
+    "color": ['Poster Look', 'Dreamy Retro', 'Retro Sepia', 'Caramel Haze', 'Bronze Sepia', 'Dramatic Look', 'Fantasy Blue', 'Hdr', 'Hot Sunset', 'Dramatic Retro'],
+    "fancy_filters": ['Puzzle', 'Edge Detection', 'Cartoon', 'Dave Hill', 'Infrared', 'Neon', 'Crazy Fractal', 'Matrix', 'Fire', 'Kaleidoscope', 'Underwater', 'Plastic', 'Engraving', 'Cross Stitch', 'Circle Mosaic', 'Isolines', 'Mosaic', 'Image To Text Effect', 'Pixelation'],
     "background": ['Light Bokeh', 'Dreams Of Love', 'Lilac Dreams', 'Christmas Bokeh', 'Frozen Window', 'Sunny Field', 'Old Cityscape', 'Old Street Frame', 'Winter Scenery', 'Flower Dream', 'Tropical Butterflies', 'In The Wave', 'Dreamlike Scenery', 'Industrial'],
     "painting_and_drawing": ['Antique Oil Painting', 'Fusain Painting', 'Sketch', 'Charcoal', 'Pen And Ink', 'Frosty Pattern', 'Plumbago', 'Pencil Painting', 'Impressionism', 'Pointillism', 'Van Gogh Style', 'Painting'],
     "borders": ['Washed Out Edges', 'Semi Transparent Frame', 'Rounded Border', 'Simple Edge', 'Stamp Frame', 'Postage Frame']
@@ -32,6 +35,7 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
   }
 
   uploadImageImgur(file = null) {
@@ -150,27 +154,35 @@ export class MainComponent implements OnInit {
     if (idx == this.currMenu) return;
     this.currFilter = null;
     this.currMenu = idx;
+    let currMenuWrap = document.querySelector('.current-menu-wrap');
+    if (currMenuWrap) currMenuWrap.scrollTo(0, 0);
   }
   downloadCurrentImage(e) {
-    let a = document.createElement("a");
-    let href = null;
-    a.href = this.getCurrentImage();
-    a.download = Date.now() + ".png";
-    let evtClick = new MouseEvent('click');
-    a.dispatchEvent(evtClick);
+    this.spinner.show();
+    download(this.getCurrentImage(), Date.now() + ".png");
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 300);
   }
+  downloadFile(file, idx) {
+    this.spinner.show();
+
+    download(file, idx + "_" + Date.now() + ".png");
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 300);
+  }
+
+
+
   downloadAllImage(e = null) {
     this.spinner.show();
     this.mainService.picturesList.forEach((item, index) => {
-      let a = document.createElement("a");
-      // let href = item;
-      a.target = "_blank";
-      a.href = item;
-      a.download = index + "_" + Date.now() + ".png";
-      let evtClick = new MouseEvent('click');
-      a.dispatchEvent(evtClick);
+      download(item, index + "_" + Date.now() + ".png");
     });
-    this.spinner.hide();
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 300);
   }
   addCurrentImage(e) {
     this.spinner.show();
@@ -227,4 +239,18 @@ export class MainComponent implements OnInit {
     let val = e.target.value || 0;
     this.pfService.filterChangeIntensity(val);
   }
+
+  openEditor() {
+    let ImageEditor = new FilerobotImageEditor({},
+      function () {
+        console.log('RESULT', arguments);
+        window.alert("OK");
+      });
+      
+    // let img = "https://scaleflex.airstore.io/demo/stephen-walker-unsplash.jpg"; 
+    let img = this.mainService.original;
+    ImageEditor.open(img);
+  }
 }
+
+

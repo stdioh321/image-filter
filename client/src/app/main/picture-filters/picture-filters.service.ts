@@ -148,8 +148,6 @@ export class PictureFiltersService {
 
 
   filterPhotoSelected(filterName = null, canChangeIntensity = false) {
-    // console.log(photoAPIApplyFilter);
-
     return new Promise(async (resolve, reject) => {
       if (!filterName) {
         reject(false);
@@ -176,16 +174,17 @@ export class PictureFiltersService {
               return;
             }
             fabric.Image.fromURL(tmpImgResult, (img) => {
-              img.set({ selectable: false });
+
+              img.set({ selectable: false, width: this.canvas.width, height: this.canvas.height });
               // console.log(filterName);
 
               img.applyFilters();
               this.canvas.add(img);
-              // this.mainService.current = this.canvas.toDataURL();
+              this.mainService.current = this.canvas.toDataURL();
               this.canvas.renderAll();
               resolve(true);
             }, { crossOrigin: 'anonymous' });
-            
+
           }).catch(err => {
             reject(false);
           });

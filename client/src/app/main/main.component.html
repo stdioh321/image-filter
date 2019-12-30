@@ -2,14 +2,23 @@
     <div class="row" id="main-row">
         <div class="col-3 menu-wrap">
             <div class="row h-100" *ngIf="mainService?.current">
-                <div class="col-5  h-100 overflow-auto menu-items-wrap">
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 1}" (click)="changeMenu(1)">Fitros</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 2}" (click)="changeMenu(2)">Art</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 3}" (click)="changeMenu(3)">Pinturas</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 4}" (click)="changeMenu(4)">Bordas</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 5}" (click)="changeMenu(5)">Estilizado</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 6}" (click)="changeMenu(6)">Iluminação</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 7}" (click)="changeMenu(7)">Background</button>
+                <div class="col-5  pr-0 h-100 overflow-auto menu-items-wrap">
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 1}"
+                        (click)="changeMenu(1)">Fitros</button>
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 2}"
+                        (click)="changeMenu(2)">Art</button>
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 3}"
+                        (click)="changeMenu(3)">Pinturas</button>
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 4}"
+                        (click)="changeMenu(4)">Bordas</button>
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 5}"
+                        (click)="changeMenu(5)">Estilizado</button>
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 6}"
+                        (click)="changeMenu(6)">Iluminação</button>
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 7}"
+                        (click)="changeMenu(7)">Background</button>
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 8}"
+                        (click)="changeMenu(8);openEditor()">Editar</button>
                     <!-- "trending"
                     "stylized"
                     "lighting"
@@ -22,6 +31,7 @@
                 <div class="col-7 h-100 current-menu-wrap">
                     <div class="current-menu" *ngIf="currMenu==1">
                         <ul class="menu-filters">
+                            
                             <li class="menu-filters-item" *ngFor="let item of photoFiltersList?.color;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx,true)">
                                     <img src="https://d3iqv7nekb4k6t.cloudfront.net/effects/547858442e50ffaaa60feb6099c8b8c5.jpg"
@@ -142,8 +152,8 @@
                 <div class="row h-100">
                     <div class="col-11 h-100 overflow-hidden">
                         <div class="saved-pictures-preview">
-                            <a href="{{item}}" *ngFor="let item of mainService?.picturesList;let idx =index"
-                                download="{{idx}}.png" target="_blank">
+                            <a href="{{item}}" *ngFor="let item of mainService?.picturesList;let idx = index"
+                                (click)="downloadFile(item, idx)">
                                 <img src="{{item}}" />
                             </a>
                         </div>

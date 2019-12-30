@@ -21,6 +21,7 @@
     "@angular/router": "~8.2.14",
     "bootstrap": "^4.4.1",
     "fabric": "^3.5.1",
+    "filerobot-image-editor": "^3.6.1",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
     "ngx-bootstrap": "^5.2.0",
