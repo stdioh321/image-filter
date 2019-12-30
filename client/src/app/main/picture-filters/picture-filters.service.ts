@@ -24,8 +24,6 @@ export class PictureFiltersService {
         return false;
       };
       try {
-        // let c = document.querySelector("canvas");
-        // let ctx = c.getContext("2d");
         this.canvas.clear();
         this.canvas.setBackgroundImage(img, (tmp) => {
           this.canvas.setWidth(tmp.width);
@@ -34,70 +32,27 @@ export class PictureFiltersService {
           res(true);
         }, { crossOrigin: "anonymous" });
 
-
-
-
-        // if (crossOrigin)
-        //   tmpImg.crossOrigin = 'anonymous';
-        // tmpImg.onload = () => {
-        //   let f_img = new fabric.Image(tmpImg);
-        //   this.canvas.clear();
-        //   this.canvas.setBackgroundImage(f_img, () => {
-
-        //     this.canvas.setWidth(tmpImg.width);
-        //     this.canvas.setHeight(tmpImg.height);
-        //     this.canvas.renderAll();
-        //     res(true);
-        //   },{
-        //     crossBrowser:'anonymous'
-        //   });
-        // }
-
-        // fabric.Image.fromURL(img,
-        //   (imgInstance) => {
-        //     console.log(imgInstance);
-        //     this.canvas.clear();
-        //     this.canvas.setBackgroundImage(imgInstance, this.canvas.renderAll.bind(this.canvas));
-        //     this.canvas.setWidth(imgInstance.width);
-        //     this.canvas.setHeight(imgInstance.height);
-        //     res(true);
-        //   }, { crossOrigin: 'anonymous' });
-
       } catch (error) {
         console.log('FROMURL ERROR');
         rej(false);
       }
-
-      // let tmpImg = document.createElement('img');
-      // tmpImg['crossOrigin'] = "anonymous";
-      // tmpImg.src = img;
-      // console.log(tmpImg);
-
-      // tmpImg.onload = () => {
-      //   let imgInstance = new fabric.Image(tmpImg, {
-      //     "id": "original",
-      //     crossOrigin: 'anonymous'
-      //   });
-      //   this.canvas.clear();
-      //   this.canvas.setBackgroundImage(imgInstance, this.canvas.renderAll.bind(this.canvas));
-      //   this.canvas.setWidth(tmpImg.width);
-      //   this.canvas.setHeight(tmpImg.height);
-
-      // this.canvas.add(imgInstance);
-
-      // this.canvas.setActiveObject(this.canvas.item(0));
-      // this.canvas.selection = false;
-
-      // this.canvas.item(0).selectable = false;
-      // window['tmp'] = this.canvas;
-      // res(true);
 
     });
 
   }
 
 
-
+  originalSelected() {
+    return new Promise((resolve, reject) => {
+      this.loadImageOnCanvas(this.mainService.original)
+        .then(res => {
+          resolve(true);
+        })
+        .catch(err => {
+          reject(false);
+        })
+    });
+  }
   filterSelected(filterName = null) {
     return new Promise((resolve, reject) => {
       if (!filterName) {

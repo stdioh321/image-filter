@@ -38,12 +38,16 @@ export class MainComponent implements OnInit {
 
   }
 
-  uploadImageImgur(file = null) {
+  uploadImageImgur(file = null, type = null) {
+    // let url = "https://api.imgur.com/3/upload";
     let url = "https://api.imgur.com/3/image";
     let clientId = "Client-ID 93117ee7a96785a";
     let options = { headers: { "Authorization": clientId } };
     let fData = new FormData();
     fData.append("image", file);
+
+    if (type)
+      fData.append("type", type);
     return this.http.post(url, fData, options);
     // let fData = new FormData();
     // fData.append("image", this.image);
@@ -219,6 +223,7 @@ export class MainComponent implements OnInit {
         this.spinner.hide();
       });
   }
+
   onFilterPhotoSelected(filterName = null, filterIndex = 0, canChangeIntensity = false) {
     if (this.currFilter == filterIndex)
       return;
@@ -231,6 +236,17 @@ export class MainComponent implements OnInit {
         this.spinner.hide();
       });
   }
+  onOriginalSelected() {
+    this.spinner.show();
+    this.pfService.originalSelected()
+      .then(res => {
+        this.currFilter = null;
+        this.spinner.hide();
+      }).catch(err => {
+        this.spinner.hide();
+      });
+  }
+
   onFilterPhotoRangeChange(e) {
     let val = e.target.value || 0;
     this.pfService.filterChangeIntensity(val);
@@ -241,12 +257,47 @@ export class MainComponent implements OnInit {
   }
 
   openEditor() {
-    let ImageEditor = new FilerobotImageEditor({},
-      function () {
-        console.log('RESULT', arguments);
-        window.alert("OK");
+    let config = {};
+    config['translations'] = { 'en': { 'toolbar.download': 'Finalize' } };
+    config['watermark'] = { fileUpload: true, opacity: 1, position: 'right-bottom' };
+    // config['colorScheme'] = 'light';
+    let ImageEditor = new FilerobotImageEditor(config,
+      (result) => {
+        console.log('RESULT', result);
+        // window.alert("OK");
+        if (result['status'] == 'success') {
+          // console.log(result['canvas'].toDataURL());
+          this.spinner.show();
+          let tmpNewImage = result['canvas'].toDataURL();
+          tmpNewImage = tmpNewImage.split(",")[1];
+          this.uploadImageImgur(tmpNewImage, 'base64')
+            .subscribe(res => {
+              // this.spinner.hide();
+              // console.log(res);
+              let img = res['data']['link'];
+              this.pfService.loadImageOnCanvas(img)
+                .then(response => {
+                  this.spinner.hide();
+                  this.currFilter = null;
+                  this.currMenu = 1;
+                  this.mainService.original = null;
+                  this.mainService.current = null;
+                  setTimeout(() => {
+                    this.mainService.original = img;
+                    this.mainService.current = img;
+                  }, 0);
+                })
+                .catch(err => {
+                  this.spinner.hide();
+                  alert("Não foi possível carregar a imagem no canvas");
+                });
+            }, err => {
+              this.spinner.hide();
+              alert("Não foi possível fazer o upload da imagem");
+            });
+        }
       });
-      
+
     // let img = "https://scaleflex.airstore.io/demo/stephen-walker-unsplash.jpg"; 
     let img = this.mainService.original;
     ImageEditor.open(img);

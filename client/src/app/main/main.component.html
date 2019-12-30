@@ -4,21 +4,21 @@
             <div class="row h-100" *ngIf="mainService?.current">
                 <div class="col-5  pr-0 h-100 overflow-auto menu-items-wrap">
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 1}"
-                        (click)="changeMenu(1)">Fitros</button>
+                        (click)="changeMenu(1);onOriginalSelected()">Fitros</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 2}"
-                        (click)="changeMenu(2)">Art</button>
+                        (click)="changeMenu(2);onOriginalSelected()">Art</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 3}"
-                        (click)="changeMenu(3)">Pinturas</button>
+                        (click)="changeMenu(3);onOriginalSelected()">Pinturas</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 4}"
-                        (click)="changeMenu(4)">Bordas</button>
+                        (click)="changeMenu(4);onOriginalSelected()">Bordas</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 5}"
-                        (click)="changeMenu(5)">Estilizado</button>
+                        (click)="changeMenu(5);onOriginalSelected()">Estilizado</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 6}"
-                        (click)="changeMenu(6)">Iluminação</button>
+                        (click)="changeMenu(6);onOriginalSelected()">Iluminação</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 7}"
-                        (click)="changeMenu(7)">Background</button>
+                        (click)="changeMenu(7);onOriginalSelected()">Background</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 8}"
-                        (click)="changeMenu(8);openEditor()">Editar</button>
+                        (click)="changeMenu(8);onOriginalSelected();openEditor()">Editar</button>
                     <!-- "trending"
                     "stylized"
                     "lighting"
