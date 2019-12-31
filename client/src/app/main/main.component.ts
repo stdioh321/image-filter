@@ -311,7 +311,7 @@ export class MainComponent implements OnInit {
 
         render.onload = (data) => {
           // console.log(data.target.result);
-          let imgB64 = data.target.result;
+          let imgB64 = data['target']['result'];
           this.pfService.image.setSrc(imgB64, (img) => {
             // img.set({width:60});
             console.log(img);
