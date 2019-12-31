@@ -126,20 +126,71 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="current-menu" *ngIf="currMenu == 9">
-                        <h2 class="text-white text-center">LogoMarca</h2>
+                    <div class="current-menu menu-logomarca" *ngIf="currMenu == 9">
+                        <!-- <h2 class="text-white text-center">Logomarca</h2> -->
                         <div>
                             <div class="text-white font-weight-bold">Texto</div>
                             <input type="text" class="form-control" placeholder="Texto" [value]="pfService?.text?.text"
                                 (input)="changeLogoText($event)">
+
+                        </div>
+                        <div>
+                            <div class="text-white font-weight-bold">Tamanho do Texto</div>
+                            <input type="range" class="w-100" min="30" max="70" step="2"
+                                [value]="pfService?.text?.fontSize || 50" (input)="onLogoTextSizeChange($event)">
+                        </div>
+                        <div>
+                            <div class="text-white font-weight-bold">Posição do Texto</div>
+                            <select class="form-control" (change)="onLogoTextPositionChange($event)">
+                                <option [value]="null" style="display: none;">Escolha</option>
+                                <option [value]="1">Topo-Esquerdo</option>
+                                <option [value]="2">Topo-Centro</option>
+                                <option [value]="3">Topo-Direito</option>
+                                <option [value]="4">Centro-Esquerdo</option>
+                                <option [value]="5">Centro</option>
+                                <option [value]="6">Centro-Direito</option>
+                                <option [value]="7">Fundo-Esquerdo</option>
+                                <option [value]="8">Fundo-Centro</option>
+                                <option [value]="9">Fundo-Direito</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="text-white font-weight-bold">Cor do Texto</div>
+                            <color-chrome color="#fff" (onChangeComplete)="onLogoTextColorChange($event)"
+                                [disableAlpha]="true">
+                            </color-chrome>
+
+
                         </div>
                         <div>
                             <div class="text-white font-weight-bold">Imagem</div>
-                            <label for="logomarcaImg" class="btn btn-primary">
+                            <label for="logomarcaImg" class="btn btn-primary btn-block">
                                 <i class="fa fa-image mr-1"></i>Upload
-                                <input type="file" placeholder="Image" accept=".jpg,jpeg,.png" (change)="changeLogoImage($event)" hidden
-                                    id="logomarcaImg">
+                                <input type="file" placeholder="Image" accept=".jpg,jpeg,.png"
+                                    (change)="changeLogoImage($event)" hidden id="logomarcaImg">
                             </label>
+                        </div>
+                        <div>
+                            <div class="text-white font-weight-bold">Tamanho da Imagem</div>
+                            <input type="range" class="w-100" min="50" max="300" step="2"
+                                [value]="pfService?.image?.getScaledWidth() || 50"
+                                (input)="onLogoImageSizeChange($event)">
+                        </div>
+                        <div>
+                            <div class="text-white font-weight-bold">Posição do Imagem</div>
+                            <select class="form-control" (change)="onLogoImagePositionChange($event)"
+                                [(ngModel)]="logoImagePos">
+                                <option [ngValue]="null" disabled>Escolha</option>
+                                <option [value]="1">Topo-Esquerdo</option>
+                                <option [value]="2">Topo-Centro</option>
+                                <option [value]="3">Topo-Direito</option>
+                                <option [value]="4">Centro-Esquerdo</option>
+                                <option [value]="5">Centro</option>
+                                <option [value]="6">Centro-Direito</option>
+                                <option [value]="7">Fundo-Esquerdo</option>
+                                <option [value]="8">Fundo-Centro</option>
+                                <option [value]="9">Fundo-Direito</option>
+                            </select>
                         </div>
                     </div>
                 </div>

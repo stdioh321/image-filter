@@ -22,7 +22,7 @@ export class PictureFiltersService {
   }
   startWaterMark() {
     this.image = new fabric.Image('', { selectable: true, id: 'image' });
-    this.text = new fabric.Text('Telefone', { selectable: false, fill: '#F00', fontSize: 50, id: 'txt' });
+    this.text = new fabric.Text('Telefone', { selectable: false, fill: '#FF0000', fontSize: 50, id: 'txt' });
   }
   drawWaterMark() {
     // console.log('aqui');
@@ -36,15 +36,15 @@ export class PictureFiltersService {
       };
     });
 
-    this.text.left = 15;
-    this.text.top = this.canvas.getHeight() - this.text.height - 15;
+
 
     if (this.image && this.image.getElement() && this.image.getElement()['naturalWidth']) {
-      this.image.left = this.canvas.getWidth() - this.image.getScaledWidth() - 15;
-      this.image.top = this.canvas.getHeight() - this.image.getScaledHeight() - 15;
+      // this.image.left = this.canvas.getWidth() - this.image.getScaledWidth() - 15;
+      // this.image.top = this.canvas.getHeight() - this.image.getScaledHeight() - 15;
+      this.updateObjPosition(this.image.pos || '9', this.image);
       this.canvas.add(this.image);
     }
-
+    this.updateObjPosition(this.text.pos, this.text);
     this.canvas.add(this.text);
     this.canvas.renderAll();
 
@@ -259,5 +259,57 @@ export class PictureFiltersService {
       this.image = result;
       this.drawWaterMark();
     }, { selectable: false, id: 'image' });
+  }
+
+  updateObjPosition(pos = '1', obj = null) {
+    if (!obj) return false;
+    pos = pos + "";
+    let padd = 15;
+    var left = 0;
+    var top = 0;
+    switch (pos) {
+      case '1':
+        left = padd;
+        top = padd;
+        break;
+      case '2':
+        top = padd;
+        left = (this.canvas.getWidth() / 2) - (obj.getScaledWidth() / 2);
+        break
+      case '3':
+        top = padd;
+        left = this.canvas.getWidth() - obj.getScaledWidth() - padd;
+        break
+      case '4':
+        top = this.canvas.getHeight() / 2 - obj.getScaledHeight() / 2;
+        left = padd;
+        break
+      case '5':
+        top = this.canvas.getHeight() / 2 - obj.getScaledHeight() / 2;
+        left = (this.canvas.getWidth() / 2) - (obj.getScaledWidth() / 2);
+        break
+      case '6':
+        top = this.canvas.getHeight() / 2 - obj.getScaledHeight() / 2;
+        left = this.canvas.getWidth() - obj.getScaledWidth() - padd;
+        break
+      case '7':
+        top = this.canvas.getHeight() - obj.getScaledHeight() - padd;
+        left = padd;
+        break
+      case '8':
+        top = this.canvas.getHeight() - obj.getScaledHeight() - padd;
+        left = (this.canvas.getWidth() / 2) - (obj.getScaledWidth() / 2);
+        break
+      case '9':
+        top = this.canvas.getHeight() - obj.getScaledHeight() - padd;
+        left = this.canvas.getWidth() - obj.getScaledWidth() - padd;
+        break
+      default:
+        left = padd;
+        top = padd;
+        break;
+    }
+    obj.set('left', left);
+    obj.set('top', top);
   }
 }

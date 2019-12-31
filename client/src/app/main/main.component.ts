@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MainService } from './main.service';
 import { PictureFiltersService } from './picture-filters/picture-filters.service';
@@ -31,11 +31,14 @@ export class MainComponent implements OnInit {
     "painting_and_drawing": ['Antique Oil Painting', 'Fusain Painting', 'Sketch', 'Charcoal', 'Pen And Ink', 'Frosty Pattern', 'Plumbago', 'Pencil Painting', 'Impressionism', 'Pointillism', 'Van Gogh Style', 'Painting'],
     "borders": ['Washed Out Edges', 'Semi Transparent Frame', 'Rounded Border', 'Simple Edge', 'Stamp Frame', 'Postage Frame']
   };
+
+  public logoImagePos = null;
   constructor(
     public spinner: NgxSpinnerService,
     public mainService: MainService,
     public pfService: PictureFiltersService,
-    public http: HttpClient
+    public http: HttpClient,
+    public ngZone: NgZone,
   ) { }
 
   ngOnInit() {
@@ -287,8 +290,6 @@ export class MainComponent implements OnInit {
       .then(res => {
         this.currFilter = null;
         this.spinner.hide();
-
-        // this.pfService.drawWaterMark();
       }).catch(err => {
         this.spinner.hide();
       });
@@ -310,7 +311,7 @@ export class MainComponent implements OnInit {
           // console.log(data.target.result);
           let imgB64 = data['target']['result'];
           this.pfService.updateLogomarcaImg(imgB64);
-
+          this.logoImagePos = null;
           // this.pfService.image.setSrc(imgB64, (img) => {
           //   this.pfService.image.scaleToWidth(100);
           //   console.log(this.pfService.image);
@@ -381,6 +382,36 @@ export class MainComponent implements OnInit {
       }
 
     });
+  }
+  onLogoTextSizeChange(e) {
+    let val = e.target.value;
+    // console.log(e);
+    this.pfService.text.fontSize = val;
+    this.pfService.drawWaterMark();
+  }
+  onLogoTextColorChange(e) {
+    let colorHex = e.color.hex;
+    this.pfService.text.set('fill', colorHex);
+    // this.pfService.text.fontSize = this.pfService.text.fontSize;
+    this.pfService.drawWaterMark();
+
+  }
+  onLogoTextPositionChange(e) {
+    let val = e.target.value;
+    this.pfService.text.set('pos', val);
+    this.pfService.drawWaterMark();
+  }
+
+  onLogoImageSizeChange(e) {
+    let val = e.target.value;
+    // console.log(val);
+    this.pfService.image.scaleToWidth(val);
+    this.pfService.drawWaterMark();
+  }
+  onLogoImagePositionChange(e) {
+    let val = e.target.value;
+    this.pfService.image.set('pos', val);
+    this.pfService.drawWaterMark();
   }
 }
 

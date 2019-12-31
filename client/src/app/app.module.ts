@@ -14,6 +14,9 @@ import { PictureFiltersComponent } from './main/picture-filters/picture-filters.
 import { MainService } from './main/main.service';
 import { PictureFiltersService } from './main/picture-filters/picture-filters.service';
 import { UcWidgetModule } from 'ngx-uploadcare-widget';
+import { ColorSketchModule } from 'ngx-color/sketch';
+import { ColorHueModule } from 'ngx-color/hue'; // <color-hue-picker></color-hue-picker>
+import { ColorChromeModule } from 'ngx-color/chrome'; // <color-chrome></color-chrome>
 
 
 @NgModule({
@@ -29,7 +32,8 @@ import { UcWidgetModule } from 'ngx-uploadcare-widget';
     HttpClientModule,
     BrowserAnimationsModule,
     NgxSpinnerModule,
-    UcWidgetModule
+    UcWidgetModule,
+    ColorChromeModule
   ],
   providers: [MainService, PictureFiltersService],
   bootstrap: [AppComponent]

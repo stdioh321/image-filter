@@ -52,6 +52,13 @@
       }
       .current-menu {
         height: 100%;
+        &.menu-logomarca{
+          ::ng-deep color-chrome{
+            .chrome-picker{
+              width: 100% !important;
+            }
+          }
+        }
       }
       .menu-filters {
         list-style: none;

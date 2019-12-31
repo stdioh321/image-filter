@@ -8,6 +8,7 @@
     width: 100% !important;
     position: relative;
     canvas {
+      transition: all 0.5s;
       position: absolute;
       top: 50% !important;
       left: 50% !important;
