@@ -475,7 +475,7 @@ var obj = {};
 $.extend( obj, photoObj.paramsObj );
 obj.image_url = image_url + "?v=" + Math.round( 10000000 * Math.random() );
 obj.methods_list.params = 'template_name=' + template;
-obj.result_size = 1500;
+obj.result_size = 600;
 
 p.process(obj, callback);
 

@@ -12,10 +12,43 @@ declare const photoAPIApplyFilter: any;
 })
 export class PictureFiltersService {
   public canvas = null;
+  public image = null;
+  public text = null;
   constructor(
     public mainService: MainService
+  ) {
+    this.startWaterMark();
 
-  ) { }
+  }
+  startWaterMark() {
+    this.image = new fabric.Image('', { selectable: false, id: 'image' });
+    this.text = new fabric.Text('Telefone', { selectable: false, fill: '#F00', fontSize: 50, id: 'txt' });
+  }
+  drawWaterMark() {
+    console.log('aqui');
+    this.canvas.getObjects().forEach((el) => {
+      if (el.id == 'txt' || el.id == 'image') {
+        try {
+          this.canvas.remove(el)
+        } catch (error) {
+
+        }
+      };
+    });
+    this.text.left = 15;
+    this.text.top = this.canvas.getHeight() - this.text.height - 15;
+
+    if (this.image.getElement() && this.image.getElement()['naturalWidth']) {
+      // this.image.scaleToWidth(60, true);
+      this.image.left = this.canvas.getWidth() - this.image.getScaledWidth() - 15;
+      this.image.top = this.canvas.getHeight() - this.image.getScaledHeight() - 15;
+
+      this.canvas.add(this.image);
+    }
+
+    this.canvas.add(this.text);
+    this.canvas.renderAll();
+  }
 
   loadImageOnCanvas(img = null, crossOrigin = false) {
     return new Promise((res, rej) => {
@@ -29,6 +62,7 @@ export class PictureFiltersService {
           this.canvas.setWidth(tmp.width);
           this.canvas.setHeight(tmp.height);
           this.canvas.renderAll();
+          this.drawWaterMark();
           res(true);
         }, { crossOrigin: "anonymous" });
 
@@ -130,11 +164,20 @@ export class PictureFiltersService {
             }
             fabric.Image.fromURL(tmpImgResult, (img) => {
 
-              img.set({ selectable: false, width: this.canvas.width, height: this.canvas.height });
+              img.set({ selectable: false, width: this.canvas.width, height: this.canvas.height, id: 'filtro' });
               // console.log(filterName);
 
               img.applyFilters();
+              // 
               this.canvas.add(img);
+              // this.canvas.item(0).bringForward(true);
+              // img.bringForward(false);
+              this.canvas.getObjects().forEach(el => {
+                if (el.id != 'filtro') {
+                  el.bringForward(true);
+                }
+              });
+
               this.mainService.current = this.canvas.toDataURL();
               this.canvas.renderAll();
               resolve(true);
@@ -152,9 +195,17 @@ export class PictureFiltersService {
   }
 
   filterChangeIntensity(val = 0) {
-    let current = this.canvas.item(0);
-    current.set({ opacity: val });
-    this.canvas.renderAll();
+    try {
+      let current = null;
+      this.canvas.forEachObject((el) => {
+        if (el.id == "filtro")
+          current = el;
+      });
+      current.set({ opacity: val });
+      this.canvas.renderAll();
+    } catch (error) {
+
+    }
   }
 
   getPhotoFIlter(template = null, imgUrl = null, effect = "trending") {

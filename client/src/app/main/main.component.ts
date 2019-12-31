@@ -5,6 +5,10 @@ import { PictureFiltersService } from './picture-filters/picture-filters.service
 import { HttpClient } from '@angular/common/http';
 
 
+import * as $ from 'jquery';
+import 'fabric';
+declare const fabric: any;
+
 declare const FilerobotImageEditor: any;
 declare const download: any;
 
@@ -111,38 +115,6 @@ export class MainComponent implements OnInit {
               alert("Não foi possivel carregar a imagem");
             }, 500);
           });
-
-        // let reader = new FileReader();
-        // this.spinner.show();
-        // reader.onload = (e) => {
-
-        //   let img = e['target']['result'];
-
-        //   this.pfService.loadImageOnCanvas(img)
-        //     .then(res => {
-        //       this.spinner.hide();
-        //       this.currFilter = 0;
-        //       this.currMenu = 1;
-        //       this.mainService.originalFile = null;
-        //       this.mainService.original = null;
-        //       this.mainService.initial = null;
-        //       this.mainService.current = null;
-        //       setTimeout(() => {
-        //         this.mainService.originalFile = file;
-        //         this.mainService.original = img;
-        //         this.mainService.current = img;
-        //         this.mainService.initial = img;
-        //         console.log(file);
-
-        //       }, 0);
-
-
-        //     });
-        // }
-        // reader.onerror = (e) => {
-        //   this.spinner.hide();
-        // }
-        // reader.readAsDataURL(file);
       } else {
         alert("Não é uma imagem.");
         this.imgUpload = null;
@@ -302,7 +274,7 @@ export class MainComponent implements OnInit {
           this.spinner.hide();
           alert("Não foi possível fazer o upload da imagem");
         });
-    }else{
+    } else {
       alert("Não foi possível editar a imagem");
     }
   }
@@ -310,6 +282,55 @@ export class MainComponent implements OnInit {
     console.log('onBeforeComplete: ', props);
     console.log(props.canvas.toDataURL());
 
+  }
+
+  openLogomarca() {
+    this.spinner.show();
+    this.pfService.originalSelected()
+      .then(res => {
+        this.currFilter = null;
+        this.spinner.hide();
+
+        // this.pfService.drawWaterMark();
+      }).catch(err => {
+        this.spinner.hide();
+      });
+
+  }
+  changeLogoText(e) {
+    this.pfService.text.text = e.target.value;
+    this.pfService.drawWaterMark();
+  }
+  changeLogoImage(e) {
+    console.log(e);
+    let file = e.target.files[0];
+    if (file) {
+      if (file.type.match(/image/gi)) {
+        let render = new FileReader();
+        render.readAsDataURL(file);
+
+        render.onload = (data) => {
+          // console.log(data.target.result);
+          let imgB64 = data.target.result;
+          this.pfService.image.setSrc(imgB64, (img) => {
+            // img.set({width:60});
+            console.log(img);
+            img.scaleToWidth(90,true);
+            this.pfService.drawWaterMark();
+          });
+
+        }
+      } else {
+        alert("Não é uma imagem.");
+        return false;
+      }
+    } else {
+      // alert("Imagem necessária.");
+      // this.imgUpload = null;
+      return false;
+    }
+    // this.pfService.text.text = e.target.value;
+    // this.pfService.drawWaterMark();
   }
 }
 

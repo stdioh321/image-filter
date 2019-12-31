@@ -19,6 +19,8 @@
                         (click)="changeMenu(7);onOriginalSelected()">Background</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 8}"
                         (click)="changeMenu(8);onOriginalSelected();openEditor()">Editar</button>
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 9}"
+                        (click)="changeMenu(9);openLogomarca()">Logomarca</button>
                     <!-- "trending"
                     "stylized"
                     "lighting"
@@ -31,7 +33,7 @@
                 <div class="col-7 h-100 current-menu-wrap">
                     <div class="current-menu" *ngIf="currMenu==1">
                         <ul class="menu-filters">
-                            
+
                             <li class="menu-filters-item" *ngFor="let item of photoFiltersList?.color;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx,true)">
                                     <img src="https://d3iqv7nekb4k6t.cloudfront.net/effects/547858442e50ffaaa60feb6099c8b8c5.jpg"
@@ -124,7 +126,22 @@
                             </li>
                         </ul>
                     </div>
-
+                    <div class="current-menu" *ngIf="currMenu == 9">
+                        <h2 class="text-white text-center">LogoMarca</h2>
+                        <div>
+                            <div class="text-white font-weight-bold">Texto</div>
+                            <input type="text" class="form-control" placeholder="Texto" [value]="pfService?.text?.text"
+                                (input)="changeLogoText($event)">
+                        </div>
+                        <div>
+                            <div class="text-white font-weight-bold">Imagem</div>
+                            <label for="logomarcaImg" class="btn btn-primary">
+                                <i class="fa fa-image mr-1"></i>Upload
+                                <input type="file" placeholder="Image" accept=".jpg,jpeg,.png" (change)="changeLogoImage($event)" hidden
+                                    id="logomarcaImg">
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -159,7 +176,7 @@
                         </div>
 
                     </div>
-                    <div class="col-1 bt-download d-flex align-items-center justify-content-center">
+                    <div class="col-1 bt-download d-flex align-items-center justify-content-end">
                         <img src="assets/images/download-green.svg" (click)="downloadAllImage()" class="pointer"
                             *ngIf="mainService?.picturesList?.length > 0">
 
