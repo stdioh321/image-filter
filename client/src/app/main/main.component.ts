@@ -53,21 +53,6 @@ export class MainComponent implements OnInit {
     if (type)
       fData.append("type", type);
     return this.http.post(url, fData, options);
-    // let fData = new FormData();
-    // fData.append("image", this.image);
-    // // fData.append("type", 'base64');
-    // this.http.post(this.url, fData, {
-
-    //   headers: {
-    //     "Authorization": this.clientId
-    //   }
-
-    // }).subscribe(res => {
-    //   console.log(res);
-    // }, err => {
-    //   console.log(err);
-
-    // });
   }
 
   onPictureUpload(e) {
@@ -79,42 +64,54 @@ export class MainComponent implements OnInit {
       if (file.type.match(/image/gi)) {
         // alert("Sucesso, uma imagem");
         this.spinner.show();
-        this.uploadImageImgur(file)
-          .subscribe(res => {
-            let img = res['data']['link'];
-            this.pfService.loadImageOnCanvas(img, true)
-              .then(res => {
+
+        this.resizeImageFile(file)
+          .then(resolve => {
+            let tmpImage = (resolve + "").split(',')[1];
+            this.uploadImageImgur(tmpImage)
+              .subscribe(res => {
+                let img = res['data']['link'];
+                this.pfService.loadImageOnCanvas(img, true)
+                  .then(res => {
+                    this.spinner.hide();
+                    this.currFilter = null;
+                    this.currMenu = 1;
+                    this.mainService.originalFile = null;
+                    this.mainService.original = null;
+                    this.mainService.initial = null;
+                    this.mainService.current = null;
+                    setTimeout(() => {
+                      this.mainService.originalFile = file;
+                      this.mainService.original = img;
+                      this.mainService.current = img;
+                      this.mainService.initial = img;
+                      console.log(file);
+
+                    }, 0);
+
+
+                  })
+                  .catch(err => {
+                    this.spinner.hide();
+                    setTimeout(() => {
+                      alert("Não foi possivel carregar a imagem no canvas");
+                    }, 500);
+                  });
+              }, err => {
+                console.log(err);
                 this.spinner.hide();
-                this.currFilter = null;
-                this.currMenu = 1;
-                this.mainService.originalFile = null;
-                this.mainService.original = null;
-                this.mainService.initial = null;
-                this.mainService.current = null;
                 setTimeout(() => {
-                  this.mainService.originalFile = file;
-                  this.mainService.original = img;
-                  this.mainService.current = img;
-                  this.mainService.initial = img;
-                  console.log(file);
-
-                }, 0);
-
-
-              })
-              .catch(err => {
-                this.spinner.hide();
-                setTimeout(() => {
-                  alert("Não foi possivel carregar a imagem no canvas");
+                  alert("Não foi possivel carregar a imagem");
                 }, 500);
               });
-          }, err => {
+          })
+          .catch(err => {
             console.log(err);
             this.spinner.hide();
             setTimeout(() => {
               alert("Não foi possivel carregar a imagem");
             }, 500);
-          });
+          })
       } else {
         alert("Não é uma imagem.");
         this.imgUpload = null;
@@ -302,7 +299,7 @@ export class MainComponent implements OnInit {
     this.pfService.drawWaterMark();
   }
   changeLogoImage(e) {
-    console.log(e);
+    // console.log(e);
     let file = e.target.files[0];
     if (file) {
       if (file.type.match(/image/gi)) {
@@ -312,12 +309,16 @@ export class MainComponent implements OnInit {
         render.onload = (data) => {
           // console.log(data.target.result);
           let imgB64 = data['target']['result'];
-          this.pfService.image.setSrc(imgB64, (img) => {
-            // img.set({width:60});
-            console.log(img);
-            img.scaleToWidth(90,true);
-            this.pfService.drawWaterMark();
-          });
+          this.pfService.updateLogomarcaImg(imgB64);
+
+          // this.pfService.image.setSrc(imgB64, (img) => {
+          //   this.pfService.image.scaleToWidth(100);
+          //   console.log(this.pfService.image);
+
+          //   // this.pfService.canvas.add(this.pfService.image)
+          //   // this.pfService.image.scaleX = 20;
+          //   this.pfService.drawWaterMark();
+          // });
 
         }
       } else {
@@ -331,6 +332,55 @@ export class MainComponent implements OnInit {
     }
     // this.pfService.text.text = e.target.value;
     // this.pfService.drawWaterMark();
+  }
+
+
+  resizeImageURL(url = null, width = 600) {
+    return new Promise((resolve, reject) => {
+      if (!url) {
+        reject(false);
+        return false;
+      }
+      let c = document.createElement('canvas');
+      let ctx = c.getContext('2d');
+      let img = new Image();
+      img.onload = () => {
+        c.width = 600;
+        c.height = img.height * 600 / img.width;
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        resolve(c.toDataURL());
+      }
+      img.onerror = () => {
+        reject(false);
+      }
+      img.crossOrigin = "anonymous";
+      img.src = url;
+    });
+  }
+  resizeImageFile(file = null, width = 600) {
+    return new Promise((resolve, reject) => {
+      if (!file) {
+        reject(false);
+        return false;
+      }
+
+      let render = new FileReader();
+      render.readAsDataURL(file);
+      render.onload = () => {
+        let url = render['result'];
+        this.resizeImageURL(url, width)
+          .then(res => {
+            resolve(res);
+          })
+          .catch(err => {
+            reject(false);
+          });
+      }
+      render.onerror = () => {
+        reject(false);
+      }
+
+    });
   }
 }
 

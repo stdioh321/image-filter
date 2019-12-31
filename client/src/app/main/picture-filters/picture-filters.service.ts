@@ -21,11 +21,11 @@ export class PictureFiltersService {
 
   }
   startWaterMark() {
-    this.image = new fabric.Image('', { selectable: false, id: 'image' });
+    this.image = new fabric.Image('', { selectable: true, id: 'image' });
     this.text = new fabric.Text('Telefone', { selectable: false, fill: '#F00', fontSize: 50, id: 'txt' });
   }
   drawWaterMark() {
-    console.log('aqui');
+    // console.log('aqui');
     this.canvas.getObjects().forEach((el) => {
       if (el.id == 'txt' || el.id == 'image') {
         try {
@@ -35,19 +35,19 @@ export class PictureFiltersService {
         }
       };
     });
+
     this.text.left = 15;
     this.text.top = this.canvas.getHeight() - this.text.height - 15;
 
-    if (this.image.getElement() && this.image.getElement()['naturalWidth']) {
-      // this.image.scaleToWidth(60, true);
+    if (this.image && this.image.getElement() && this.image.getElement()['naturalWidth']) {
       this.image.left = this.canvas.getWidth() - this.image.getScaledWidth() - 15;
       this.image.top = this.canvas.getHeight() - this.image.getScaledHeight() - 15;
-
       this.canvas.add(this.image);
     }
 
     this.canvas.add(this.text);
     this.canvas.renderAll();
+
   }
 
   loadImageOnCanvas(img = null, crossOrigin = false) {
@@ -251,5 +251,13 @@ export class PictureFiltersService {
     };
     xhr.onerror = onError;
     xhr.send();
+  }
+
+  updateLogomarcaImg(img) {
+    new fabric.Image.fromURL(img, (result) => {
+      result.scaleToWidth(100);
+      this.image = result;
+      this.drawWaterMark();
+    }, { selectable: false, id: 'image' });
   }
 }
