@@ -67,6 +67,7 @@
           margin-bottom: 7.5px;
           .menu-filters-thumb {
             position: relative;
+            min-height: 20px;
             cursor: pointer;
             & > img {
               width: 100%;

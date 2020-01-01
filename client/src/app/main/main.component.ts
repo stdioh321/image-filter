@@ -60,6 +60,7 @@ export class MainComponent implements OnInit {
 
   onPictureUpload(e) {
     let file = e.target.files[0];
+    e.target.value = null;
     // console.log(this.imgUpload);
 
     if (file) {
@@ -288,6 +289,7 @@ export class MainComponent implements OnInit {
   changeLogoImage(e) {
     // console.log(e);
     let file = e.target.files[0];
+    e.target.value = null;
     if (file) {
       if (file.type.match(/image/gi)) {
         let render = new FileReader();
@@ -417,6 +419,10 @@ export class MainComponent implements OnInit {
   }
   onRemoveLogoImage(){
     this.pfService.removeLogomarcaImg();
+  }
+
+  resetMain(){
+
   }
 }
 
