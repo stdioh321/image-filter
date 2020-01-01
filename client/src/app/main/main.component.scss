@@ -125,7 +125,7 @@
         flex: 1;
       }
       .saved-pictures-wrap {
-        height: 70px;
+        height: 110px;
         // border: solid rgba(0, 0, 0, 1) 1px;
         // border-radius: 5px;
         // overflow: auto;
@@ -139,21 +139,36 @@
           width: 100% !important;
           max-width: 100% !important;
           display: flex;
+          position: relative;
+          // border: solid red 2px;
           // flex-wrap: nowrap;
-          & > a {
+          & > .saved-picture-item {
+            // border: solid blue 1px;
             height: 100%;
             max-width: 80px;
             min-width: 40px;
             margin: 0px 3px;
             display: flex;
             align-items: center;
-
-            & > img {
+            position: relative;
+            cursor: pointer;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            & > .removeImage {
+              width: 25px;
+              height: 25px;
+              position: absolute;
+              top: 0;
+              left: 100%;
+              transform: translate(-90%, 0%);
+              z-index: 10;
+            }
+            & > .currImg {
               max-height: 100%;
               max-width: 100%;
               transition: all 0.2s;
               &:hover {
-                transform: scale(1.1);
+                // transform: scale(1.1);
               }
             }
           }

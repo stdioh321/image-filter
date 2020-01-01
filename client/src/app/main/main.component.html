@@ -20,7 +20,7 @@
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 8}"
                         (click)="changeMenu(8);onOriginalSelected();openEditor()">Editar</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 9}"
-                        (click)="changeMenu(9);openLogomarca()">Logomarca</button>
+                        (click)="changeMenu(9)">Logomarca</button>
                     <!-- "trending"
                     "stylized"
                     "lighting"
@@ -36,8 +36,7 @@
 
                             <li class="menu-filters-item" *ngFor="let item of photoFiltersList?.color;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx,true)">
-                                    <img src="./assets/images/filters/filter_color_{{idx}}.jpg"
-                                        alt="">
+                                    <img src="./assets/images/filters/filter_color_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
                                 </div>
                                 <div *ngIf="currFilter==idx" class="filter-intensity-range">
@@ -54,8 +53,7 @@
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.fancy_filters;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                    <img src="./assets/images/filters/filter_fancy_{{idx}}.jpg"
-                                        alt="">
+                                    <img src="./assets/images/filters/filter_fancy_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
                                 </div>
                                 <!-- <div *ngIf="currFilter==idx" class="filter-intensity-range">
@@ -71,8 +69,7 @@
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.painting_and_drawing;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                    <img src="./assets/images/filters/filter_painting_{{idx}}.jpg"
-                                        alt="">
+                                    <img src="./assets/images/filters/filter_painting_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
                                 </div>
                             </li>
@@ -83,8 +80,7 @@
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.borders;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                    <img src="./assets/images/filters/filter_border_{{idx}}.jpg"
-                                        alt="">
+                                    <img src="./assets/images/filters/filter_border_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
                                 </div>
                             </li>
@@ -95,157 +91,155 @@
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.stylized;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                    <img src="./assets/images/filters/filter_stylized_{{idx}}.jpg"
-                                        alt="">
+                                    <img src="./assets/images/filters/filter_stylized_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
                                 </div>
                             </li>
                         </ul>
                     </div>
                     <div class=" current-menu" *ngIf="currMenu==6">
-                                    <ul class="menu-filters">
-                                        <li class="menu-filters-item"
-                                            *ngFor="let item of photoFiltersList?.lighting;let idx = index">
-                                            <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                                <img src="./assets/images/filters/filter_lighting_{{idx}}.jpg"
-                                                    alt="">
-                                                <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="current-menu" *ngIf="currMenu==7">
-                                    <ul class="menu-filters">
-                                        <li class="menu-filters-item"
-                                            *ngFor="let item of photoFiltersList?.background;let idx = index">
-                                            <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                                <img  src="./assets/images/filters/filter_background_{{idx}}.jpg"
-                                                    alt="">
-                                                <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="current-menu menu-logomarca" *ngIf="currMenu == 9">
-                                    <!-- <h2 class="text-white text-center">Logomarca</h2> -->
-                                    <div>
-                                        <div class="text-white font-weight-bold">Texto</div>
-                                        <input type="text" class="form-control" placeholder="Texto"
-                                            [value]="pfService?.text?.text" (input)="changeLogoText($event)">
-
-                                    </div>
-                                    <div>
-                                        <div class="text-white font-weight-bold">Tamanho do Texto</div>
-                                        <input type="range" class="w-100" min="30" max="70" step="2"
-                                            [value]="pfService?.text?.fontSize || 50"
-                                            (input)="onLogoTextSizeChange($event)">
-                                    </div>
-                                    <div>
-                                        <div class="text-white font-weight-bold">Posição do Texto</div>
-                                        <select class="form-control" (change)="onLogoTextPositionChange($event)">
-                                            <option [value]="null" style="display: none;">Escolha</option>
-                                            <option [value]="1">Topo-Esquerdo</option>
-                                            <option [value]="2">Topo-Centro</option>
-                                            <option [value]="3">Topo-Direito</option>
-                                            <option [value]="4">Centro-Esquerdo</option>
-                                            <option [value]="5">Centro</option>
-                                            <option [value]="6">Centro-Direito</option>
-                                            <option [value]="7">Fundo-Esquerdo</option>
-                                            <option [value]="8">Fundo-Centro</option>
-                                            <option [value]="9">Fundo-Direito</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <div class="text-white font-weight-bold">Cor do Texto</div>
-                                        <color-chrome color="#fff" (onChangeComplete)="onLogoTextColorChange($event)"
-                                            [disableAlpha]="true">
-                                        </color-chrome>
-
-
-                                    </div>
-                                    <div>
-                                        <div class="text-white font-weight-bold">Imagem</div>
-                                        <label for="logomarcaImg" class="btn btn-primary btn-block">
-                                            <i class="fa fa-image mr-1"></i>Upload
-                                            <input type="file" placeholder="Image" accept=".jpg,jpeg,.png"
-                                                (change)="changeLogoImage($event)" hidden id="logomarcaImg">
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <!-- <div class="text-white font-weight-bold">Remover Imagem</div> -->
-                                        <button class="btn btn-danger btn-block" (click)="onRemoveLogoImage()">
-                                            <i class="fa far fa-trash mr-1"></i> Remover Imagem
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <div class="text-white font-weight-bold">Tamanho da Imagem</div>
-                                        <input type="range" class="w-100" min="50" max="300" step="2"
-                                            [value]="pfService?.image?.getScaledWidth() || 50"
-                                            (input)="onLogoImageSizeChange($event)">
-                                    </div>
-                                    <div>
-                                        <div class="text-white font-weight-bold">Posição da Imagem</div>
-                                        <select class="form-control" (change)="onLogoImagePositionChange($event)"
-                                            [(ngModel)]="logoImagePos">
-                                            <option [ngValue]="null" disabled>Escolha</option>
-                                            <option [value]="1">Topo-Esquerdo</option>
-                                            <option [value]="2">Topo-Centro</option>
-                                            <option [value]="3">Topo-Direito</option>
-                                            <option [value]="4">Centro-Esquerdo</option>
-                                            <option [value]="5">Centro</option>
-                                            <option [value]="6">Centro-Direito</option>
-                                            <option [value]="7">Fundo-Esquerdo</option>
-                                            <option [value]="8">Fundo-Centro</option>
-                                            <option [value]="9">Fundo-Direito</option>
-                                        </select>
+                        <ul class="menu-filters">
+                            <li class="menu-filters-item"
+                                *ngFor="let item of photoFiltersList?.lighting;let idx = index">
+                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                    <img src="./assets/images/filters/filter_lighting_{{idx}}.jpg" alt="">
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
                                     </div>
                                 </div>
+                            </li>
+                        </ul>
                     </div>
-                </div>
-            </div>
-            <div class="col-9 h-100 content-wrap">
-                <div class="content-top">
-                    <div class="choose-picute-wrap">
-                        <label for="uploadFile" class="btn btn-primary mb-0">
-                            <i class="fa fa-upload mr-1"></i>Upload da imagem
-                            <input type="file" id="uploadFile" (change)="onPictureUpload($event)"
-                                accept=".jpg,.jpeg,.png" [(ngModel)]="imgUpload" hidden />
-                        </label>
+                    <div class="current-menu" *ngIf="currMenu==7">
+                        <ul class="menu-filters">
+                            <li class="menu-filters-item"
+                                *ngFor="let item of photoFiltersList?.background;let idx = index">
+                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                    <img src="./assets/images/filters/filter_background_{{idx}}.jpg" alt="">
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="download-wrap ml-3" *ngIf="mainService?.current" (click)="downloadCurrentImage($event)">
-                        <img src="assets/images/download.svg" alt="">
-                    </div>
-                    <div class="reset-wrap ml-3" *ngIf="mainService?.current" (click)="resetAll()">
-                        <img src="assets/images/error.svg" alt="">
-                    </div>
-                    <div class="add-wrap ml-auto" *ngIf="mainService?.current" (click)="addCurrentImage($event)">
-                        <img src="assets/images/plus.svg" alt="">
-                    </div>
-                </div>
-                <div class="pictute-wrap">
-                    <!-- <img id="my-image" style="max-width: 100%; max-height: 100%;"> -->
-                    <router-outlet></router-outlet>
-                </div>
-                <div class="saved-pictures-wrap w-100">
-                    <div class="row h-100">
-                        <div class="col-11 h-100 overflow-hidden">
-                            <div class="saved-pictures-preview">
-                                <a href="{{item}}" *ngFor="let item of mainService?.picturesList;let idx = index"
-                                    (click)="downloadFile(item, idx)">
-                                    <img src="{{item}}" />
-                                </a>
-                            </div>
+                    <div class="current-menu menu-logomarca" *ngIf="currMenu == 9">
+                        <!-- <h2 class="text-white text-center">Logomarca</h2> -->
+                        <div>
+                            <div class="text-white font-weight-bold">Texto</div>
+                            <input type="text" class="form-control" placeholder="Texto" [value]="pfService?.text?.text"
+                                (input)="changeLogoText($event)">
 
                         </div>
-                        <div class="col-1 bt-download d-flex align-items-center justify-content-end">
-                            <img src="assets/images/download-green.svg" (click)="downloadAllImage()" class="pointer"
-                                *ngIf="mainService?.picturesList?.length > 0">
+                        <div>
+                            <div class="text-white font-weight-bold">Tamanho do Texto</div>
+                            <input type="range" class="w-100" min="30" max="70" step="2"
+                                [value]="pfService?.text?.fontSize || 50" (input)="onLogoTextSizeChange($event)">
+                        </div>
+                        <div>
+                            <div class="text-white font-weight-bold">Posição do Texto</div>
+                            <select class="form-control" (change)="onLogoTextPositionChange($event)">
+                                <option [value]="null" style="display: none;">Escolha</option>
+                                <option [value]="1">Topo-Esquerdo</option>
+                                <option [value]="2">Topo-Centro</option>
+                                <option [value]="3">Topo-Direito</option>
+                                <option [value]="4">Centro-Esquerdo</option>
+                                <option [value]="5">Centro</option>
+                                <option [value]="6">Centro-Direito</option>
+                                <option [value]="7">Fundo-Esquerdo</option>
+                                <option [value]="8">Fundo-Centro</option>
+                                <option [value]="9">Fundo-Direito</option>
+                            </select>
+                        </div>
+                        <div>
+                            <div class="text-white font-weight-bold">Cor do Texto</div>
+                            <color-chrome color="#fff" (onChangeComplete)="onLogoTextColorChange($event)"
+                                [disableAlpha]="true">
+                            </color-chrome>
 
+
+                        </div>
+                        <div>
+                            <div class="text-white font-weight-bold">Imagem</div>
+                            <label for="logomarcaImg" class="btn btn-primary btn-block">
+                                <i class="fa fa-image mr-1"></i>Upload
+                                <input type="file" placeholder="Image" accept=".jpg,jpeg,.png"
+                                    (change)="changeLogoImage($event)" hidden id="logomarcaImg">
+                            </label>
+                        </div>
+                        <div>
+                            <!-- <div class="text-white font-weight-bold">Remover Imagem</div> -->
+                            <button class="btn btn-danger btn-block" (click)="onRemoveLogoImage()">
+                                <i class="fa far fa-trash mr-1"></i> Remover Imagem
+                            </button>
+                        </div>
+                        <div>
+                            <div class="text-white font-weight-bold">Tamanho da Imagem</div>
+                            <input type="range" class="w-100" min="50" max="300" step="2"
+                                [value]="pfService?.image?.getScaledWidth() || 50"
+                                (input)="onLogoImageSizeChange($event)">
+                        </div>
+                        <div>
+                            <div class="text-white font-weight-bold">Posição da Imagem</div>
+                            <select class="form-control" (change)="onLogoImagePositionChange($event)"
+                                [(ngModel)]="logoImagePos">
+                                <option [ngValue]="null" disabled>Escolha</option>
+                                <option [value]="1">Topo-Esquerdo</option>
+                                <option [value]="2">Topo-Centro</option>
+                                <option [value]="3">Topo-Direito</option>
+                                <option [value]="4">Centro-Esquerdo</option>
+                                <option [value]="5">Centro</option>
+                                <option [value]="6">Centro-Direito</option>
+                                <option [value]="7">Fundo-Esquerdo</option>
+                                <option [value]="8">Fundo-Centro</option>
+                                <option [value]="9">Fundo-Direito</option>
+                            </select>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="col-9 h-100 content-wrap">
+            <div class="content-top">
+                <div class="choose-picute-wrap">
+                    <label for="uploadFile" class="btn btn-primary mb-0">
+                        <i class="fa fa-upload mr-1"></i>Upload da imagem
+                        <input type="file" id="uploadFile" (change)="onPictureUpload($event)" accept=".jpg,.jpeg,.png"
+                            [(ngModel)]="imgUpload" hidden />
+                    </label>
+                </div>
+                <div class="download-wrap ml-3" *ngIf="mainService?.current" (click)="downloadCurrentImage($event)">
+                    <img src="assets/images/download.svg" alt="">
+                </div>
+                <div class="reset-wrap ml-3" *ngIf="mainService?.current" (click)="resetAll()">
+                    <img src="assets/images/error.svg" alt="">
+                </div>
+                <div class="add-wrap ml-auto" *ngIf="mainService?.current" (click)="addCurrentImage($event)">
+                    <img src="assets/images/plus.svg" alt="">
+                </div>
+            </div>
+            <div class="pictute-wrap">
+                <!-- <img id="my-image" style="max-width: 100%; max-height: 100%;"> -->
+                <router-outlet></router-outlet>
+            </div>
+            <div class="saved-pictures-wrap w-100">
+                <div class="row h-100">
+                    <div class="col-11 h-100 overflow-hidden">
+                        <div class="saved-pictures-preview">
+                            <div class="saved-picture-item"
+                                *ngFor="let item of mainService?.picturesList;let idx = index">
+                                <img (click)="downloadFile(item, idx)" class="currImg" src="{{item}}" />
+                                <img (click)="removeCurrentImage(idx)" class="removeImage"
+                                    src="./assets/images/error.svg" alt="">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-1 bt-download d-flex align-items-center justify-content-end">
+                        <img src="assets/images/download-green.svg" (click)="downloadAllImage()" class="pointer"
+                            *ngIf="mainService?.picturesList?.length > 0">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+</div>

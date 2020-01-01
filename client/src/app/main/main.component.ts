@@ -191,6 +191,9 @@ export class MainComponent implements OnInit {
         this.spinner.hide();
       }).catch(err => {
         this.spinner.hide();
+        setTimeout(() => {
+          alert("Não foi possível aplicar o filtro.");
+        }, 800);
       });
   }
   onOriginalSelected() {
@@ -217,6 +220,7 @@ export class MainComponent implements OnInit {
     let config = {};
     config['translations'] = { 'en': { 'toolbar.download': 'Finalize' } };
     config['watermark'] = { fileUpload: true, opacity: 1, position: 'right-bottom' };
+    config['tools'] = ['adjust', 'effects', 'filters', 'rotate', 'crop', 'watermark'];
 
     // config['colorScheme'] = 'light';
     let ImageEditor = new FilerobotImageEditor(config, { onBeforeComplete: this.onEditComplete.bind(this) });
@@ -296,31 +300,18 @@ export class MainComponent implements OnInit {
         render.readAsDataURL(file);
 
         render.onload = (data) => {
-          // console.log(data.target.result);
           let imgB64 = data['target']['result'];
           this.pfService.updateLogomarcaImg(imgB64);
           this.logoImagePos = null;
-          // this.pfService.image.setSrc(imgB64, (img) => {
-          //   this.pfService.image.scaleToWidth(100);
-          //   console.log(this.pfService.image);
-
-          //   // this.pfService.canvas.add(this.pfService.image)
-          //   // this.pfService.image.scaleX = 20;
-          //   this.pfService.drawWaterMark();
-          // });
-
         }
       } else {
         alert("Não é uma imagem.");
         return false;
       }
     } else {
-      // alert("Imagem necessária.");
-      // this.imgUpload = null;
       return false;
     }
-    // this.pfService.text.text = e.target.value;
-    // this.pfService.drawWaterMark();
+
   }
 
 
@@ -417,12 +408,17 @@ export class MainComponent implements OnInit {
       this.pfService.canvas.clear();
     }
   }
-  onRemoveLogoImage(){
+  onRemoveLogoImage() {
     this.pfService.removeLogomarcaImg();
   }
 
-  resetMain(){
+  resetMain() {
 
+  }
+
+  removeCurrentImage(idx) {
+    // console.log(idx);
+    this.mainService.picturesList.splice(idx, 1);
   }
 }
 
