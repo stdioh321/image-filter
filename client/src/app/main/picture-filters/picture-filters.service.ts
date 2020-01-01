@@ -213,6 +213,14 @@ export class PictureFiltersService {
       alert('Não foi possível carregar a imagem');
     }
   }
+  removeLogomarcaImg() {
+    try {
+      this.image = new fabric.Image('', { selectable: false, id: 'image' });
+      this.drawWaterMark();
+    } catch (error) {
+      alert('Não foi possível remover a imagem');
+    }
+  }
 
   updateObjPosition(pos = '1', obj = null) {
     if (!obj) return false;

@@ -88,7 +88,7 @@ export class MainComponent implements OnInit {
                       this.mainService.original = img;
                       this.mainService.current = img;
                       this.mainService.initial = img;
-                      console.log(file);
+                      // console.log(file);
 
                     }, 0);
 
@@ -414,6 +414,9 @@ export class MainComponent implements OnInit {
       this.pfService.startWaterMark();
       this.pfService.canvas.clear();
     }
+  }
+  onRemoveLogoImage(){
+    this.pfService.removeLogomarcaImg();
   }
 }
 
