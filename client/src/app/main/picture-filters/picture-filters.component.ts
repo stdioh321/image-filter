@@ -23,9 +23,10 @@ export class PictureFiltersComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    // $("#tmpCanvas");
-    let canvas = new fabric.Canvas('picture-filters-canvas', {
-    });
+    this.startCanvas();
+  }
+  startCanvas() {
+    let canvas = new fabric.Canvas('picture-filters-canvas', {});
     this.pfService.canvas = canvas;
     window['pfService'] = this.pfService;
   }

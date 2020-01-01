@@ -21,11 +21,10 @@ export class PictureFiltersService {
 
   }
   startWaterMark() {
-    this.image = new fabric.Image('', { selectable: true, id: 'image' });
-    this.text = new fabric.Text('Telefone', { selectable: false, fill: '#FF0000', fontSize: 50, id: 'txt' });
+    this.image = new fabric.Image('', { selectable: false, id: 'image' });
+    this.text = new fabric.Text('', { selectable: false, fill: '#FF0000', fontSize: 50, id: 'txt' });
   }
   drawWaterMark() {
-    // console.log('aqui');
     this.canvas.getObjects().forEach((el) => {
       if (el.id == 'txt' || el.id == 'image') {
         try {
@@ -39,8 +38,6 @@ export class PictureFiltersService {
 
 
     if (this.image && this.image.getElement() && this.image.getElement()['naturalWidth']) {
-      // this.image.left = this.canvas.getWidth() - this.image.getScaledWidth() - 15;
-      // this.image.top = this.canvas.getHeight() - this.image.getScaledHeight() - 15;
       this.updateObjPosition(this.image.pos || '9', this.image);
       this.canvas.add(this.image);
     }
@@ -87,54 +84,6 @@ export class PictureFiltersService {
         })
     });
   }
-  filterSelected(filterName = null) {
-    return new Promise((resolve, reject) => {
-      if (!filterName) {
-        reject(false);
-        return false;
-      };
-
-      let tmpImgOriginal = this.mainService.original;
-      let tmpImgResult = this.mainService.original;
-      // resolve(true);
-      this.loadImageOnCanvas(tmpImgOriginal, true)
-        .then(res => {
-          try {
-            fabric.Image.fromURL(tmpImgResult, (img) => {
-              img.set({ selectable: false });
-              console.log(filterName);
-
-              switch (filterName) {
-                case 'sepia':
-                  img.filters = [new fabric.Image.filters.Sepia()];
-                  break;
-                case 'bw':
-                  img.filters = [new fabric.Image.filters.BlackWhite()];
-                  break;
-
-                case 'vintage':
-                  img.filters = [new fabric.Image.filters.Vintage()];
-                  break;
-
-                default:
-                  break;
-              }
-              img.applyFilters();
-              this.canvas.add(img);
-              this.mainService.current = this.canvas.toDataURL();
-              this.canvas.renderAll();
-              resolve(true);
-            }, { crossOrigin: 'anonymous' });
-          } catch (error) {
-            reject(false);
-          }
-
-        });
-
-    });
-
-  }
-
 
   filterPhotoSelected(filterName = null, canChangeIntensity = false) {
     return new Promise(async (resolve, reject) => {
@@ -254,11 +203,15 @@ export class PictureFiltersService {
   }
 
   updateLogomarcaImg(img) {
-    new fabric.Image.fromURL(img, (result) => {
-      result.scaleToWidth(100);
-      this.image = result;
-      this.drawWaterMark();
-    }, { selectable: false, id: 'image' });
+    try {
+      new fabric.Image.fromURL(img, (result) => {
+        result.scaleToWidth(100);
+        this.image = result;
+        this.drawWaterMark();
+      }, { selectable: false, id: 'image' });
+    } catch (error) {
+      alert('Não foi possível carregar a imagem');
+    }
   }
 
   updateObjPosition(pos = '1', obj = null) {

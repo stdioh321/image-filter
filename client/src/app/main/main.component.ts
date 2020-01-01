@@ -180,22 +180,6 @@ export class MainComponent implements OnInit {
     return result;
   }
 
-  onFilterSelected(filterName = null, filterIndex = 0) {
-    if (this.currFilter == filterIndex)
-      return;
-    // this.currFilter = filterIndex;
-    // return;
-    this.spinner.show();
-    // return;
-    this.pfService.filterSelected(filterName)
-      .then(res => {
-        this.currFilter = filterIndex;
-        this.spinner.hide();
-      }).catch(err => {
-        this.spinner.hide();
-      });
-  }
-
   onFilterPhotoSelected(filterName = null, filterIndex = 0, canChangeIntensity = false) {
     if (this.currFilter == filterIndex)
       return;
@@ -296,8 +280,10 @@ export class MainComponent implements OnInit {
 
   }
   changeLogoText(e) {
-    this.pfService.text.text = e.target.value;
+    this.pfService.text.set('text', e.target.value);
     this.pfService.drawWaterMark();
+    // this.pfService.canvas.renderAll();
+
   }
   changeLogoImage(e) {
     // console.log(e);
@@ -386,7 +372,7 @@ export class MainComponent implements OnInit {
   onLogoTextSizeChange(e) {
     let val = e.target.value;
     // console.log(e);
-    this.pfService.text.fontSize = val;
+    this.pfService.text.set('fontSize', val);
     this.pfService.drawWaterMark();
   }
   onLogoTextColorChange(e) {
@@ -412,6 +398,22 @@ export class MainComponent implements OnInit {
     let val = e.target.value;
     this.pfService.image.set('pos', val);
     this.pfService.drawWaterMark();
+  }
+
+  resetAll() {
+    if (confirm('Realmente resetar??')) {
+      this.currFilter = null;
+      this.currMenu = 1;
+      this.imgUpload = null;
+      this.mainService.current = null;
+      this.mainService.history = [];
+      this.mainService.initial = null;
+      this.mainService.original = null;
+      this.mainService.originalFile = null;
+      this.mainService.picturesList = [];
+      this.pfService.startWaterMark();
+      this.pfService.canvas.clear();
+    }
   }
 }
 

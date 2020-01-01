@@ -52,9 +52,9 @@
       }
       .current-menu {
         height: 100%;
-        &.menu-logomarca{
-          ::ng-deep color-chrome{
-            .chrome-picker{
+        &.menu-logomarca {
+          ::ng-deep color-chrome {
+            .chrome-picker {
               width: 100% !important;
             }
           }
@@ -109,7 +109,8 @@
         display: flex;
         align-items: center;
         .download-wrap,
-        .add-wrap {
+        .add-wrap,
+        .reset-wrap {
           & > img {
             width: 30px;
             height: 30px;
