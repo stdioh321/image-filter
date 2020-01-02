@@ -18,6 +18,7 @@ declare const download: any;
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit {
+  // public tmp = []
   public imgUpload = null;
   public currMenu = 1;
   public currFilter = null;
@@ -28,8 +29,12 @@ export class MainComponent implements OnInit {
     "color": ['Poster Look', 'Dreamy Retro', 'Retro Sepia', 'Caramel Haze', 'Bronze Sepia', 'Dramatic Look', 'Fantasy Blue', 'Hdr', 'Hot Sunset', 'Dramatic Retro'],
     "fancy_filters": ['Puzzle', 'Edge Detection', 'Cartoon', 'Dave Hill', 'Infrared', 'Neon', 'Crazy Fractal', 'Matrix', 'Fire', 'Kaleidoscope', 'Underwater', 'Plastic', 'Engraving', 'Cross Stitch', 'Circle Mosaic', 'Isolines', 'Mosaic', 'Image To Text Effect', 'Pixelation'],
     "background": ['Light Bokeh', 'Dreams Of Love', 'Lilac Dreams', 'Christmas Bokeh', 'Frozen Window', 'Sunny Field', 'Old Cityscape', 'Old Street Frame', 'Winter Scenery', 'Flower Dream', 'Tropical Butterflies', 'In The Wave', 'Dreamlike Scenery', 'Industrial'],
-    "painting_and_drawing": ['Antique Oil Painting', 'Fusain Painting', 'Sketch', 'Charcoal', 'Pen And Ink', 'Frosty Pattern', 'Plumbago', 'Pencil Painting', 'Impressionism', 'Pointillism', 'Van Gogh Style', 'Painting'],
-    "borders": ['Washed Out Edges', 'Semi Transparent Frame', 'Rounded Border', 'Simple Edge', 'Stamp Frame', 'Postage Frame']
+    // "painting_and_drawing": ['Antique Oil Painting', 'Fusain Painting', 'Sketch', 'Charcoal', 'Pen And Ink', 'Frosty Pattern', 'Plumbago', 'Pencil Painting', 'Impressionism', 'Pointillism', 'Van Gogh Style', 'Painting'],
+    "painting_and_drawing": ["Sketch", "Color Pencil Drawing", "Warm Colors Watercolor", "Trois Couleurs Drawing", "Sanguine Drawing", "Vintage Charcoal Sketch", "Graphite Pencil Sketch", "Pastel Drawing", "Pen Sketch", "Color Pencil Sketch", "Antique Oil Painting", "Charcoal Drawing", "Crayon Drawing", "Pen and Ink", "Water Color", "Impressionism", "Fusain Painting", "Pointillism", "Charcoal", "Van Gogh Style", "Felt Tip Pen Drawing", "Pencil Painting", "Plumbago", "Painting"],
+    "borders": ['Washed Out Edges', 'Simple Edge', 'Semi Transparent Frame', 'Rounded Border', 'Stamp Frame', 'Postage Frame'],
+    "draws_pictures": ["Photography in Drawing ", "Torn Color Pencil Sketch", "Burning Sketch Effect", "Photo to Sketch in iPad", "Ballpoint Pen Drawing vs Photography", "Pastel Drawing vs Photography", "Photography vs Watercolor", "Pencil VS Reality"],
+    "frames": ["Balloon Frame", "Heart in Hands", "Fireworks Frame", "Birthday Owls", "Wavy Blue Frame", "I Love you Honey", "Frame of Roses"]
+
   };
 
   public logoImagePos = null;
@@ -72,7 +77,7 @@ export class MainComponent implements OnInit {
         this.resizeImageFile(file)
           .then(resolve => {
             let tmpImage = (resolve + "").split(',')[1];
-            this.uploadImageImgur(tmpImage)
+            this.pfService.uploadImageImgur(tmpImage)
               .subscribe(res => {
                 let img = res['data']['link'];
                 this.pfService.loadImageOnCanvas(img, true)
@@ -135,31 +140,44 @@ export class MainComponent implements OnInit {
     if (currMenuWrap) currMenuWrap.scrollTo(0, 0);
   }
   downloadCurrentImage(e) {
+
     this.spinner.show();
-    download(this.getCurrentImage(), Date.now() + ".png");
-    setTimeout(() => {
+    try {
+      download(this.getCurrentImage(), Date.now() + ".png");
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 300);
+    } catch (error) {
       this.spinner.hide();
-    }, 300);
+    }
   }
   downloadFile(file, idx) {
     this.spinner.show();
 
-    download(file, idx + "_" + Date.now() + ".png");
-    setTimeout(() => {
+    try {
+      download(file, idx + "_" + Date.now() + ".png");
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 300);
+    } catch (error) {
       this.spinner.hide();
-    }, 300);
+    }
   }
 
 
 
   downloadAllImage(e = null) {
     this.spinner.show();
-    this.mainService.picturesList.forEach((item, index) => {
-      download(item, index + "_" + Date.now() + ".png");
-    });
-    setTimeout(() => {
+    try {
+      this.mainService.picturesList.forEach((item, index) => {
+        download(item, index + "_" + Date.now() + ".png");
+      });
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 300);
+    } catch (error) {
       this.spinner.hide();
-    }, 300);
+    }
   }
   addCurrentImage(e) {
     this.spinner.show();
@@ -238,7 +256,7 @@ export class MainComponent implements OnInit {
       this.spinner.show();
       let tmpNewImage = result['canvas'].toDataURL();
       tmpNewImage = tmpNewImage.split(",")[1];
-      this.uploadImageImgur(tmpNewImage, 'base64')
+      this.pfService.uploadImageImgur(tmpNewImage, 'base64')
         .subscribe(res => {
           // this.spinner.hide();
           // console.log(res);
@@ -419,6 +437,10 @@ export class MainComponent implements OnInit {
   removeCurrentImage(idx) {
     // console.log(idx);
     this.mainService.picturesList.splice(idx, 1);
+  }
+  onFilterThumbErro(e) {
+    let src = e.target.src;
+    e.target.src = "assets/images/filters/filter_original.jpg"
   }
 }
 

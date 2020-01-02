@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import * as $ from 'jquery';
 import 'fabric';
 import { MainService } from '../main.service';
+import { HttpClient } from '@angular/common/http';
 declare const fabric: any;
 
 declare const photoAPIApplyFilter: any;
@@ -15,7 +16,8 @@ export class PictureFiltersService {
   public image = null;
   public text = null;
   constructor(
-    public mainService: MainService
+    public mainService: MainService,
+    public http: HttpClient,
   ) {
     this.startWaterMark();
 
@@ -54,14 +56,18 @@ export class PictureFiltersService {
         return false;
       };
       try {
+
         this.canvas.clear();
         this.canvas.setBackgroundImage(img, (tmp) => {
-          this.canvas.setWidth(tmp.width);
-          this.canvas.setHeight(tmp.height);
+          let w = (tmp && tmp.width) || 0;
+          let h = (tmp && tmp.height) || 0;
+          this.canvas.setWidth(w);
+          this.canvas.setHeight(h);
           this.canvas.renderAll();
           this.drawWaterMark();
           res(true);
-        }, { crossOrigin: "anonymous" });
+        }, { 'crossOrigin': "anonymous" });
+        // });
 
       } catch (error) {
         console.log('FROMURL ERROR');
@@ -98,7 +104,11 @@ export class PictureFiltersService {
 
       try {
         let photoImg = await this.getPhotoFIlter(filterName, this.mainService.original);
-
+        // console.log(photoImg);
+        if (!photoImg) {
+          reject(false);
+          return false;
+        }
         if (canChangeIntensity) {
           tmpImgOriginal = this.mainService.original;
           tmpImgResult = photoImg;
@@ -112,25 +122,19 @@ export class PictureFiltersService {
               return;
             }
             fabric.Image.fromURL(tmpImgResult, (img) => {
-
               img.set({ selectable: false, width: this.canvas.width, height: this.canvas.height, id: 'filtro' });
-              // console.log(filterName);
-
               img.applyFilters();
-              // 
               this.canvas.add(img);
-              // this.canvas.item(0).bringForward(true);
-              // img.bringForward(false);
               this.canvas.getObjects().forEach(el => {
                 if (el.id != 'filtro') {
                   el.bringForward(true);
                 }
               });
-
-              this.mainService.current = this.canvas.toDataURL();
               this.canvas.renderAll();
+              this.mainService.current = tmpImgResult;
               resolve(true);
             }, { crossOrigin: 'anonymous' });
+            // });
 
           }).catch(err => {
             reject(false);
@@ -164,11 +168,20 @@ export class PictureFiltersService {
           // console.log('before');
         }, success: (requestId, json) => {
           // console.log(requestId, json);
-          this.getBase64FromImage(json['result_url'], (b64) => {
-            resolve(b64);
-          }, () => {
-            reject('getBase64FromImage');
-          })
+
+
+          this.uploadImageImgur(json['result_url'])
+            .subscribe(res => {
+              resolve(res['data']['link']);
+            }, err => {
+              reject('imgur');
+            })
+
+          // this.getBase64FromImage(json['result_url'], (b64) => {
+          //   resolve(b64);
+          // }, () => {
+          //   reject('getBase64FromImage');
+          // });
         }, ajaxError: function () {
           reject('ajaxError');
         }, apiError: function () {
@@ -273,4 +286,17 @@ export class PictureFiltersService {
     obj.set('left', left);
     obj.set('top', top);
   }
+
+  uploadImageImgur(file = null, type = null) {
+    let url = "https://api.imgur.com/3/image";
+    let clientId = "Client-ID 93117ee7a96785a";
+    let options = { headers: { "Authorization": clientId } };
+    let fData = new FormData();
+    fData.append("image", file);
+
+    if (type)
+      fData.append("type", type);
+    return this.http.post(url, fData, options);
+  }
+
 }

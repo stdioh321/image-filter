@@ -17,10 +17,17 @@
                         (click)="changeMenu(6);onOriginalSelected()">Iluminação</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 7}"
                         (click)="changeMenu(7);onOriginalSelected()">Background</button>
+
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 8}"
-                        (click)="changeMenu(8);onOriginalSelected();openEditor()">Editar</button>
+                        (click)="changeMenu(8);onOriginalSelected()">Desenho/Foto</button>
+
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 9}"
-                        (click)="changeMenu(9)">Logomarca</button>
+                        (click)="changeMenu(9);onOriginalSelected()">Molduras</button>
+
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 98}"
+                        (click)="changeMenu(98);onOriginalSelected();openEditor()">Editar</button>
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 99}"
+                        (click)="changeMenu(99)">Logomarca</button>
                     <!-- "trending"
                     "stylized"
                     "lighting"
@@ -36,7 +43,8 @@
 
                             <li class="menu-filters-item" *ngFor="let item of photoFiltersList?.color;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx,true)">
-                                    <img src="./assets/images/filters/filter_color_{{idx}}.jpg" alt="">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_color_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
                                 </div>
                                 <div *ngIf="currFilter==idx" class="filter-intensity-range">
@@ -53,7 +61,8 @@
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.fancy_filters;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                    <img src="./assets/images/filters/filter_fancy_{{idx}}.jpg" alt="">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_fancy_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
                                 </div>
                                 <!-- <div *ngIf="currFilter==idx" class="filter-intensity-range">
@@ -69,7 +78,8 @@
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.painting_and_drawing;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                    <img src="./assets/images/filters/filter_painting_{{idx}}.jpg" alt="">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_painting_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
                                 </div>
                             </li>
@@ -80,7 +90,8 @@
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.borders;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                    <img src="./assets/images/filters/filter_border_{{idx}}.jpg" alt="">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_border_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
                                 </div>
                             </li>
@@ -91,7 +102,8 @@
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.stylized;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                    <img src="./assets/images/filters/filter_stylized_{{idx}}.jpg" alt="">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_stylized_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
                                 </div>
                             </li>
@@ -102,7 +114,8 @@
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.lighting;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                    <img src="./assets/images/filters/filter_lighting_{{idx}}.jpg" alt="">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_lighting_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
                                     </div>
                                 </div>
@@ -114,14 +127,40 @@
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.background;let idx = index">
                                 <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
-                                    <img src="./assets/images/filters/filter_background_{{idx}}.jpg" alt="">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_background_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
                                     </div>
                                 </div>
                             </li>
                         </ul>
                     </div>
-                    <div class="current-menu menu-logomarca" *ngIf="currMenu == 9">
+                    <div class="current-menu" *ngIf="currMenu==8">
+                        <ul class="menu-filters">
+                            <li class="menu-filters-item"
+                                *ngFor="let item of photoFiltersList?.draws_pictures;let idx = index">
+                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_draws_pictures_{{idx}}.jpg" alt="">
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="current-menu" *ngIf="currMenu==9">
+                        <ul class="menu-filters">
+                            <li class="menu-filters-item" *ngFor="let item of photoFiltersList?.frames;let idx = index">
+                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_frames_{{idx}}.jpg" alt="">
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="current-menu menu-logomarca" *ngIf="currMenu == 99">
                         <!-- <h2 class="text-white text-center">Logomarca</h2> -->
                         <div>
                             <div class="text-white font-weight-bold">Texto</div>
