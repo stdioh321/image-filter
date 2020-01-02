@@ -214,6 +214,23 @@ export class MainComponent implements OnInit {
         }, 800);
       });
   }
+  onFilterPhotoAnimationSelected(filterName = null, filterIndex = 0) {
+    // if (this.currFilter == filterIndex)
+    // return;
+    this.spinner.show();
+    this.pfService.filterPhotoAnimationSelected(filterName)
+      .then(res => {
+      console.log('SUCCESS');
+
+      // this.currFilter = filterIndex;
+      this.spinner.hide();
+    }).catch(err => {
+      this.spinner.hide();
+      // setTimeout(() => {
+      // alert("Não foi possível aplicar o filtro.");
+      // }, 800);
+    });
+  }
   onOriginalSelected() {
     this.spinner.show();
     this.pfService.originalSelected()

@@ -1,0 +1,38 @@
+https://www.pizap.com/ 
+https://www.befunky.com/
+https://www5.lunapic.com/
+https://photomania.net/editor
+https://gifmaker.me/
+http://art.pho.to/#
+http://funny.pho.to/
+
+Lunapic | Photomania
+
+Este APP | Site deverá ter as mesmas funcionabilidades: Upload para a imagem,  File, Edit, Adjust, Draw, Borders, Filters, Effects, Art, Animation, criação de Manga.
+
+
+/////////////////////////////////////////////
+LIBS
+/////////////////////////////////////////////
+http://art.pho.to/#
+https://evanw.github.io/glfx.js/demo/
+https://developer.deeparteffects.com/page/sdk
+http://showcase.deeparteffects.com/
+https://github.com/elgervb/imagemanipulation
+https://imagine.readthedocs.io/en/latest/usage/introduction.html#
+https://kosinix.github.io/grafika/filters/Sobel.html
+https://github.com/locomotivemtl/charcoal-image/blob/master/docs/api.md
+
+/////////////////////////////////////////////
+APIS
+/////////////////////////////////////////////
+https://pixlab.io/cmdls
+https://developer.deeparteffects.com/
+
+
+
+imgur api 
+	LIMIT 1250 uploads per day
+
+pho.to api
+	LIMIT 100 filters per day

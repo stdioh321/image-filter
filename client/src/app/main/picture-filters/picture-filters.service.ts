@@ -146,7 +146,20 @@ export class PictureFiltersService {
     });
 
   }
-
+  filterPhotoAnimationSelected(filterName = null) {
+    return new Promise(async (resolve, reject) => {
+      try {
+        
+        
+        let photoImg = await this.getPhotoFIlter(filterName, this.mainService.original, 'trending', 'animated_effect');
+        // console.log('filterPhotoAnimationSelected');
+        console.log(photoImg);
+        resolve(true);
+      } catch (error) {
+        reject(false);
+      }
+    });
+  }
   filterChangeIntensity(val = 0) {
     try {
       let current = null;
@@ -161,7 +174,7 @@ export class PictureFiltersService {
     }
   }
 
-  getPhotoFIlter(template = null, imgUrl = null, effect = "trending") {
+  getPhotoFIlter(template = null, imgUrl = null, effect = "trending", name = "collage") {
     return new Promise((resolve, reject) => {
       photoAPIApplyFilter(effect, template, imgUrl, {
         before: function () {
@@ -187,7 +200,7 @@ export class PictureFiltersService {
         }, apiError: function () {
           reject('apiError');
         }
-      })
+      }, name)
     });
   }
   getBase64FromImage(url, onSuccess, onError) {

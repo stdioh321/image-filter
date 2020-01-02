@@ -95,6 +95,13 @@
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
                                 </div>
                             </li>
+                            <li class="menu-filters-item">
+                                <div class="menu-filters-thumb" (click)="onFilterPhotoAnimationSelected('fire')">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_border.jpg" alt="">
+                                    <div class="text">Fire</div>
+                                </div>
+                            </li>
                         </ul>
                     </div>
                     <div class="current-menu" *ngIf="currMenu==5">

@@ -418,66 +418,67 @@ var photoObj = {
     sharedPages: {},
     result: {},
     effects: {
-        "trending": [ 'Soft Lilac', 'Lilac Dreams', 'Sweet Caramel', 'Light Bokeh', 'Antique Oil Painting', 'Old Style Bw', 'Washed Out Edges', 'Dreams Of Love', 'Tropical Butterflies', 'Vintage Card' ],
-        "stylized": [ 'Old Style Bw', 'Soft Lilac', 'Dramatic Bronze', 'Vintage Card', 'Old Photo', 'Retro Film', 'Triptych Effect', 'Sweet Caramel' ],
-        "lighting": [ 'Rainbow Rays', 'Dawn Light', 'Floodlights', 'Mysterious Rays', 'Moon Night', 'Romantic Landscape', 'Evening Light' ],
-        "color": [ 'Poster Look', 'Dreamy Retro', 'Retro Sepia', 'Caramel Haze', 'Bronze Sepia', 'Dramatic Look', 'Sunny Retro', 'Fantasy Blue', 'Hdr', 'Hot Sunset', 'Dramatic Retro' ],
-        "fancy_filters": [ 'Puzzle', 'Edge Detection', 'Cartoon', 'Dave Hill', 'Infrared', 'Neon', 'Crazy Fractal', 'Matrix', 'Fire', 'Kaleidoscope', 'Underwater', /*'Mosaic Friends',*/ 'Plastic', 'Engraving', 'Cross Stitch', 'Circle Mosaic', 'Isolines', 'Mosaic', 'Image To Text Effect', 'Pixelation' ],
-        "background": [ 'Light Bokeh', 'Dreams Of Love', 'Lilac Dreams', 'Christmas Bokeh', 'Frozen Window', 'Sunny Field', 'Old Cityscape', 'Old Street Frame', 'Winter Scenery', 'Flower Dream', 'Tropical Butterflies', 'In The Wave', 'Dreamlike Scenery', 'Industrial' ],
-        "painting-and-drawing": [ 'Antique Oil Painting', 'Fusain Painting', 'Sketch', 'Charcoal', 'Pen And Ink', 'Frosty Pattern', 'Plumbago', 'Pencil Painting', 'Impressionism', 'Pointillism', 'Van Gogh Style', 'Painting' ],
-        "borders": [ 'Washed Out Edges', 'Semi Transparent Frame', 'Rounded Border', 'Simple Edge', 'Stamp Frame', 'Postage Frame' ]
+        "trending": ['Soft Lilac', 'Lilac Dreams', 'Sweet Caramel', 'Light Bokeh', 'Antique Oil Painting', 'Old Style Bw', 'Washed Out Edges', 'Dreams Of Love', 'Tropical Butterflies', 'Vintage Card'],
+        "stylized": ['Old Style Bw', 'Soft Lilac', 'Dramatic Bronze', 'Vintage Card', 'Old Photo', 'Retro Film', 'Triptych Effect', 'Sweet Caramel'],
+        "lighting": ['Rainbow Rays', 'Dawn Light', 'Floodlights', 'Mysterious Rays', 'Moon Night', 'Romantic Landscape', 'Evening Light'],
+        "color": ['Poster Look', 'Dreamy Retro', 'Retro Sepia', 'Caramel Haze', 'Bronze Sepia', 'Dramatic Look', 'Sunny Retro', 'Fantasy Blue', 'Hdr', 'Hot Sunset', 'Dramatic Retro'],
+        "fancy_filters": ['Puzzle', 'Edge Detection', 'Cartoon', 'Dave Hill', 'Infrared', 'Neon', 'Crazy Fractal', 'Matrix', 'Fire', 'Kaleidoscope', 'Underwater', /*'Mosaic Friends',*/ 'Plastic', 'Engraving', 'Cross Stitch', 'Circle Mosaic', 'Isolines', 'Mosaic', 'Image To Text Effect', 'Pixelation'],
+        "background": ['Light Bokeh', 'Dreams Of Love', 'Lilac Dreams', 'Christmas Bokeh', 'Frozen Window', 'Sunny Field', 'Old Cityscape', 'Old Street Frame', 'Winter Scenery', 'Flower Dream', 'Tropical Butterflies', 'In The Wave', 'Dreamlike Scenery', 'Industrial'],
+        "painting-and-drawing": ['Antique Oil Painting', 'Fusain Painting', 'Sketch', 'Charcoal', 'Pen And Ink', 'Frosty Pattern', 'Plumbago', 'Pencil Painting', 'Impressionism', 'Pointillism', 'Van Gogh Style', 'Painting'],
+        "borders": ['Washed Out Edges', 'Semi Transparent Frame', 'Rounded Border', 'Simple Edge', 'Stamp Frame', 'Postage Frame']
     },
-    getSharePage: function( url, callback ) {
+    getSharePage: function (url, callback) {
         // Cache it!
-        if ( photoObj.sharedPages[url] ) {
-            callback( photoObj.sharedPages );
+        if (photoObj.sharedPages[url]) {
+            callback(photoObj.sharedPages);
         } else {
             var data = [
                 'images[src]=' + url,
                 'images[src_type]=url',
                 'images[caption]=Photo effect applied at <a href="http://art.pho.to">Art.pho.to</a>',
                 "app_key=0a074e7405a015b8"
-            ].join( '&' );
+            ].join('&');
 
-            $.ajax( {
+            $.ajax({
                 url: '/api-share-pho-to-proxy/v1/images',
                 type: "POST",
                 data: data,
                 dataType: 'json',
-                success: function( response ) {
+                success: function (response) {
                     //Its url page for sharing social
                     var link = response[0]['links']['web_page'];
                     photoObj.sharedPages[url] = link;
                     photoObj.sharedPages['name'] = response[0]['name'] + '_o.' + response[0]['format'];
-                    if ( typeof callback == 'function' )
-                        callback( photoObj.sharedPages );
+                    if (typeof callback == 'function')
+                        callback(photoObj.sharedPages);
                 },
-                error: function() {
-                    alert( "Creating sharing page failed :(" );
+                error: function () {
+                    alert("Creating sharing page failed :(");
                 }
-            } );
+            });
         }
     }
 };
 
 var p = new PhotoAPI;
-p.init( photoObj.data );
+p.init(photoObj.data);
 
-function photoAPIApplyFilter(effect, template, image_url, callback){
+function photoAPIApplyFilter(effect, template, image_url, callback, name = "collage") {
 
-// var effect = 'trending'
-photoObj.result['process'] = {};
-photoObj.result['process'][effect] = {};
-photoObj.result['process'][effect] = photoObj.effects[effect].length;
+    // var effect = 'trending'
+    photoObj.result['process'] = {};
+    photoObj.result['process'][effect] = {};
+    photoObj.result['process'][effect] = photoObj.effects[effect].length;
 
-// var template = 'Puzzle';
-var obj = {};
-$.extend( obj, photoObj.paramsObj );
-obj.image_url = image_url + "?v=" + Math.round( 10000000 * Math.random() );
-obj.methods_list.params = 'template_name=' + template;
-obj.result_size = 600;
+    // var template = 'Puzzle';
+    var obj = {};
+    photoObj.paramsObj.methods_list.name = name;
+    $.extend(obj, photoObj.paramsObj);
+    obj.image_url = image_url + "?v=" + Math.round(10000000 * Math.random());
+    obj.methods_list.params = 'template_name=' + template;
+    obj.result_size = 600;
 
-p.process(obj, callback);
+    p.process(obj, callback);
 
 }
 // ----
