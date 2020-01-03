@@ -59,6 +59,10 @@ export class PictureFiltersService {
 
         this.canvas.clear();
         this.canvas.setBackgroundImage(img, (tmp) => {
+          if (!tmp) {
+            rej(false);
+            return false;
+          }
           let w = (tmp && tmp.width) || 0;
           let h = (tmp && tmp.height) || 0;
           this.canvas.setWidth(w);
@@ -122,11 +126,15 @@ export class PictureFiltersService {
               return;
             }
             fabric.Image.fromURL(tmpImgResult, (img) => {
-              img.set({ selectable: false, width: this.canvas.width, height: this.canvas.height, id: 'filtro' });
+              img.set({ selectable: false, id: 'filtro' });
+              img.scaleToWidth(this.canvas.width);
+              img.scaleToHeight(this.canvas.height);
               img.applyFilters();
               this.canvas.add(img);
               this.canvas.getObjects().forEach(el => {
                 if (el.id != 'filtro') {
+                  console.log('NOT FILTRO');
+
                   el.bringForward(true);
                 }
               });
@@ -149,8 +157,8 @@ export class PictureFiltersService {
   filterPhotoAnimationSelected(filterName = null) {
     return new Promise(async (resolve, reject) => {
       try {
-        
-        
+
+
         let photoImg = await this.getPhotoFIlter(filterName, this.mainService.original, 'trending', 'animated_effect');
         // console.log('filterPhotoAnimationSelected');
         console.log(photoImg);
@@ -182,13 +190,13 @@ export class PictureFiltersService {
         }, success: (requestId, json) => {
           // console.log(requestId, json);
 
-
-          this.uploadImageImgur(json['result_url'])
-            .subscribe(res => {
-              resolve(res['data']['link']);
-            }, err => {
-              reject('imgur');
-            })
+          resolve("https://arkzffgvpo.cloudimg.io/width/600/n/" + json['result_url']);
+          // this.uploadImageImgur(json['result_url'])
+          //   .subscribe(res => {
+          //     resolve(res['data']['link']);
+          //   }, err => {
+          //     reject('imgur');
+          //   });
 
           // this.getBase64FromImage(json['result_url'], (b64) => {
           //   resolve(b64);
