@@ -28,6 +28,7 @@
     "ngx-color": "^4.1.0",
     "ngx-color-picker": "^8.2.0",
     "ngx-spinner": "^8.1.0",
+    "ngx-tui-image-editor": "^7.0.2",
     "ngx-uploadcare-widget": "^1.2.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",

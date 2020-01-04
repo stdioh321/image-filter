@@ -31,11 +31,13 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/font-awesome/css/font-awesome.css",
               "node_modules/spectrum-colorpicker/spectrum.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/assets/styles/styles.min.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/fabric/dist/fabric.min.js",
+              "src/assets/js/scripts.min.js",
               "src/assets/js/sha1.js",
               "src/assets/js/photoapi.js",
               "src/assets/js/download.js",

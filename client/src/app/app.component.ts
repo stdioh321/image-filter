@@ -1,16 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { ToastUiImageEditorComponent } from 'ngx-tui-image-editor';
 // import * as photoApi from 'assets/js/photoapi.js';
 // declare const photoAPIApplyFilter: any;
 // import { FilerobotImageEditor } from 'filerobot-image-editor';
 
+// declare const Pixie: any;
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
+  @ViewChild(ToastUiImageEditorComponent, { static: true }) editorComponent: ToastUiImageEditorComponent;
+
+  public options = {};
   title = 'client';
   // url = "https://api.imgur.com/3/image";
   // clientId = "Client-ID 93117ee7a96785a"
@@ -19,8 +24,15 @@ export class AppComponent {
   constructor(
     public http: HttpClient
   ) {
-    
-    
+    this.options = {
+      'cssMaxWidth': 400,
+      'cssMaxHeight': 400,
+      includeUI: {
+        menuBarPosition: 'bottom'
+      }
+    };
+    // console.log(this.editorComponent);
+
     // let fData = new FormData();
     // fData.append("image", this.image);
     // // fData.append("type", 'base64');
@@ -51,5 +63,18 @@ export class AppComponent {
     }
   }
 
-
+  ngAfterViewInit() {
+    // console.log(this.editorComponent);
+    // let instance = this.editorComponent.editorInstance;
+    // instance.loadImageFromURL("https://arkzffgvpo.cloudimg.io/width/600/n/http://worker-images.ws.pho.to/i1/8029C49E-B1D7-4EFB-B66F-E69AADA1EF58.jpg", "SampleImage2")
+    //   .then((sizeValue) => {
+    //     instance.ui['activeMenuEvent']();
+    //     instance.ui.resizeEditor({ imageSize: sizeValue });
+    //     console.log("Image allegedly loaded.")
+    //   }).catch(e => {
+    //     console.error("Something went wrong:")
+    //     console.error(e)
+    //   })
+   
+  }
 }

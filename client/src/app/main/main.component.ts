@@ -12,6 +12,8 @@ declare const fabric: any;
 declare const FilerobotImageEditor: any;
 declare const download: any;
 
+declare const Pixie: any;
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -19,6 +21,7 @@ declare const download: any;
 })
 export class MainComponent implements OnInit {
   // public tmp = []
+  public pixieEditor: any = null;
   public imgUpload = null;
   public currMenu = 1;
   public currFilter = null;
@@ -43,11 +46,11 @@ export class MainComponent implements OnInit {
     public mainService: MainService,
     public pfService: PictureFiltersService,
     public http: HttpClient,
-    public ngZone: NgZone,
+    public ngZone: NgZone
   ) { }
 
   ngOnInit() {
-
+    this.startPixieEditor();
   }
 
   uploadImageImgur(file = null, type = null) {
@@ -220,16 +223,16 @@ export class MainComponent implements OnInit {
     this.spinner.show();
     this.pfService.filterPhotoAnimationSelected(filterName)
       .then(res => {
-      console.log('SUCCESS');
+        console.log('SUCCESS');
 
-      // this.currFilter = filterIndex;
-      this.spinner.hide();
-    }).catch(err => {
-      this.spinner.hide();
-      // setTimeout(() => {
-      // alert("Não foi possível aplicar o filtro.");
-      // }, 800);
-    });
+        // this.currFilter = filterIndex;
+        this.spinner.hide();
+      }).catch(err => {
+        this.spinner.hide();
+        // setTimeout(() => {
+        // alert("Não foi possível aplicar o filtro.");
+        // }, 800);
+      });
   }
   onOriginalSelected() {
     this.spinner.show();
@@ -257,13 +260,95 @@ export class MainComponent implements OnInit {
     config['watermark'] = { fileUpload: true, opacity: 1, position: 'right-bottom' };
     config['tools'] = ['adjust', 'effects', 'filters', 'rotate', 'crop', 'watermark'];
 
-    // config['colorScheme'] = 'light';
     let ImageEditor = new FilerobotImageEditor(config, { onBeforeComplete: this.onEditComplete.bind(this) });
 
-    // let img = "https://scaleflex.airstore.io/demo/stephen-walker-unsplash.jpg"; 
     let img = this.mainService.original;
     ImageEditor.open(img);
+
+
   }
+  openPixieEditor() {
+    let tmpImage = document.createElement('img');
+    let c = document.createElement('canvas');
+    let ctx = c.getContext("2d");
+    tmpImage.crossOrigin = 'anonymous';
+    tmpImage.src = this.mainService.original;
+
+    tmpImage.onload = () => {
+      c.width = tmpImage.width;
+      c.height = tmpImage.height;
+      ctx.drawImage(tmpImage, 0, 0);
+      let b64 = c.toDataURL();
+      this.pixieEditor.resetAndOpenEditor('image', b64);
+    }
+    tmpImage.onerror = () => {
+      alert('Não foi possível carregar a imagem');
+    }
+  }
+  onPixieEditorSave(result) {
+
+    if (result) {
+      this.spinner.show();
+      let tmpNewImage = result;
+      tmpNewImage = tmpNewImage.split(",")[1];
+      this.pfService.uploadImageImgur(tmpNewImage, 'base64')
+        .subscribe(res => {
+          // this.spinner.hide();
+          // console.log(res);
+          let img = res['data']['link'];
+          this.pfService.loadImageOnCanvas(img)
+            .then(response => {
+              this.spinner.hide();
+              this.currFilter = null;
+              this.currMenu = 1;
+              this.mainService.original = null;
+              this.mainService.current = null;
+              setTimeout(() => {
+                this.mainService.original = img;
+                this.mainService.current = img;
+              }, 0);
+            })
+            .catch(err => {
+              this.spinner.hide();
+              alert("Não foi possível carregar a imagem no canvas");
+            });
+        }, err => {
+          this.spinner.hide();
+          alert("Não foi possível fazer o upload da imagem");
+        });
+    } else {
+      alert("Não foi possível editar a imagem");
+    }
+  }
+  startPixieEditor() {
+    this.pixieEditor = new window['Pixie']({
+      openImageDialog: {
+        show: false
+      },
+      onLoad: () => {
+        console.log('Pixie is ready');
+      },
+      ui: {
+        allowEditorClose: true,
+        mode: 'overlay',
+        theme: 'dark',
+        toolbar: {
+          hideCloseButton: false
+        }
+      },
+      onSave: (b64) => {
+        // console.log(b64);
+        // this.mainService.original = b64;
+        this.onPixieEditorSave(b64);
+        this.pixieEditor.close();
+      },
+      onClose: () => {
+        console.log('onClose');
+      }
+
+    });
+  }
+
   onEditComplete(result) {
     console.log('RESULT', result);
     // return false;
