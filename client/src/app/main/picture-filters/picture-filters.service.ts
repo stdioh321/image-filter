@@ -132,10 +132,8 @@ export class PictureFiltersService {
               img.applyFilters();
               this.canvas.add(img);
               this.canvas.getObjects().forEach(el => {
-                if (el.id != 'filtro') {
-                  console.log('NOT FILTRO');
-
-                  el.bringForward(true);
+                if (el.id == 'filtro') {
+                  el.sendToBack();
                 }
               });
               this.canvas.renderAll();
@@ -190,7 +188,12 @@ export class PictureFiltersService {
         }, success: (requestId, json) => {
           // console.log(requestId, json);
 
-          resolve("https://arkzffgvpo.cloudimg.io/width/600/n/" + json['result_url']);
+          // resolve("https://arkzffgvpo.cloudimg.io/width/600/n/" + json['result_url']);
+          
+          let url = json['result_url'];
+          url = url.replace(/^http:\/\//i, 'https://');
+          resolve("https://arkzffgvpo.cloudimg.io/cdno/n/n/" + url);
+
           // this.uploadImageImgur(json['result_url'])
           //   .subscribe(res => {
           //     resolve(res['data']['link']);

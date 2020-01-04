@@ -182,6 +182,7 @@
                         objXML._xml += '<name>' + value['name'] + '</name><params>' + value['params'] + '</params>';
                         objXML._xml += '</method>';
                     }
+                    // objXML._xml += '<crop_portrait>FALSE</crop_portrait>';
                     objXML._xml += '</methods_list>';
                 },
                 _default: function (key, value) {
@@ -401,8 +402,8 @@ var photoObj = {
         userId: '1',
         apiKey: 'CB97F3379DAA4D4035FC47E2FD29',
         // apiKey: '11759d5e7aca60c77de402cb1b254f07',
-        getResultUrl: 'http://opeapi.ws.pho.to/getresult',
-        addTaskUrl: 'http://opeapi.ws.pho.to/addtask',
+        getResultUrl: 'https://opeapi.ws.pho.to/getresult',
+        addTaskUrl: 'https://opeapi.ws.pho.to/addtask',
     },
     paramsObj: {
         image_url: '',

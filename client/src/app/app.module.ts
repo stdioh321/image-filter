@@ -38,7 +38,7 @@ import { ToastUiImageEditorModule } from "ngx-tui-image-editor";
     ToastUiImageEditorModule
   ],
   providers: [MainService, PictureFiltersService],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  bootstrap: [AppComponent]
+  // ,schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

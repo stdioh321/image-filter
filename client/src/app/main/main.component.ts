@@ -50,7 +50,7 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.startPixieEditor();
+    // this.startPixieEditor();
   }
 
   uploadImageImgur(file = null, type = null) {
@@ -69,12 +69,9 @@ export class MainComponent implements OnInit {
   onPictureUpload(e) {
     let file = e.target.files[0];
     e.target.value = null;
-    // console.log(this.imgUpload);
 
     if (file) {
-
       if (file.type.match(/image/gi)) {
-        // alert("Sucesso, uma imagem");
         this.spinner.show();
 
         this.resizeImageFile(file)
@@ -321,6 +318,7 @@ export class MainComponent implements OnInit {
     }
   }
   startPixieEditor() {
+    if (!window['Pixie']) return false;
     this.pixieEditor = new window['Pixie']({
       openImageDialog: {
         show: false
@@ -337,8 +335,6 @@ export class MainComponent implements OnInit {
         }
       },
       onSave: (b64) => {
-        // console.log(b64);
-        // this.mainService.original = b64;
         this.onPixieEditorSave(b64);
         this.pixieEditor.close();
       },
@@ -350,7 +346,7 @@ export class MainComponent implements OnInit {
   }
 
   onEditComplete(result) {
-    console.log('RESULT', result);
+    // console.log('RESULT', result);
     // return false;
     // window.alert("OK");
     if (result['status'] == 'before-complete') {
