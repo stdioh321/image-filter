@@ -192,7 +192,7 @@ export class PictureFiltersService {
           
           let url = json['result_url'];
           url = url.replace(/^http:\/\//i, 'https://');
-          resolve("https://arkzffgvpo.cloudimg.io/cdno/n/n/" + url);
+          resolve("https://arkzffgvpo.cloudimg.io/width/600/n/" + url);
 
           // this.uploadImageImgur(json['result_url'])
           //   .subscribe(res => {
