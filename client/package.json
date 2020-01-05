@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "start:electron": "ng build --base-href ./ && electron .",
-    "electron-packager": "ng build && electron-packager . --no-prune --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite. --no-prune --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite"
+    "electron-packager": "ng build --base-href ./ && electron-packager . --no-prune --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite. --no-prune --ignore=/node_modules --ignore=/e2e --ignore=/src --overwrite"
   },
   "private": true,
   "dependencies": {
