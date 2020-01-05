@@ -24,28 +24,24 @@
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 9}"
                         (click)="changeMenu(9);onOriginalSelected()">Molduras</button>
 
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 10}"
+                        (click)="changeMenu(10);onOriginalSelected()">Nova Realidade</button>
+
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 98}"
-                        (click)="changeMenu(98);onOriginalSelected();openEditor()">Editar</button>
+                        (click)="changeMenu(98);onOriginalSelected();openPixieEditor()">Editar</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 99}"
                         (click)="changeMenu(99)">Logomarca</button>
-                    <!-- "trending"
-                    "stylized"
-                    "lighting"
-                    "color"
-                    "fancy_filters"
-                    "background"
-                    "painting_and_drawing"
-                    "borders" -->
                 </div>
                 <div class="col-7 h-100 current-menu-wrap">
                     <div class="current-menu" *ngIf="currMenu==1">
                         <ul class="menu-filters">
 
                             <li class="menu-filters-item" *ngFor="let item of photoFiltersList?.color;let idx = index">
-                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx,true)">
+                                <div class="menu-filters-thumb"
+                                    (click)="onFilterPhotoSelected(item?.filter_name,idx,item?.canChange)">
                                     <img (error)="onFilterThumbErro($event)"
                                         src="./assets/images/filters/filter_color_{{idx}}.jpg" alt="">
-                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}</div>
                                 </div>
                                 <div *ngIf="currFilter==idx" class="filter-intensity-range">
                                     <input type="range" min="0" max="1" step="0.1" value="1"
@@ -60,10 +56,11 @@
                         <ul class="menu-filters">
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.fancy_filters;let idx = index">
-                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                <div class="menu-filters-thumb"
+                                    (click)="onFilterPhotoSelected(item?.filter_name,idx,item?.canChange)">
                                     <img (error)="onFilterThumbErro($event)"
                                         src="./assets/images/filters/filter_fancy_{{idx}}.jpg" alt="">
-                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}</div>
                                 </div>
                                 <!-- <div *ngIf="currFilter==idx" class="filter-intensity-range">
                                     <input type="range" min="0" max="1" step="0.1" value="1"
@@ -77,10 +74,11 @@
                         <ul class="menu-filters">
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.painting_and_drawing;let idx = index">
-                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                <div class="menu-filters-thumb"
+                                    (click)="onFilterPhotoSelected(item?.filter_name,idx,item?.canChange)">
                                     <img (error)="onFilterThumbErro($event)"
                                         src="./assets/images/filters/filter_painting_{{idx}}.jpg" alt="">
-                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}</div>
                                 </div>
                             </li>
                         </ul>
@@ -89,10 +87,11 @@
                         <ul class="menu-filters">
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.borders;let idx = index">
-                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                <div class="menu-filters-thumb"
+                                    (click)="onFilterPhotoSelected(item?.filter_name,idx,item?.canChange)">
                                     <img (error)="onFilterThumbErro($event)"
                                         src="./assets/images/filters/filter_border_{{idx}}.jpg" alt="">
-                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}</div>
                                 </div>
                             </li>
                         </ul>
@@ -101,10 +100,11 @@
                         <ul class="menu-filters">
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.stylized;let idx = index">
-                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                <div class="menu-filters-thumb"
+                                    (click)="onFilterPhotoSelected(item?.filter_name,idx,item?.canChange)">
                                     <img (error)="onFilterThumbErro($event)"
                                         src="./assets/images/filters/filter_stylized_{{idx}}.jpg" alt="">
-                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}</div>
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}</div>
                                 </div>
                             </li>
                         </ul>
@@ -113,10 +113,11 @@
                         <ul class="menu-filters">
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.lighting;let idx = index">
-                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                <div class="menu-filters-thumb"
+                                    (click)="onFilterPhotoSelected(item?.filter_name,idx,item?.canChange)">
                                     <img (error)="onFilterThumbErro($event)"
                                         src="./assets/images/filters/filter_lighting_{{idx}}.jpg" alt="">
-                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}
                                     </div>
                                 </div>
                             </li>
@@ -126,10 +127,11 @@
                         <ul class="menu-filters">
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.background;let idx = index">
-                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                <div class="menu-filters-thumb"
+                                    (click)="onFilterPhotoSelected(item?.filter_name,idx,item?.canChange)">
                                     <img (error)="onFilterThumbErro($event)"
                                         src="./assets/images/filters/filter_background_{{idx}}.jpg" alt="">
-                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}
                                     </div>
                                 </div>
                             </li>
@@ -139,10 +141,11 @@
                         <ul class="menu-filters">
                             <li class="menu-filters-item"
                                 *ngFor="let item of photoFiltersList?.draws_pictures;let idx = index">
-                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                <div class="menu-filters-thumb"
+                                    (click)="onFilterPhotoSelected(item?.filter_name,idx,item?.canChange)">
                                     <img (error)="onFilterThumbErro($event)"
                                         src="./assets/images/filters/filter_draws_pictures_{{idx}}.jpg" alt="">
-                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}
                                     </div>
                                 </div>
                             </li>
@@ -151,10 +154,24 @@
                     <div class="current-menu" *ngIf="currMenu==9">
                         <ul class="menu-filters">
                             <li class="menu-filters-item" *ngFor="let item of photoFiltersList?.frames;let idx = index">
-                                <div class="menu-filters-thumb" (click)="onFilterPhotoSelected(item,idx)">
+                                <div class="menu-filters-thumb"
+                                    (click)="onFilterPhotoSelected(item?.filter_name,idx,item?.canChange)">
                                     <img (error)="onFilterThumbErro($event)"
                                         src="./assets/images/filters/filter_frames_{{idx}}.jpg" alt="">
-                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item}}
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="current-menu" *ngIf="currMenu==10">
+                        <ul class="menu-filters">
+                            <li class="menu-filters-item" *ngFor="let item of photoFiltersList?.new_reality;let idx = index">
+                                <div class="menu-filters-thumb"
+                                    (click)="onFilterPhotoSelected(item?.filter_name,idx,item?.canChange)">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_new_reality_{{idx}}.jpg" alt="">
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}
                                     </div>
                                 </div>
                             </li>

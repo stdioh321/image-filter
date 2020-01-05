@@ -37,7 +37,7 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/fabric/dist/fabric.min.js",
-              
+              "src/assets/js/scripts.min.js",
               "src/assets/js/sha1.js",
               "src/assets/js/photoapi.js",
               "src/assets/js/download.js",
