@@ -40,5 +40,5 @@ import { ColorChromeModule } from 'ngx-color/chrome'; // <color-chrome></color-c
   , schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
-  
+
 }
