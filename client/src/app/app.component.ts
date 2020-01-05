@@ -1,6 +1,5 @@
 import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { ToastUiImageEditorComponent } from 'ngx-tui-image-editor';
 // import * as photoApi from 'assets/js/photoapi.js';
 // declare const photoAPIApplyFilter: any;
 // import { FilerobotImageEditor } from 'filerobot-image-editor';
@@ -13,7 +12,6 @@ import { ToastUiImageEditorComponent } from 'ngx-tui-image-editor';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements AfterViewInit {
-  @ViewChild(ToastUiImageEditorComponent, { static: true }) editorComponent: ToastUiImageEditorComponent;
 
   public options = {};
   title = 'client';

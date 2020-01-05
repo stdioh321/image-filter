@@ -17,7 +17,6 @@ import { UcWidgetModule } from 'ngx-uploadcare-widget';
 import { ColorSketchModule } from 'ngx-color/sketch';
 import { ColorHueModule } from 'ngx-color/hue'; // <color-hue-picker></color-hue-picker>
 import { ColorChromeModule } from 'ngx-color/chrome'; // <color-chrome></color-chrome>
-import { ToastUiImageEditorModule } from 'ngx-tui-image-editor';
 
 
 @NgModule({
@@ -34,8 +33,7 @@ import { ToastUiImageEditorModule } from 'ngx-tui-image-editor';
     BrowserAnimationsModule,
     NgxSpinnerModule,
     UcWidgetModule,
-    ColorChromeModule,
-    ToastUiImageEditorModule
+    ColorChromeModule
   ],
   providers: [MainService, PictureFiltersService],
   bootstrap: [AppComponent]
