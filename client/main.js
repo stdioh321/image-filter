@@ -1,7 +1,7 @@
-const { app, BrowserWindow } = require('electron')
+const { app, BrowserWindow, globalShortcut } = require('electron')
 const url = require("url");
 const path = require("path");
-window.$ = window.jQuery = require('jquery');
+
 
 let mainWindow
 
@@ -17,7 +17,8 @@ function createWindow() {
 
     }
   })
-
+  // // mainWindow.$ = mainWindow.jQuery = require('jquery');
+  mainWindow.setMenu(null);
   mainWindow.loadURL(
     url.format({
       pathname: path.join(__dirname, `/dist/index.html`),
@@ -33,7 +34,10 @@ function createWindow() {
   })
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+  globalShortcut.register('CmdOrCtrl+R', () => { });
+  createWindow();
+})
 
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit()
