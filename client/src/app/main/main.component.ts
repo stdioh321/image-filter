@@ -37,7 +37,6 @@ export class MainComponent implements OnInit {
       { name: 'Dreams Of Love', filter_name: 'Dreams Of Love', canChange: false },
       { name: 'Tropical Butterflies', filter_name: 'Tropical Butterflies', canChange: false },
       { name: 'Vintage Card', filter_name: 'Vintage Card', canChange: false }
-
     ],
     "stylized": [
       { name: 'Old Style Bw', filter_name: 'Old Style Bw', canChange: false },
@@ -677,8 +676,8 @@ export class MainComponent implements OnInit {
     }
   }
   onBeforeComplete(props) {
-    console.log('onBeforeComplete: ', props);
-    console.log(props.canvas.toDataURL());
+    console.log('onBeforeComplete: ');
+    // console.log(props.canvas.toDataURL());
 
   }
 
@@ -734,8 +733,8 @@ export class MainComponent implements OnInit {
       let ctx = c.getContext('2d');
       let img = new Image();
       img.onload = () => {
-        c.width = 600;
-        c.height = img.height * 600 / img.width;
+        c.width = width;
+        c.height = img.height * width / img.width;
         ctx.drawImage(img, 0, 0, c.width, c.height);
         resolve(c.toDataURL());
       }
@@ -803,7 +802,7 @@ export class MainComponent implements OnInit {
   }
 
   resetAll() {
-    if (confirm('Realmente resetar??')) {
+    if (confirm('Realmente resetar?')) {
       this.currFilter = null;
       this.currMenu = 1;
       this.imgUpload = null;

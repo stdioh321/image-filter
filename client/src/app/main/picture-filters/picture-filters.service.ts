@@ -56,21 +56,45 @@ export class PictureFiltersService {
         return false;
       };
       try {
+        let tmpImg = new Image();
+        tmpImg.crossOrigin = 'anonymous';
+        tmpImg.src = img;
 
-        this.canvas.clear();
-        this.canvas.setBackgroundImage(img, (tmp) => {
-          if (!tmp) {
-            rej(false);
-            return false;
-          }
-          let w = (tmp && tmp.width) || 0;
-          let h = (tmp && tmp.height) || 0;
+        tmpImg.onload = () => {
+          let fImg = new fabric.Image(tmpImg);
+          this.canvas.clear();
+          this.canvas.setBackgroundImage(fImg);
+          let w = (fImg && fImg.width) || 0;
+          let h = (fImg && fImg.height) || 0;
           this.canvas.setWidth(w);
           this.canvas.setHeight(h);
           this.canvas.renderAll();
           this.drawWaterMark();
           res(true);
-        }, { 'crossOrigin': "anonymous" });
+        }
+        tmpImg.onerror = () => {
+          console.log('Image Error');
+          rej(false)
+        }
+        tmpImg.onabort = () => {
+          console.log('Image Abort');
+          rej(false)
+        }
+
+        // this.canvas.clear();
+        // this.canvas.setBackgroundImage(img, (tmp) => {
+        //   if (!tmp) {
+        //     rej(false);
+        //     return false;
+        //   }
+        //   let w = (tmp && tmp.width) || 0;
+        //   let h = (tmp && tmp.height) || 0;
+        //   this.canvas.setWidth(w);
+        //   this.canvas.setHeight(h);
+        //   this.canvas.renderAll();
+        //   this.drawWaterMark();
+        //   res(true);
+        // }, { 'crossOrigin': "anonymous" });
         // });
 
       } catch (error) {
@@ -126,10 +150,20 @@ export class PictureFiltersService {
               return;
             }
             fabric.Image.fromURL(tmpImgResult, (img) => {
-              img.set({ selectable: false, id: 'filtro' });
-              img.scaleToWidth(this.canvas.width);
-              img.scaleToHeight(this.canvas.height);
-              img.applyFilters();
+              img.set(
+                {
+                  selectable: false,
+                  id: 'filtro',
+                  width: this.canvas.getWidth(),
+                  height: this.canvas.getHeight()
+                });
+              // console.log(img);
+              // img.width = this.canvas.getWidth();
+              img.scaleToWidth(this.canvas.getWidth(), true);
+              img.scaleToHeight(this.canvas.getHeight(), true);
+
+              // img.scaleToHeight(this.canvas.getHeight());
+              // img.applyFilters();
               this.canvas.add(img);
               this.canvas.getObjects().forEach(el => {
                 if (el.id == 'filtro') {
@@ -189,7 +223,7 @@ export class PictureFiltersService {
           // console.log(requestId, json);
 
           // resolve("https://arkzffgvpo.cloudimg.io/width/600/n/" + json['result_url']);
-          
+
           let url = json['result_url'];
           url = url.replace(/^http:\/\//i, 'https://');
           resolve("https://arkzffgvpo.cloudimg.io/width/600/n/" + url);

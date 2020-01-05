@@ -1,0 +1,57 @@
+* Filtros
+* Artes
+* Frames/Molduras
+* Bordas
+* Pinturas/Desenhos
+* Editar
+* Logomarca + Texto (telefone)
+
+* Download da imagem corrente
+* Lista de imagens para download
+* Download de todas as imagens da lista
+
+
+Serviços utilizados
+	* Pho.to API - http://developers.pho.to/
+		- Aplica os filtros e efeitos nas imagens;
+		- Limite de 100 filtros por dia;
+		- Atualmente utilizando TOKEN do site: "http://art.pho.to/"
+	
+	* Imgur API - https://apidocs.imgur.com/?version=latest
+		- Armazena e publica a imagem  para ser acessada pelo pho.to api.
+		- Limite de 1250 uploads por dia.
+	
+	* Cloudimage API - https://www.cloudimage.io/
+		- Recebe e deixa publica a imagem filtrada do pho.to api.
+		- Limite de 25GB de trafego mensal
+
+
+
+
+
+https://www.pizap.com/ 
+https://www.befunky.com/
+https://www5.lunapic.com/
+https://photomania.net/editor
+https://gifmaker.me/
+http://art.pho.to/#
+http://funny.pho.to/
+
+/////////////////////////////////////////////
+LIBS
+/////////////////////////////////////////////
+
+https://evanw.github.io/glfx.js/demo/
+https://developer.deeparteffects.com/page/sdk
+http://showcase.deeparteffects.com/
+https://github.com/elgervb/imagemanipulation
+https://imagine.readthedocs.io/en/latest/usage/introduction.html#
+https://kosinix.github.io/grafika/filters/Sobel.html
+https://github.com/locomotivemtl/charcoal-image/blob/master/docs/api.md
+
+/////////////////////////////////////////////
+APIS
+/////////////////////////////////////////////
+https://pixlab.io/cmdls
+https://developer.deeparteffects.com/
+https://cloudinary.com/documentation/image_transformations

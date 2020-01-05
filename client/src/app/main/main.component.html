@@ -1,6 +1,6 @@
 <div class="container-fluid" id="main">
     <div class="row" id="main-row">
-        <div class="col-3 menu-wrap">
+        <div class="col-md-3 col-5 menu-wrap">
             <div class="row h-100" *ngIf="mainService?.current">
                 <div class="col-5  pr-0 h-100 overflow-auto menu-items-wrap">
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 1}"
@@ -62,10 +62,10 @@
                                         src="./assets/images/filters/filter_fancy_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}</div>
                                 </div>
-                                <!-- <div *ngIf="currFilter==idx" class="filter-intensity-range">
+                                <div *ngIf="currFilter==idx && item?.canChange" class="filter-intensity-range">
                                     <input type="range" min="0" max="1" step="0.1" value="1"
                                         (input)="onFilterRangeChange($event)" />
-                                </div> -->
+                                </div>
                             </li>
 
                         </ul>
@@ -80,6 +80,9 @@
                                         src="./assets/images/filters/filter_painting_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}</div>
                                 </div>
+                                <div *ngIf="currFilter==idx && item?.canChange" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1" (input)="onFilterRangeChange($event)" />
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -93,6 +96,9 @@
                                         src="./assets/images/filters/filter_border_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}</div>
                                 </div>
+                                <div *ngIf="currFilter==idx && item?.canChange" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1" (input)="onFilterRangeChange($event)" />
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -105,6 +111,9 @@
                                     <img (error)="onFilterThumbErro($event)"
                                         src="./assets/images/filters/filter_stylized_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}</div>
+                                </div>
+                                <div *ngIf="currFilter==idx && item?.canChange" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1" (input)="onFilterRangeChange($event)" />
                                 </div>
                             </li>
                         </ul>
@@ -120,6 +129,9 @@
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}
                                     </div>
                                 </div>
+                                <div *ngIf="currFilter==idx && item?.canChange" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1" (input)="onFilterRangeChange($event)" />
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -133,6 +145,9 @@
                                         src="./assets/images/filters/filter_background_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}
                                     </div>
+                                </div>
+                                <div *ngIf="currFilter==idx && item?.canChange" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1" (input)="onFilterRangeChange($event)" />
                                 </div>
                             </li>
                         </ul>
@@ -148,6 +163,9 @@
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}
                                     </div>
                                 </div>
+                                <div *ngIf="currFilter==idx && item?.canChange" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1" (input)="onFilterRangeChange($event)" />
+                                </div>
                             </li>
                         </ul>
                     </div>
@@ -161,18 +179,25 @@
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}
                                     </div>
                                 </div>
+                                <div *ngIf="currFilter==idx && item?.canChange" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1" (input)="onFilterRangeChange($event)" />
+                                </div>
                             </li>
                         </ul>
                     </div>
                     <div class="current-menu" *ngIf="currMenu==10">
                         <ul class="menu-filters">
-                            <li class="menu-filters-item" *ngFor="let item of photoFiltersList?.new_reality;let idx = index">
+                            <li class="menu-filters-item"
+                                *ngFor="let item of photoFiltersList?.new_reality;let idx = index">
                                 <div class="menu-filters-thumb"
                                     (click)="onFilterPhotoSelected(item?.filter_name,idx,item?.canChange)">
                                     <img (error)="onFilterThumbErro($event)"
                                         src="./assets/images/filters/filter_new_reality_{{idx}}.jpg" alt="">
                                     <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}
                                     </div>
+                                </div>
+                                <div *ngIf="currFilter==idx && item?.canChange" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1" (input)="onFilterRangeChange($event)" />
                                 </div>
                             </li>
                         </ul>
@@ -253,7 +278,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-9 h-100 content-wrap">
+        <div class="col-md-9 col-7 h-100 content-wrap">
             <div class="content-top">
                 <div class="choose-picute-wrap">
                     <label for="uploadFile" class="btn btn-primary mb-0">
@@ -278,7 +303,7 @@
             </div>
             <div class="saved-pictures-wrap w-100">
                 <div class="row h-100">
-                    <div class="col-11 h-100 overflow-hidden">
+                    <div class="col-md-11 col-8 h-100 overflow-hidden">
                         <div class="saved-pictures-preview">
                             <div class="saved-picture-item"
                                 *ngFor="let item of mainService?.picturesList;let idx = index">
@@ -289,7 +314,7 @@
                         </div>
 
                     </div>
-                    <div class="col-1 bt-download d-flex align-items-center justify-content-end">
+                    <div class="col-md-1 col-4 bt-download d-flex align-items-center justify-content-end">
                         <img src="assets/images/download-green.svg" (click)="downloadAllImage()" class="pointer"
                             *ngIf="mainService?.picturesList?.length > 0">
 
