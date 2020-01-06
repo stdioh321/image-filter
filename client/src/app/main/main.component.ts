@@ -894,6 +894,94 @@ export class MainComponent implements OnInit {
     let src = e.target.src;
     e.target.src = "assets/images/filters/filter_original.jpg"
   }
+
+  onSnapChoosed(e) {
+
+    try {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          // console.log(stream);
+          var snap = null;
+          var video: HTMLVideoElement = document.createElement("video");
+          video.width = 600;
+          video.height = 600;
+          video.srcObject = stream;
+          video.onloadedmetadata = (e) => {
+            video.play();
+
+            var canvas = document.createElement("canvas");
+            var ctx = canvas.getContext('2d');
+            var img = new Image();
+            canvas.width = video.width;
+            canvas.height = video.height;
+            ctx.drawImage(video, 0, 0);
+            let tmpImg = canvas.toDataURL();
+            // console.log(video);
+            let tracks = stream.getTracks();
+
+            tracks.forEach(function (track) {
+              track.stop();
+            });
+
+            video.srcObject = null;
+
+            this.onSnapUpload(tmpImg);
+          };
+          // video.play();
+
+        })
+        .catch(err => {
+          console.log(err);
+        })
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
+  onSnapUpload(b64 = null) {
+    // console.log(b64);
+    if (!b64)
+      return false;
+    this.spinner.show();
+    let tmpImage = (b64 + "").split(',')[1];
+    this.pfService.uploadImageImgur(tmpImage)
+      .subscribe(res => {
+        let img = res['data']['link'];
+        this.pfService.loadImageOnCanvas(img, true)
+          .then(res => {
+            this.spinner.hide();
+            this.currFilter = null;
+            this.currFilterName = null;
+            this.currMenu = 1;
+            this.mainService.originalFile = null;
+            this.mainService.original = null;
+            this.mainService.initial = null;
+            this.mainService.current = null;
+            setTimeout(() => {
+              // this.mainService.originalFile = file;
+              this.mainService.original = img;
+              this.mainService.current = img;
+              this.mainService.initial = img;
+              // console.log(file);
+            }, 0);
+
+
+          })
+          .catch(err => {
+            this.spinner.hide();
+            setTimeout(() => {
+              alert("Não foi possivel carregar a imagem no canvas");
+            }, 500);
+          });
+      }, err => {
+        console.log(err);
+        this.spinner.hide();
+        setTimeout(() => {
+          alert("Não foi possivel carregar a imagem");
+        }, 500);
+      });
+  }
 }
 
 

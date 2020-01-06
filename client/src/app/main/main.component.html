@@ -3,38 +3,38 @@
         <div class="col-md-3 col-5 menu-wrap">
             <div class="row h-100" *ngIf="mainService?.current">
                 <div class="col-5  pr-0 h-100 overflow-auto menu-items-wrap">
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 1}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 1}"
                         (click)="changeMenu(1);onOriginalSelected()">Fitros</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 2}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 2}"
                         (click)="changeMenu(2);onOriginalSelected()">Art</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 3}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 3}"
                         (click)="changeMenu(3);onOriginalSelected()">Pinturas</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 4}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 4}"
                         (click)="changeMenu(4);onOriginalSelected()">Bordas</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 5}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 5}"
                         (click)="changeMenu(5);onOriginalSelected()">Estilizado</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 6}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 6}"
                         (click)="changeMenu(6);onOriginalSelected()">Iluminação</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 7}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 7}"
                         (click)="changeMenu(7);onOriginalSelected()">Background</button>
 
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 8}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 8}"
                         (click)="changeMenu(8);onOriginalSelected()">Desenho/Foto</button>
 
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 9}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 9}"
                         (click)="changeMenu(9);onOriginalSelected()">Molduras</button>
 
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 10}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 10}"
                         (click)="changeMenu(10);onOriginalSelected()">Nova Realidade</button>
 
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 11}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 11}"
                         (click)="changeMenu(11);onOriginalSelected()">Celebridades</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 12}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 12}"
                         (click)="changeMenu(12);onOriginalSelected()">Animações</button>
 
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 98}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 98}"
                         (click)="changeMenu(98);onOriginalSelected();openPixieEditor()">Editar</button>
-                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 99}"
+                    <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 99}"
                         (click)="changeMenu(99);openLogomarca()">Logomarca</button>
 
                 </div>
@@ -337,6 +337,9 @@
                         <input type="file" id="uploadFile" (change)="onPictureUpload($event)" accept=".jpg,.jpeg,.png"
                             [(ngModel)]="imgUpload" hidden />
                     </label>
+                    <!-- <button class="btn btn-success  mx-1" (click)="onSnapChoosed($event)">
+                        <i class="fa fa-upload"></i>
+                    </button> -->
                 </div>
                 <div class="download-wrap ml-3" *ngIf="mainService?.current" (click)="downloadCurrentImage($event)">
                     <img src="assets/images/download.svg" alt="">
