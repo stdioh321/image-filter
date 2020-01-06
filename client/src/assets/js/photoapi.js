@@ -217,7 +217,7 @@
          */
         var attempts = 0;
         function checkResult(self) {
-            attempts += 1;
+            console.log('checkResult', attempts);
             $.ajax({
                 url: thisInit.getResultUrl,
                 dataType: 'xml',
@@ -238,7 +238,7 @@
 
                         self.abort();
                     }
-                    else if (status == 'InProgress' && attempts < 5) {
+                    else if (status == 'InProgress' && attempts < 4) {
                         attempts += 1;
                         self.getTimer();
                     }
