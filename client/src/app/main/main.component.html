@@ -358,7 +358,7 @@
                         <div class="saved-pictures-preview">
                             <div class="saved-picture-item"
                                 *ngFor="let item of mainService?.picturesList;let idx = index">
-                                <img (click)="downloadFile(item, idx)" class="currImg" src="{{item}}" />
+                                <img (click)="downloadFile(item, idx)" class="currImg" src="{{item?.data}}" />
                                 <img (click)="removeCurrentImage(idx)" class="removeImage"
                                     src="./assets/images/error.svg" alt="">
                             </div>

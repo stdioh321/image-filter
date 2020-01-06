@@ -1,4 +1,4 @@
-import { Component, OnInit, NgZone } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MainService } from './main.service';
 import { PictureFiltersService } from './picture-filters/picture-filters.service';
@@ -25,121 +25,122 @@ export class MainComponent implements OnInit {
   public imgUpload = null;
   public currMenu = 1;
   public currFilter = null;
+  public currFilterName = null;
   public photoFiltersList = {
     "trending": [
-      { name: 'Soft Lilac', filter_name: 'Soft Lilac', canChange: false },
-      { name: 'Lilac Dreams', filter_name: 'Lilac Dreams', canChange: false },
-      { name: 'Sweet Caramel', filter_name: 'Sweet Caramel', canChange: false },
-      { name: 'Light Bokeh', filter_name: 'Light Bokeh', canChange: false },
-      { name: 'Antique Oil Painting', filter_name: 'Antique Oil Painting', canChange: false },
-      { name: 'Old Style Bw', filter_name: 'Old Style Bw', canChange: false },
-      { name: 'Washed Out Edges', filter_name: 'Washed Out Edges', canChange: false },
-      { name: 'Dreams Of Love', filter_name: 'Dreams Of Love', canChange: false },
-      { name: 'Tropical Butterflies', filter_name: 'Tropical Butterflies', canChange: false },
-      { name: 'Vintage Card', filter_name: 'Vintage Card', canChange: false }
+      { name: 'Soft Lilac', filter_name: 'soft_lilac', canChange: false },
+      { name: 'Lilac Dreams', filter_name: 'lilac_dreams', canChange: false },
+      { name: 'Sweet Caramel', filter_name: 'sweet_caramel', canChange: false },
+      { name: 'Light Bokeh', filter_name: 'light_bokeh', canChange: false },
+      { name: 'Antique Oil Painting', filter_name: 'antique_oil_painting', canChange: false },
+      { name: 'Old Style Bw', filter_name: 'old_style_bw', canChange: false },
+      { name: 'Washed Out Edges', filter_name: 'washed_out_edges', canChange: false },
+      { name: 'Dreams Of Love', filter_name: 'dreams_of_love', canChange: false },
+      { name: 'Tropical Butterflies', filter_name: 'tropical_butterflies', canChange: false },
+      { name: 'Vintage Card', filter_name: 'vintage_card', canChange: false }
     ],
     "stylized": [
-      { name: 'Old Style Bw', filter_name: 'Old Style Bw', canChange: false },
-      { name: 'Soft Lilac', filter_name: 'Soft Lilac', canChange: false },
-      { name: 'Dramatic Bronze', filter_name: 'Dramatic Bronze', canChange: false },
-      { name: 'Vintage Card', filter_name: 'Vintage Card', canChange: false },
-      { name: 'Old Photo', filter_name: 'Old Photo', canChange: false },
-      { name: 'Retro Film', filter_name: 'Retro Film', canChange: false },
-      { name: 'Triptych Effect', filter_name: 'Triptych Effect', canChange: false },
-      { name: 'Sweet Caramel', filter_name: 'Sweet Caramel', canChange: false },
+      { name: 'Old Style Bw', filter_name: 'old_style_bw', canChange: false },
+      { name: 'Soft Lilac', filter_name: 'soft_lilac', canChange: false },
+      { name: 'Dramatic Bronze', filter_name: 'dramatic_bronze', canChange: false },
+      { name: 'Vintage Card', filter_name: 'vintage_card', canChange: false },
+      { name: 'Old Photo', filter_name: 'old_photo', canChange: false },
+      { name: 'Retro Film', filter_name: 'retro_film', canChange: false },
+      { name: 'Triptych Effect', filter_name: 'triptych_effect', canChange: false },
+      { name: 'Sweet Caramel', filter_name: 'sweet_caramel', canChange: false },
     ],
 
     "lighting": [
-      { name: 'Rainbow Rays', filter_name: 'Rainbow Rays', canChange: false },
-      { name: 'Dawn Light', filter_name: 'Dawn Light', canChange: false },
-      { name: 'Floodlights', filter_name: 'Floodlights', canChange: false },
-      { name: 'Mysterious Rays', filter_name: 'Mysterious Rays', canChange: false },
-      { name: 'Moon Night', filter_name: 'Moon Night', canChange: false },
-      { name: 'Romantic Landscape', filter_name: 'Romantic Landscape', canChange: false },
-      { name: 'Evening Light', filter_name: 'Evening Light', canChange: false }
+      { name: 'Rainbow Rays', filter_name: 'rainbow_rays', canChange: false },
+      { name: 'Dawn Light', filter_name: 'dawn_light', canChange: false },
+      { name: 'Floodlights', filter_name: 'floodlights', canChange: false },
+      { name: 'Mysterious Rays', filter_name: 'mysterious_rays', canChange: false },
+      { name: 'Moon Night', filter_name: 'moon_night', canChange: false },
+      { name: 'Romantic Landscape', filter_name: 'romantic_landscape', canChange: false },
+      { name: 'Evening Light', filter_name: 'evening_light', canChange: false }
 
     ],
 
     "color": [
-      { name: 'Poster Look', filter_name: 'Poster Look', canChange: true },
-      { name: 'Dreamy Retro', filter_name: 'Dreamy Retro', canChange: true },
-      { name: 'Retro Sepia', filter_name: 'Retro Sepia', canChange: true },
-      { name: 'Caramel Haze', filter_name: 'Caramel Haze', canChange: true },
-      { name: 'Bronze Sepia', filter_name: 'Bronze Sepia', canChange: true },
-      { name: 'Dramatic Look', filter_name: 'Dramatic Look', canChange: true },
-      { name: 'Fantasy Blue', filter_name: 'Fantasy Blue', canChange: true },
-      { name: 'Hdr', filter_name: 'Hdr', canChange: true },
-      { name: 'Hot Sunset', filter_name: 'Hot Sunset', canChange: true },
-      { name: 'Dramatic Retro', filter_name: 'Dramatic Retro', canChange: true }
+      { name: 'Poster Look', filter_name: 'poster_look', canChange: true },
+      { name: 'Dreamy Retro', filter_name: 'dreamy_retro', canChange: true },
+      { name: 'Retro Sepia', filter_name: 'retro_sepia', canChange: true },
+      { name: 'Caramel Haze', filter_name: 'caramel_haze', canChange: true },
+      { name: 'Bronze Sepia', filter_name: 'bronze_sepia', canChange: true },
+      { name: 'Dramatic Look', filter_name: 'dramatic_look', canChange: true },
+      { name: 'Fantasy Blue', filter_name: 'fantasy_blue', canChange: true },
+      { name: 'Hdr', filter_name: 'hdr', canChange: true },
+      { name: 'Hot Sunset', filter_name: 'hot_sunset', canChange: true },
+      { name: 'Dramatic Retro', filter_name: 'dramatic_retro', canChange: true }
     ],
 
     "fancy_filters": [
-      { name: 'Puzzle', filter_name: 'Puzzle', canChange: false },
-      { name: 'Edge Detection', filter_name: 'Edge Detection', canChange: false },
-      { name: 'Cartoon', filter_name: 'Cartoon', canChange: false },
-      { name: 'Dave Hill', filter_name: 'Dave Hill', canChange: false },
-      { name: 'Infrared', filter_name: 'Infrared', canChange: false },
-      { name: 'Neon', filter_name: 'Neon', canChange: false },
-      { name: 'Crazy Fractal', filter_name: 'Crazy Fractal', canChange: false },
-      { name: 'Matrix', filter_name: 'Matrix', canChange: false },
-      { name: 'Fire', filter_name: 'Fire', canChange: false },
-      { name: 'Kaleidoscope', filter_name: 'Kaleidoscope', canChange: false },
-      { name: 'Underwater', filter_name: 'Underwater', canChange: false },
-      { name: 'Plastic', filter_name: 'Plastic', canChange: false },
-      { name: 'Engraving', filter_name: 'Engraving', canChange: false },
-      { name: 'Cross Stitch', filter_name: 'Cross Stitch', canChange: false },
-      { name: 'Circle Mosaic', filter_name: 'Circle Mosaic', canChange: false },
-      { name: 'Isolines', filter_name: 'Isolines', canChange: false },
-      { name: 'Mosaic', filter_name: 'Mosaic', canChange: false },
-      { name: 'Image To Text Effect', filter_name: 'Image To Text Effect', canChange: false },
-      { name: 'Pixelation', filter_name: 'Pixelation', canChange: false }
+      { name: 'Puzzle', filter_name: 'puzzle', canChange: false },
+      { name: 'Edge Detection', filter_name: 'edge_detection', canChange: false },
+      { name: 'Cartoon', filter_name: 'cartoon', canChange: false },
+      { name: 'Dave Hill', filter_name: 'dave_hill', canChange: false },
+      { name: 'Infrared', filter_name: 'infrared', canChange: false },
+      { name: 'Neon', filter_name: 'neon', canChange: false },
+      { name: 'Crazy Fractal', filter_name: 'crazy_fractal', canChange: false },
+      { name: 'Matrix', filter_name: 'matrix', canChange: false },
+      { name: 'Fire', filter_name: 'fire', canChange: false },
+      { name: 'Kaleidoscope', filter_name: 'kaleidoscope', canChange: false },
+      { name: 'Underwater', filter_name: 'underwater', canChange: false },
+      { name: 'Plastic', filter_name: 'plastic', canChange: false },
+      { name: 'Engraving', filter_name: 'engraving', canChange: false },
+      { name: 'Cross Stitch', filter_name: 'cross_stitch', canChange: false },
+      { name: 'Circle Mosaic', filter_name: 'circle_mosaic', canChange: false },
+      { name: 'Isolines', filter_name: 'isolines', canChange: false },
+      { name: 'Mosaic', filter_name: 'mosaic', canChange: false },
+      { name: 'Image To Text Effect', filter_name: 'image_to_text_effect', canChange: false },
+      { name: 'Pixelation', filter_name: 'pixelation', canChange: false }
     ],
 
     "background": [
-      { name: 'Light Bokeh', filter_name: 'Light Bokeh', canChange: false },
-      { name: 'Dreams Of Love', filter_name: 'Dreams Of Love', canChange: false },
-      { name: 'Lilac Dreams', filter_name: 'Lilac Dreams', canChange: false },
-      { name: 'Christmas Bokeh', filter_name: 'Christmas Bokeh', canChange: false },
-      { name: 'Frozen Window', filter_name: 'Frozen Window', canChange: false },
-      { name: 'Sunny Field', filter_name: 'Sunny Field', canChange: false },
-      { name: 'Old Cityscape', filter_name: 'Old Cityscape', canChange: false },
-      { name: 'Old Street Frame', filter_name: 'Old Street Frame', canChange: false },
-      { name: 'Winter Scenery', filter_name: 'Winter Scenery', canChange: false },
-      { name: 'Flower Dream', filter_name: 'Flower Dream', canChange: false },
-      { name: 'Tropical Butterflies', filter_name: 'Tropical Butterflies', canChange: false },
-      { name: 'In The Wave', filter_name: 'In The Wave', canChange: false },
-      { name: 'Dreamlike Scenery', filter_name: 'Dreamlike Scenery', canChange: false },
-      { name: 'Industrial', filter_name: 'Industrial', canChange: false }
+      { name: 'Light Bokeh', filter_name: 'light_bokeh', canChange: false },
+      { name: 'Dreams Of Love', filter_name: 'dreams_of_love', canChange: false },
+      { name: 'Lilac Dreams', filter_name: 'lilac_dreams', canChange: false },
+      { name: 'Christmas Bokeh', filter_name: 'christmas_bokeh', canChange: false },
+      { name: 'Frozen Window', filter_name: 'frozen_window', canChange: false },
+      { name: 'Sunny Field', filter_name: 'sunny_field', canChange: false },
+      { name: 'Old Cityscape', filter_name: 'old_cityscape', canChange: false },
+      { name: 'Old Street Frame', filter_name: 'old_street_frame', canChange: false },
+      { name: 'Winter Scenery', filter_name: 'winter_scenery', canChange: false },
+      { name: 'Flower Dream', filter_name: 'flower_dream', canChange: false },
+      { name: 'Tropical Butterflies', filter_name: 'tropical_butterflies', canChange: false },
+      { name: 'In The Wave', filter_name: 'in_the_wave', canChange: false },
+      { name: 'Dreamlike Scenery', filter_name: 'dreamlike_scenery', canChange: false },
+      { name: 'Industrial', filter_name: 'industrial', canChange: false }
     ],
 
     "borders": [
-      { name: 'Washed Out Edges', filter_name: 'Washed Out Edges', canChange: false },
-      { name: 'Simple Edge', filter_name: 'Simple Edge', canChange: false },
-      { name: 'Semi Transparent Frame', filter_name: 'Semi Transparent Frame', canChange: false },
-      { name: 'Rounded Border', filter_name: 'Rounded Border', canChange: false },
-      { name: 'Stamp Frame', filter_name: 'Stamp Frame', canChange: false },
-      { name: 'Postage Frame', filter_name: 'Postage Frame', canChange: false }
+      { name: 'Washed Out Edges', filter_name: 'washed_out_edges', canChange: false },
+      { name: 'Simple Edge', filter_name: 'simple_edge', canChange: false },
+      { name: 'Semi Transparent Frame', filter_name: 'semi_transparent_frame', canChange: false },
+      { name: 'Rounded Border', filter_name: 'rounded_border', canChange: false },
+      { name: 'Stamp Frame', filter_name: 'stamp_frame', canChange: false },
+      { name: 'Postage Frame', filter_name: 'postage_frame', canChange: false }
     ],
 
     "draws_pictures": [
-      { name: 'Photography in Drawing ', filter_name: 'Photography in Drawing ', canChange: false },
-      { name: 'Torn Color Pencil Sketch', filter_name: 'Torn Color Pencil Sketch', canChange: false },
-      { name: 'Burning Sketch Effect', filter_name: 'Burning Sketch Effect', canChange: false },
-      { name: 'Photo to Sketch in iPad', filter_name: 'Photo to Sketch in iPad', canChange: false },
-      { name: 'Ballpoint Pen Drawing vs Photography', filter_name: 'Ballpoint Pen Drawing vs Photography', canChange: false },
-      { name: 'Pastel Drawing vs Photography', filter_name: 'Pastel Drawing vs Photography', canChange: false },
-      { name: 'Photography vs Watercolor', filter_name: 'Photography vs Watercolor', canChange: false },
-      { name: 'Pencil VS Reality', filter_name: 'Pencil VS Reality', canChange: false }
+      { name: 'Photography in Drawing ', filter_name: 'photography_in_drawing ', canChange: false },
+      { name: 'Torn Color Pencil Sketch', filter_name: 'torn_color_pencil_sketch', canChange: false },
+      { name: 'Burning Sketch Effect', filter_name: 'burning_sketch_effect', canChange: false },
+      { name: 'Photo to Sketch in iPad', filter_name: 'photo_to_sketch_in_ipad', canChange: false },
+      { name: 'Ballpoint Pen Drawing vs Photography', filter_name: 'ballpoint_pen_drawing_vs_photography', canChange: false },
+      { name: 'Pastel Drawing vs Photography', filter_name: 'pastel_drawing_vs_photography', canChange: false },
+      { name: 'Photography vs Watercolor', filter_name: 'photography_vs_watercolor', canChange: false },
+      { name: 'Pencil VS Reality', filter_name: 'pencil_vs_reality', canChange: false }
     ],
 
     "frames": [
-      { name: 'Balloon Frame', filter_name: 'Balloon Frame', canChange: false },
-      { name: 'Heart in Hands', filter_name: 'Heart in Hands', canChange: false },
-      { name: 'Fireworks Frame', filter_name: 'Fireworks Frame', canChange: false },
-      { name: 'Birthday Owls', filter_name: 'Birthday Owls', canChange: false },
-      { name: 'Wavy Blue Frame', filter_name: 'Wavy Blue Frame', canChange: false },
-      { name: 'I Love you Honey', filter_name: 'I Love you Honey', canChange: false },
-      { name: 'Frame of Roses', filter_name: 'Frame of Roses', canChange: false },
+      { name: 'Balloon Frame', filter_name: 'balloon_frame', canChange: false },
+      { name: 'Heart in Hands', filter_name: 'heart_in_hands', canChange: false },
+      { name: 'Fireworks Frame', filter_name: 'fireworks_frame', canChange: false },
+      { name: 'Birthday Owls', filter_name: 'birthday_owls', canChange: false },
+      { name: 'Wavy Blue Frame', filter_name: 'wavy_blue_frame', canChange: false },
+      { name: 'I Love you Honey', filter_name: 'i_love_you_honey', canChange: false },
+      { name: 'Frame of Roses', filter_name: 'frame_of_roses', canChange: false },
       { name: 'Burning Frame', filter_name: 'burning_frame', canChange: false },
       { name: 'Cartoon Artist', filter_name: 'cartoon_artist', canChange: false },
       { name: 'Grunge Photo', filter_name: 'grunge_photo', canChange: false },
@@ -147,30 +148,30 @@ export class MainComponent implements OnInit {
     ],
 
     "painting_and_drawing": [
-      { name: 'Sketch', filter_name: 'Sketch', canChange: false },
-      { name: 'Color Pencil Drawing', filter_name: 'Color Pencil Drawing', canChange: false },
-      { name: 'Warm Colors Watercolor', filter_name: 'Warm Colors Watercolor', canChange: false },
-      { name: 'Trois Couleurs Drawing', filter_name: 'Trois Couleurs Drawing', canChange: false },
-      { name: 'Sanguine Drawing', filter_name: 'Sanguine Drawing', canChange: false },
-      { name: 'Vintage Charcoal Sketch', filter_name: 'Vintage Charcoal Sketch', canChange: false },
-      { name: 'Graphite Pencil Sketch', filter_name: 'Graphite Pencil Sketch', canChange: false },
-      { name: 'Pastel Drawing', filter_name: 'Pastel Drawing', canChange: false },
-      { name: 'Pen Sketch', filter_name: 'Pen Sketch', canChange: false },
-      { name: 'Color Pencil Sketch', filter_name: 'Color Pencil Sketch', canChange: false },
-      { name: 'Antique Oil Painting', filter_name: 'Antique Oil Painting', canChange: false },
-      { name: 'Charcoal Drawing', filter_name: 'Charcoal Drawing', canChange: false },
-      { name: 'Crayon Drawing', filter_name: 'Crayon Drawing', canChange: false },
-      { name: 'Pen and Ink', filter_name: 'Pen and Ink', canChange: false },
-      { name: 'Water Color', filter_name: 'Water Color', canChange: false },
-      { name: 'Impressionism', filter_name: 'Impressionism', canChange: false },
-      { name: 'Fusain Painting', filter_name: 'Fusain Painting', canChange: false },
-      { name: 'Pointillism', filter_name: 'Pointillism', canChange: false },
-      { name: 'Charcoal', filter_name: 'Charcoal', canChange: false },
-      { name: 'Van Gogh Style', filter_name: 'Van Gogh Style', canChange: false },
-      { name: 'Felt Tip Pen Drawing', filter_name: 'Felt Tip Pen Drawing', canChange: false },
-      { name: 'Pencil Painting', filter_name: 'Pencil Painting', canChange: false },
-      { name: 'Plumbago', filter_name: 'Plumbago', canChange: false },
-      { name: 'Painting', filter_name: 'Painting', canChange: false }
+      { name: 'Sketch', filter_name: 'sketch', canChange: false },
+      { name: 'Color Pencil Drawing', filter_name: 'color_pencil_drawing', canChange: false },
+      { name: 'Warm Colors Watercolor', filter_name: 'warm_colors_watercolor', canChange: false },
+      { name: 'Trois Couleurs Drawing', filter_name: 'trois_couleurs_drawing', canChange: false },
+      { name: 'Sanguine Drawing', filter_name: 'sanguine_drawing', canChange: false },
+      { name: 'Vintage Charcoal Sketch', filter_name: 'vintage_charcoal_sketch', canChange: false },
+      { name: 'Graphite Pencil Sketch', filter_name: 'graphite_pencil_sketch', canChange: false },
+      { name: 'Pastel Drawing', filter_name: 'pastel_drawing', canChange: false },
+      { name: 'Pen Sketch', filter_name: 'pen_sketch', canChange: false },
+      { name: 'Color Pencil Sketch', filter_name: 'color_pencil_sketch', canChange: false },
+      { name: 'Antique Oil Painting', filter_name: 'antique_oil_painting', canChange: false },
+      { name: 'Charcoal Drawing', filter_name: 'charcoal_drawing', canChange: false },
+      { name: 'Crayon Drawing', filter_name: 'crayon_drawing', canChange: false },
+      { name: 'Pen and Ink', filter_name: 'pen_and_ink', canChange: false },
+      { name: 'Water Color', filter_name: 'water_color', canChange: false },
+      { name: 'Impressionism', filter_name: 'impressionism', canChange: false },
+      { name: 'Fusain Painting', filter_name: 'fusain_painting', canChange: false },
+      { name: 'Pointillism', filter_name: 'pointillism', canChange: false },
+      { name: 'Charcoal', filter_name: 'charcoal', canChange: false },
+      { name: 'Van Gogh Style', filter_name: 'van_gogh_style', canChange: false },
+      { name: 'Felt Tip Pen Drawing', filter_name: 'felt_tip_pen_drawing', canChange: false },
+      { name: 'Pencil Painting', filter_name: 'pencil_painting', canChange: false },
+      { name: 'Plumbago', filter_name: 'plumbago', canChange: false },
+      { name: 'Painting', filter_name: 'painting', canChange: false }
     ],
     "new_reality": [
       // { name: 'Old Photo Book', filter_name: 'old_photo_book', canChange: false },
@@ -398,8 +399,7 @@ export class MainComponent implements OnInit {
     public spinner: NgxSpinnerService,
     public mainService: MainService,
     public pfService: PictureFiltersService,
-    public http: HttpClient,
-    public ngZone: NgZone
+    public http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -437,6 +437,7 @@ export class MainComponent implements OnInit {
                   .then(res => {
                     this.spinner.hide();
                     this.currFilter = null;
+                    this.currFilterName = null;
                     this.currMenu = 1;
                     this.mainService.originalFile = null;
                     this.mainService.original = null;
@@ -495,8 +496,10 @@ export class MainComponent implements OnInit {
   downloadCurrentImage(e) {
 
     this.spinner.show();
+    let fileName = this.currFilterName ? this.currFilterName : 'original';
+    fileName = fileName + "_" + Date.now();
     try {
-      download(this.getCurrentImage(), Date.now());
+      download(this.getCurrentImage(), fileName);
       setTimeout(() => {
         this.spinner.hide();
       }, 300);
@@ -506,9 +509,10 @@ export class MainComponent implements OnInit {
   }
   downloadFile(file, idx) {
     this.spinner.show();
-
+    // let fileName = this.currFilterName
+    // fileName = fileName + "_" + Date.now();
     try {
-      download(file, idx + "_" + Date.now());
+      download(file.data, idx + "_" + file.name + "_" + Date.now());
       setTimeout(() => {
         this.spinner.hide();
       }, 300);
@@ -523,7 +527,7 @@ export class MainComponent implements OnInit {
     this.spinner.show();
     try {
       this.mainService.picturesList.forEach((item, index) => {
-        download(item, index + "_" + Date.now());
+        download(item.data, index + "_" + item.name + "_" + Date.now());
       });
       setTimeout(() => {
         this.spinner.hide();
@@ -534,8 +538,10 @@ export class MainComponent implements OnInit {
   }
   addCurrentImage(e) {
     this.spinner.show();
+    let fileName = this.currFilterName ? this.currFilterName : 'original';
+    let data = { name: fileName, data: this.getCurrentImage() };
     setTimeout(() => {
-      this.mainService.picturesList.push(this.getCurrentImage());
+      this.mainService.picturesList.push(data);
     }, 0);
     setTimeout(() => {
       this.spinner.hide();
@@ -562,6 +568,7 @@ export class MainComponent implements OnInit {
     this.pfService.filterPhotoSelected(filterName, canChangeIntensity)
       .then(res => {
         this.currFilter = filterIndex;
+        this.currFilterName = filterName;
         this.spinner.hide();
       }).catch(err => {
         this.spinner.hide();
@@ -577,6 +584,7 @@ export class MainComponent implements OnInit {
     this.pfService.filterPhotoAnimationSelected(filterName)
       .then(res => {
         this.currFilter = filterIndex;
+        this.currFilterName = filterName;
         this.spinner.hide();
       }).catch(err => {
         this.spinner.hide();
@@ -588,6 +596,7 @@ export class MainComponent implements OnInit {
     this.pfService.originalSelected()
       .then(res => {
         this.currFilter = null;
+        this.currFilterName = null;
         this.spinner.hide();
       }).catch(err => {
         this.spinner.hide();
