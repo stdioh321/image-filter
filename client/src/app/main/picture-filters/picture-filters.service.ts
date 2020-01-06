@@ -67,10 +67,13 @@ export class PictureFiltersService {
         return false;
       };
       try {
-        let tmpImg = new Image();
+
+        let tmpImg = document.createElement('img');
         tmpImg.crossOrigin = 'anonymous';
         tmpImg.src = img;
-
+        tmpImg.style.display = "none";
+        document.body.appendChild(tmpImg);
+        // console.log('onload');
         tmpImg.onload = () => {
           let fImg = new fabric.Image(tmpImg);
 
@@ -85,6 +88,7 @@ export class PictureFiltersService {
           this.canvas.setHeight(h);
           this.canvas.renderAll();
           this.drawWaterMark();
+          tmpImg.parentNode.removeChild(tmpImg);
           res(true);
         }
         tmpImg.onerror = () => {
@@ -102,6 +106,9 @@ export class PictureFiltersService {
         //     rej(false);
         //     return false;
         //   }
+        //   this.animationB64 = null;
+        //   this.canvas.getContext().canvas.style.backgroundImage = "";
+
         //   let w = (tmp && tmp.width) || 0;
         //   let h = (tmp && tmp.height) || 0;
         //   this.canvas.setWidth(w);
@@ -251,6 +258,7 @@ export class PictureFiltersService {
           let url = json['result_url'];
           url = url.replace(/^http:\/\//i, 'https://');
           let urlComplete = "https://arkzffgvpo.cloudimg.io/width/600/n/" + url;
+          // let urlComplete = "https://arkzffgvpo.cloudimg.io/cdno/n/n/" + url;
           resolve(urlComplete);
 
           // this.uploadImageImgur(json['result_url'])
@@ -266,9 +274,9 @@ export class PictureFiltersService {
           //   reject('getBase64FromImage');
           // });
         }, ajaxError: function () {
-          reject('ajaxError');
+          reject(false);
         }, apiError: function () {
-          reject('apiError');
+          reject(false);
         }
       }, name)
     });

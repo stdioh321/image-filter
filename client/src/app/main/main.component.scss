@@ -20,11 +20,13 @@
           transition: all 0.3s;
           &:hover {
             background: #0158b4 !important;
+            border-color: #0158b4 !important;
           }
           &.selected {
             text-transform: uppercase;
             font-weight: 700;
             background: #0158b4 !important;
+            border-color: #0158b4 !important;
           }
         }
       }
