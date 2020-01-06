@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 declare const fabric: any;
 
 declare const photoAPIApplyFilter: any;
+declare const download: any;
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,11 @@ export class PictureFiltersService {
   public canvas = null;
   public image = null;
   public text = null;
+
+  public animationB64 = null;
+
+
+
   constructor(
     public mainService: MainService,
     public http: HttpClient,
@@ -48,7 +54,12 @@ export class PictureFiltersService {
     this.canvas.renderAll();
 
   }
-
+  clearAll() {
+    this.startWaterMark();
+    this.canvas.clear();
+    this.animationB64 = null;
+    this.canvas.getContext().canvas.style.backgroundImage = "";
+  }
   loadImageOnCanvas(img = null, crossOrigin = false) {
     return new Promise((res, rej) => {
       if (!img) {
@@ -62,7 +73,11 @@ export class PictureFiltersService {
 
         tmpImg.onload = () => {
           let fImg = new fabric.Image(tmpImg);
+
           this.canvas.clear();
+          this.animationB64 = null;
+          this.canvas.getContext().canvas.style.backgroundImage = "";
+
           this.canvas.setBackgroundImage(fImg);
           let w = (fImg && fImg.width) || 0;
           let h = (fImg && fImg.height) || 0;
@@ -145,6 +160,7 @@ export class PictureFiltersService {
         }
         this.loadImageOnCanvas(tmpImgOriginal)
           .then(res => {
+            this.animationB64 = null;
             if (!tmpImgResult) {
               resolve(true);
               return;
@@ -189,12 +205,20 @@ export class PictureFiltersService {
   filterPhotoAnimationSelected(filterName = null) {
     return new Promise(async (resolve, reject) => {
       try {
-
-
         let photoImg = await this.getPhotoFIlter(filterName, this.mainService.original, 'trending', 'animated_effect');
-        // console.log('filterPhotoAnimationSelected');
-        console.log(photoImg);
-        resolve(true);
+        let photoImgbB64 = await this.getImageBase64(photoImg);
+        if (photoImg && photoImgbB64) {
+          let c: HTMLCanvasElement = this.canvas.getContext().canvas;
+          if (c) {
+            this.canvas.clear();
+            c.style.cssText = `background-image: url(${photoImgbB64}); background-position: center; background-size:contain; background-repeat:no-repeat`;
+            this.animationB64 = photoImgbB64;
+            resolve(true);
+          } else {
+            throw new Error('No canvas');
+          }
+
+        }
       } catch (error) {
         reject(false);
       }
@@ -247,6 +271,36 @@ export class PictureFiltersService {
         }
       }, name)
     });
+  }
+
+  getImageBase64(url = null) {
+
+    return new Promise((resolve, reject) => {
+      try {
+        if (!url) { reject('No Url'); return false };
+        fetch(url)
+          .then(function (response) {
+            return response.blob();
+          })
+          .then(function (blob) {
+            let reader = new FileReader();
+            reader.readAsDataURL(blob);
+            reader.onload = () => {
+              // console.log("SUCCESS");
+              resolve(reader.result);
+            }
+            reader.onerror = () => {
+              reject('Reader Error');
+            }
+          })
+          .catch(err => {
+            reject('Error on Fetching Image');
+          });
+      } catch (error) {
+        reject('ERROR');
+      }
+    });
+
   }
   getBase64FromImage(url, onSuccess, onError) {
     var xhr = new XMLHttpRequest();

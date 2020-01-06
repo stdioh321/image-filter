@@ -13,14 +13,21 @@ export class MainService implements OnInit {
   public picturesList: any = [];
 
 
-  
-  constructor() {
-    console.log('mainService');
 
+  constructor() {
     window['mainService'] = this;
   }
 
   ngOnInit() {
 
+  }
+  clearAll() {
+    this.originalFile = null;
+    this.initial = null;
+    this.original = null;
+    this.current = null;
+
+    this.history = []
+    this.picturesList = [];
   }
 }

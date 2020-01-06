@@ -29,11 +29,14 @@
 
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 11}"
                         (click)="changeMenu(11);onOriginalSelected()">Celebridades</button>
+                    <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 12}"
+                        (click)="changeMenu(12);onOriginalSelected()">Animações</button>
 
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 98}"
                         (click)="changeMenu(98);onOriginalSelected();openPixieEditor()">Editar</button>
                     <button class="btn btn-primary btn-block" [ngClass]="{'selected':currMenu == 99}"
-                        (click)="changeMenu(99)">Logomarca</button>
+                        (click)="changeMenu(99);openLogomarca()">Logomarca</button>
+
                 </div>
                 <div class="col-7 h-100 current-menu-wrap">
                     <div class="current-menu" *ngIf="currMenu==1">
@@ -228,6 +231,25 @@
                                     <input type="range" min="0" max="1" step="0.1" value="1"
                                         (input)="onFilterRangeChange($event)" />
                                 </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="current-menu" *ngIf="currMenu==12">
+                        <ul class="menu-filters">
+                            <li class="menu-filters-item"
+                                *ngFor="let item of photoFiltersList?.animations;let idx = index">
+                                <div class="menu-filters-thumb"
+                                    (click)="onFilterPhotoAnimationSelected(item?.filter_name,idx)">
+                                    <img (error)="onFilterThumbErro($event)"
+                                        src="./assets/images/filters/filter_animations_{{item?.filter_name}}.gif"
+                                        alt="">
+                                    <div class="text" [ngClass]="{'selected':currFilter ==idx}">{{item?.name}}
+                                    </div>
+                                </div>
+                                <!-- <div *ngIf="currFilter==idx && item?.canChange" class="filter-intensity-range">
+                                    <input type="range" min="0" max="1" step="0.1" value="1"
+                                        (input)="onFilterRangeChange($event)" />
+                                </div> -->
                             </li>
                         </ul>
                     </div>

@@ -373,9 +373,26 @@ export class MainComponent implements OnInit {
       // { name: "Harry Potter", filter_name: "harry_potter", canChange: false },
       // { name: "Kristen Stewart", filter_name: "kristen_stewart", canChange: false }
 
+    ],
+    "animations": [
+      { name: "Matrix Effect 2", filter_name: "matrix_effect_2", canChange: false },
+      { name: "Fire", filter_name: "fire", canChange: false },
+      { name: "Matrix Effect 3", filter_name: "matrix_effect_3", canChange: false },
+      { name: "Desaturation", filter_name: "desaturation", canChange: false },
+      { name: "Water Flow", filter_name: "water_flow", canChange: false },
+      { name: "Matrix Effect 1", filter_name: "matrix_effect_1", canChange: false },
+      { name: "Rainbow Colors", filter_name: "rainbow_colors", canChange: false },
+      { name: "Fire Fading", filter_name: "fire_fading", canChange: false },
+      { name: "Blinking", filter_name: "blinking", canChange: false },
+      // { name: "Terminator", filter_name: "terminator", canChange: false,face:true },
+      // { name: "X Ray", filter_name: "x_ray", canChange: false,face:true  },
+      { name: "Scary Effect", filter_name: "scary_effect", canChange: false },
+      { name: "Old Movie", filter_name: "old_movie", canChange: false },
+      { name: "Radar", filter_name: "radar", canChange: false },
+      { name: "Will o the Wisp", filter_name: "will_o_the_wisp", canChange: false },
+      { name: "Yin and Yang", filter_name: "yin_and_yang", canChange: false }
     ]
   };
-
   public logoImagePos = null;
   constructor(
     public spinner: NgxSpinnerService,
@@ -479,7 +496,7 @@ export class MainComponent implements OnInit {
 
     this.spinner.show();
     try {
-      download(this.getCurrentImage(), Date.now() + ".png");
+      download(this.getCurrentImage(), Date.now());
       setTimeout(() => {
         this.spinner.hide();
       }, 300);
@@ -491,7 +508,7 @@ export class MainComponent implements OnInit {
     this.spinner.show();
 
     try {
-      download(file, idx + "_" + Date.now() + ".png");
+      download(file, idx + "_" + Date.now());
       setTimeout(() => {
         this.spinner.hide();
       }, 300);
@@ -506,7 +523,7 @@ export class MainComponent implements OnInit {
     this.spinner.show();
     try {
       this.mainService.picturesList.forEach((item, index) => {
-        download(item, index + "_" + Date.now() + ".png");
+        download(item, index + "_" + Date.now());
       });
       setTimeout(() => {
         this.spinner.hide();
@@ -526,8 +543,11 @@ export class MainComponent implements OnInit {
   }
   getCurrentImage() {
     let result = null;
-    let currentCanvas: HTMLCanvasElement = document.querySelector("#picture-filters-canvas");
-    if (currentCanvas) {
+    let hasAnimation = this.pfService.animationB64;
+    let currentCanvas: HTMLCanvasElement = this.pfService.canvas.getContext().canvas;
+    if (hasAnimation) {
+      result = hasAnimation
+    } else if (currentCanvas) {
       result = currentCanvas.toDataURL();
     } else {
       result = this.mainService.current;
@@ -551,20 +571,16 @@ export class MainComponent implements OnInit {
       });
   }
   onFilterPhotoAnimationSelected(filterName = null, filterIndex = 0) {
-    // if (this.currFilter == filterIndex)
-    // return;
+    if (this.currFilter == filterIndex)
+      return;
     this.spinner.show();
     this.pfService.filterPhotoAnimationSelected(filterName)
       .then(res => {
-        console.log('SUCCESS');
-
-        // this.currFilter = filterIndex;
+        this.currFilter = filterIndex;
         this.spinner.hide();
       }).catch(err => {
         this.spinner.hide();
-        // setTimeout(() => {
-        // alert("Não foi possível aplicar o filtro.");
-        // }, 800);
+        console.log('ANIMATION ERROR');
       });
   }
   onOriginalSelected() {
@@ -726,15 +742,16 @@ export class MainComponent implements OnInit {
   }
 
   openLogomarca() {
-    this.spinner.show();
-    this.pfService.originalSelected()
-      .then(res => {
-        this.currFilter = null;
-        this.spinner.hide();
-      }).catch(err => {
-        this.spinner.hide();
-      });
-
+    if (this.pfService.animationB64) {
+      this.spinner.show();
+      this.pfService.originalSelected()
+        .then(res => {
+          this.pfService.animationB64 = null;
+          this.spinner.hide();
+        }).catch(err => {
+          this.spinner.hide();
+        });
+    }
   }
   changeLogoText(e) {
     this.pfService.text.set('text', e.target.value);
@@ -850,23 +867,15 @@ export class MainComponent implements OnInit {
       this.currFilter = null;
       this.currMenu = 1;
       this.imgUpload = null;
-      this.mainService.current = null;
-      this.mainService.history = [];
-      this.mainService.initial = null;
-      this.mainService.original = null;
-      this.mainService.originalFile = null;
-      this.mainService.picturesList = [];
-      this.pfService.startWaterMark();
-      this.pfService.canvas.clear();
+
+      this.mainService.clearAll();
+      this.pfService.clearAll();
     }
   }
   onRemoveLogoImage() {
     this.pfService.removeLogomarcaImg();
   }
 
-  resetMain() {
-
-  }
 
   removeCurrentImage(idx) {
     // console.log(idx);
