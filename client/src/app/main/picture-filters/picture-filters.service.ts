@@ -169,9 +169,9 @@ export class PictureFiltersService {
               img.set(
                 {
                   selectable: false,
-                  id: 'filtro',
-                  width: this.canvas.getWidth(),
-                  height: this.canvas.getHeight()
+                  id: 'filtro'
+                  // ,width: this.canvas.getWidth(),
+                  // height: this.canvas.getHeight()
                 });
               // console.log(img);
               // img.width = this.canvas.getWidth();
@@ -250,7 +250,8 @@ export class PictureFiltersService {
 
           let url = json['result_url'];
           url = url.replace(/^http:\/\//i, 'https://');
-          resolve("https://arkzffgvpo.cloudimg.io/width/600/n/" + url);
+          let urlComplete = "https://arkzffgvpo.cloudimg.io/width/600/n/" + url;
+          resolve(urlComplete);
 
           // this.uploadImageImgur(json['result_url'])
           //   .subscribe(res => {
@@ -409,6 +410,16 @@ export class PictureFiltersService {
     if (type)
       fData.append("type", type);
     return this.http.post(url, fData, options);
+  }
+  uploadImageImbb(file = null, type = null) {
+    let url = "https://api.imgbb.com/1/upload";
+    let key = "?key=61836d6ff292676f5e9f7ec26dc0e20b";
+    url = url + key;
+    // let options = { headers: { "Authorization": clientId } };
+    let fData = new FormData();
+    fData.append("image", file);
+
+    return this.http.post(url, fData);
   }
 
 }

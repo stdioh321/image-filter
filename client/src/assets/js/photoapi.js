@@ -215,7 +215,9 @@
          * Check status
          * @param self This process
          */
+        var attempts = 0;
         function checkResult(self) {
+            attempts += 1;
             $.ajax({
                 url: thisInit.getResultUrl,
                 dataType: 'xml',
@@ -230,15 +232,18 @@
                     var status = $xml.find('status').text();
 
                     if (status == 'OK') {
+                        attempts = 0;
                         var json = xmlParamsToJson.call(self, xml);
                         getCallbacks.call(self, 'success', json);
 
                         self.abort();
                     }
-                    else if (status == 'InProgress') {
+                    else if (status == 'InProgress' && attempts < 5) {
+                        attempts += 1;
                         self.getTimer();
                     }
                     else {
+                        attempts = 0;
                         getCallbacks.call(self, 'apiError', $xml.find('description').text(), $xml.find('err_code').text());
                         self.abort();
                     }

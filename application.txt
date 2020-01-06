@@ -5,6 +5,7 @@
 * Pinturas/Desenhos
 * Editar
 * Logomarca + Texto (telefone)
+* Animação/Gifs 
 
 * Download da imagem corrente
 * Lista de imagens para download

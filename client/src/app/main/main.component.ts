@@ -904,7 +904,7 @@ export class MainComponent implements OnInit {
           var snap = null;
           var video: HTMLVideoElement = document.createElement("video");
           video.width = 600;
-          video.height = 600;
+          // video.height = 600;
           video.srcObject = stream;
           video.onloadedmetadata = (e) => {
             video.play();
