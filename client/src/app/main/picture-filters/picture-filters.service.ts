@@ -69,8 +69,9 @@ export class PictureFiltersService {
       try {
 
         let imgTmp = document.createElement('img');
-        imgTmp.src = img;
         imgTmp.crossOrigin = 'anonymous';
+        imgTmp.src = img;
+        
 
         // console.log('onload');
         imgTmp.onload = () => {
