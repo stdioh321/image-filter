@@ -21,6 +21,7 @@ declare const Pixie: any;
 })
 export class MainComponent implements OnInit {
   // public tmp = []
+  
   public pixieEditor: any = null;
   public imgUpload = null;
   public currMenu = 1;

@@ -68,19 +68,17 @@ export class PictureFiltersService {
       };
       try {
 
-        let tmpImg = document.createElement('img');
-        tmpImg.crossOrigin = 'anonymous';
-        tmpImg.src = img;
-        tmpImg.style.display = "none";
-        document.body.appendChild(tmpImg);
+        let imgTmp = document.createElement('img');
+        imgTmp.src = img;
+        imgTmp.crossOrigin = 'anonymous';
+
         // console.log('onload');
-        tmpImg.onload = () => {
-          let fImg = new fabric.Image(tmpImg);
+        imgTmp.onload = () => {
+          let fImg = new fabric.Image(imgTmp);
 
           this.canvas.clear();
           this.animationB64 = null;
           this.canvas.getContext().canvas.style.backgroundImage = "";
-
           this.canvas.setBackgroundImage(fImg);
           let w = (fImg && fImg.width) || 0;
           let h = (fImg && fImg.height) || 0;
@@ -88,14 +86,14 @@ export class PictureFiltersService {
           this.canvas.setHeight(h);
           this.canvas.renderAll();
           this.drawWaterMark();
-          tmpImg.parentNode.removeChild(tmpImg);
+
           res(true);
         }
-        tmpImg.onerror = () => {
+        imgTmp.onerror = () => {
           console.log('Image Error');
           rej(false)
         }
-        tmpImg.onabort = () => {
+        imgTmp.onabort = () => {
           console.log('Image Abort');
           rej(false)
         }

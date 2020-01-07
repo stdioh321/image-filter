@@ -217,7 +217,7 @@
          */
         var attempts = 0;
         function checkResult(self) {
-            console.log('checkResult', attempts);
+            // console.log('checkResult', attempts);
             $.ajax({
                 url: thisInit.getResultUrl,
                 dataType: 'xml',
