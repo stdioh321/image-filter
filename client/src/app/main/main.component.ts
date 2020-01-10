@@ -404,7 +404,7 @@ export class MainComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.startPixieEditor();
+    // this.startPixieEditor();
   }
 
   uploadImageImgur(file = null, type = null) {
