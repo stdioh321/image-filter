@@ -1,6 +1,54 @@
 <div class="container-fluid" id="main">
     <div class="row" id="main-row">
-        <div class="col-md-3 col-5 menu-wrap">
+
+        <div class="col-md-9 content-wrap">
+            <div class="content-top" [ngClass]="{'no-current':!mainService?.current}">
+                <div class="choose-picute-wrap">
+                    <label for="uploadFile" class="btn btn-primary mb-0">
+                        <i class="fa fa-upload mr-1"></i>Upload da imagem
+                        <input type="file" id="uploadFile" (change)="onPictureUpload($event)" accept=".jpg,.jpeg,.png"
+                            [(ngModel)]="imgUpload" hidden />
+                    </label>
+                    <!-- <button class="btn btn-success  mx-1" (click)="onSnapChoosed($event)">
+                        <i class="fa fa-upload"></i>
+                    </button> -->
+                </div>
+                <div class="download-wrap ml-3" *ngIf="mainService?.current" (click)="downloadCurrentImage($event)">
+                    <img src="assets/images/download.svg" alt="">
+                </div>
+                <div class="reset-wrap ml-3" *ngIf="mainService?.current" (click)="resetAll()">
+                    <img src="assets/images/error.svg" alt="">
+                </div>
+                <div class="add-wrap ml-auto" *ngIf="mainService?.current" (click)="addCurrentImage($event)">
+                    <img src="assets/images/plus.svg" alt="">
+                </div>
+            </div>
+            <div class="pictute-wrap">
+                <!-- <img id="my-image" style="max-width: 100%; max-height: 100%;"> -->
+                <router-outlet></router-outlet>
+            </div>
+            <div class="saved-pictures-wrap w-100">
+                <div class="row h-100">
+                    <div class="col-md-11 col-8 h-100 overflow-hidden">
+                        <div class="saved-pictures-preview">
+                            <div class="saved-picture-item"
+                                *ngFor="let item of mainService?.picturesList;let idx = index">
+                                <img (click)="downloadFile(item, idx)" class="currImg" src="{{item?.data}}" />
+                                <img (click)="removeCurrentImage(idx)" class="removeImage"
+                                    src="./assets/images/error.svg" alt="">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-1 col-4 bt-download d-flex align-items-center justify-content-end">
+                        <img src="assets/images/download-green.svg" (click)="downloadAllImage()" class="pointer"
+                            *ngIf="mainService?.picturesList?.length > 0">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 menu-wrap" *ngIf="mainService?.current">
             <div class="row h-100" *ngIf="mainService?.current">
                 <div class="col-5  pr-0 h-100 overflow-auto menu-items-wrap">
                     <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 1}"
@@ -247,9 +295,9 @@
                                     </div>
                                 </div>
                                 <!-- <div *ngIf="currFilter==idx && item?.canChange" class="filter-intensity-range">
-                                    <input type="range" min="0" max="1" step="0.1" value="1"
-                                        (input)="onFilterRangeChange($event)" />
-                                </div> -->
+                                            <input type="range" min="0" max="1" step="0.1" value="1"
+                                                (input)="onFilterRangeChange($event)" />
+                                        </div> -->
                             </li>
                         </ul>
                     </div>
@@ -325,53 +373,6 @@
                                 <option [value]="9">Fundo-Direito</option>
                             </select>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-9 col-7 h-100 content-wrap">
-            <div class="content-top">
-                <div class="choose-picute-wrap">
-                    <label for="uploadFile" class="btn btn-primary mb-0">
-                        <i class="fa fa-upload mr-1"></i>Upload da imagem
-                        <input type="file" id="uploadFile" (change)="onPictureUpload($event)" accept=".jpg,.jpeg,.png"
-                            [(ngModel)]="imgUpload" hidden />
-                    </label>
-                    <!-- <button class="btn btn-success  mx-1" (click)="onSnapChoosed($event)">
-                        <i class="fa fa-upload"></i>
-                    </button> -->
-                </div>
-                <div class="download-wrap ml-3" *ngIf="mainService?.current" (click)="downloadCurrentImage($event)">
-                    <img src="assets/images/download.svg" alt="">
-                </div>
-                <div class="reset-wrap ml-3" *ngIf="mainService?.current" (click)="resetAll()">
-                    <img src="assets/images/error.svg" alt="">
-                </div>
-                <div class="add-wrap ml-auto" *ngIf="mainService?.current" (click)="addCurrentImage($event)">
-                    <img src="assets/images/plus.svg" alt="">
-                </div>
-            </div>
-            <div class="pictute-wrap">
-                <!-- <img id="my-image" style="max-width: 100%; max-height: 100%;"> -->
-                <router-outlet></router-outlet>
-            </div>
-            <div class="saved-pictures-wrap w-100">
-                <div class="row h-100">
-                    <div class="col-md-11 col-8 h-100 overflow-hidden">
-                        <div class="saved-pictures-preview">
-                            <div class="saved-picture-item"
-                                *ngFor="let item of mainService?.picturesList;let idx = index">
-                                <img (click)="downloadFile(item, idx)" class="currImg" src="{{item?.data}}" />
-                                <img (click)="removeCurrentImage(idx)" class="removeImage"
-                                    src="./assets/images/error.svg" alt="">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-1 col-4 bt-download d-flex align-items-center justify-content-end">
-                        <img src="assets/images/download-green.svg" (click)="downloadAllImage()" class="pointer"
-                            *ngIf="mainService?.picturesList?.length > 0">
-
                     </div>
                 </div>
             </div>

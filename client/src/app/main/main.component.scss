@@ -8,6 +8,20 @@
   // align-items: center;
   // justify-content: center;
   #main-row {
+    @media (max-width: 768px){
+      display: flex;
+      flex-direction: row !important;
+      overflow: hidden;
+      .menu-wrap {
+        height: 150px !important;
+        // height: 30%;
+      }
+      .content-wrap {
+        // flex: 1;
+        height: calc(100vh - 151px);
+        // height: 70%;
+      }
+    }
     height: 100%;
     background-color: #eee;
     border-radius: 5px;
@@ -103,6 +117,7 @@
       }
     }
     .content-wrap {
+      position: relative;
       display: flex;
       flex-direction: column;
       flex-wrap: wrap;
@@ -112,6 +127,14 @@
         // width: 100% !important;
       }
       .content-top {
+        z-index: 5;
+        // transition: all 1s;
+        &.no-current {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%) scale(1.7);
+        }
         display: flex;
         align-items: center;
         .download-wrap,
