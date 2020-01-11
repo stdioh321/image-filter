@@ -17,7 +17,7 @@ import { UcWidgetModule } from 'ngx-uploadcare-widget';
 import { ColorSketchModule } from 'ngx-color/sketch';
 import { ColorHueModule } from 'ngx-color/hue'; // <color-hue-picker></color-hue-picker>
 import { ColorChromeModule } from 'ngx-color/chrome'; // <color-chrome></color-chrome>
-
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -33,12 +33,13 @@ import { ColorChromeModule } from 'ngx-color/chrome'; // <color-chrome></color-c
     BrowserAnimationsModule,
     NgxSpinnerModule,
     UcWidgetModule,
-    ColorChromeModule
+    ColorChromeModule,
+    ToastrModule.forRoot()
   ],
   providers: [MainService, PictureFiltersService],
   bootstrap: [AppComponent]
   , schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {
-  
+
 }

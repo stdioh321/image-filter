@@ -6,7 +6,7 @@
                 <div class="choose-picute-wrap">
                     <label for="uploadFile" class="btn btn-primary mb-0">
                         <i class="fa fa-upload mr-1"></i>Upload da imagem
-                        <input type="file" id="uploadFile" (change)="onPictureUpload($event)" accept=".jpg,.jpeg,.png"
+                        <input type="file" id="uploadFile" (change)="onPictureUpload($event)" accept="image/*"
                             [(ngModel)]="imgUpload" hidden />
                     </label>
                     <!-- <button class="btn btn-success  mx-1" (click)="onSnapChoosed($event)">
@@ -341,7 +341,7 @@
                             <div class="text-white font-weight-bold">Imagem</div>
                             <label for="logomarcaImg" class="btn btn-primary btn-block">
                                 <i class="fa fa-image mr-1"></i>Upload
-                                <input type="file" placeholder="Image" accept=".jpg,jpeg,.png"
+                                <input type="file" placeholder="Image" accept="image/*"
                                     (change)="changeLogoImage($event)" hidden id="logomarcaImg">
                             </label>
                         </div>

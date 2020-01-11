@@ -7,6 +7,7 @@ import { HttpClient } from '@angular/common/http';
 
 import * as $ from 'jquery';
 import 'fabric';
+import { ToastrService } from 'ngx-toastr';
 declare const fabric: any;
 
 declare const FilerobotImageEditor: any;
@@ -21,7 +22,7 @@ declare const Pixie: any;
 })
 export class MainComponent implements OnInit {
   // public tmp = []
-  
+
   public pixieEditor: any = null;
   public imgUpload = null;
   public currMenu = 1;
@@ -400,7 +401,9 @@ export class MainComponent implements OnInit {
     public spinner: NgxSpinnerService,
     public mainService: MainService,
     public pfService: PictureFiltersService,
-    public http: HttpClient
+    public http: HttpClient,
+    public toastr: ToastrService,
+
   ) { }
 
   ngOnInit() {
@@ -497,23 +500,50 @@ export class MainComponent implements OnInit {
   downloadCurrentImage(e) {
 
     this.spinner.show();
-    let fileName = this.currFilterName ? this.currFilterName : 'original';
-    fileName = fileName + "_" + Date.now();
-    try {
-      download(this.getCurrentImage(), fileName);
-      setTimeout(() => {
+
+    setTimeout(() => {
+      let currImage = this.getCurrentImage();
+      let fileName = this.currFilterName ? this.currFilterName : 'original';
+      fileName = fileName + "_" + Date.now() + '.' + currImage.split(';')[0].split('/')[1];
+      try {
+        if (window['device'] && window['device']['platform']) {
+          let blob = this.dataURItoBlob(currImage);
+          this.downloadToDevice(blob, fileName)
+            .then(res => {
+              this.toastr.success("Imagem Baixada", "Sucesso");
+            });
+        } else {
+          download(this.getCurrentImage(), fileName);
+        }
+
+        setTimeout(() => {
+          this.spinner.hide();
+        }, 300);
+      } catch (error) {
         this.spinner.hide();
-      }, 300);
-    } catch (error) {
-      this.spinner.hide();
-    }
+      }
+    }, 0);
   }
   downloadFile(file, idx) {
     this.spinner.show();
     // let fileName = this.currFilterName
     // fileName = fileName + "_" + Date.now();
     try {
-      download(file.data, idx + "_" + file.name + "_" + Date.now());
+      let fileName = file.name + "_" + Date.now() + '.' + file.data.split(';')[0].split('/')[1];
+      if (window['device'] && window['device']['platform']) {
+        let blob = this.dataURItoBlob(file.data);
+        this.downloadToDevice(blob, fileName)
+          .then(res => {
+            this.toastr.success("Imagem Baixada", "Sucesso");
+          });
+      } else {
+        download(file.data, idx + "_" + file.name + "_" + Date.now());
+      }
+
+
+      // download(file.data, idx + "_" + file.name + "_" + Date.now());
+
+
       setTimeout(() => {
         this.spinner.hide();
       }, 300);
@@ -521,32 +551,44 @@ export class MainComponent implements OnInit {
       this.spinner.hide();
     }
   }
-
-
 
   downloadAllImage(e = null) {
     this.spinner.show();
-    try {
-      this.mainService.picturesList.forEach((item, index) => {
-        download(item.data, index + "_" + item.name + "_" + Date.now());
-      });
-      setTimeout(() => {
+    setTimeout(() => {
+      try {
+        this.mainService.picturesList.forEach((item, index) => {
+
+          let fileName = item.name + "_" + Date.now() + '.' + item.data.split(';')[0].split('/')[1];
+          if (window['device'] && window['device']['platform']) {
+            let blob = this.dataURItoBlob(item.data);
+            this.downloadToDevice(blob, fileName);
+          } else {
+            download(item.data, index + "_" + item.name + "_" + Date.now());
+          }
+        });
+        
+        setTimeout(() => {
+          this.spinner.hide();
+          this.toastr.success("Imagens Baixadas", "Sucesso");
+        }, 300);
+      } catch (error) {
         this.spinner.hide();
-      }, 300);
-    } catch (error) {
-      this.spinner.hide();
-    }
+      }
+    }, 0);
   }
   addCurrentImage(e) {
     this.spinner.show();
-    let fileName = this.currFilterName ? this.currFilterName : 'original';
-    let data = { name: fileName, data: this.getCurrentImage() };
+
     setTimeout(() => {
-      this.mainService.picturesList.push(data);
+      let fileName = this.currFilterName ? this.currFilterName : 'original';
+      let data = { name: fileName, data: this.getCurrentImage() };
+      setTimeout(() => {
+        this.mainService.picturesList.push(data);
+      }, 0);
+      setTimeout(() => {
+        this.spinner.hide();
+      }, 500);
     }, 0);
-    setTimeout(() => {
-      this.spinner.hide();
-    }, 500);
   }
   getCurrentImage() {
     let result = null;
@@ -982,6 +1024,58 @@ export class MainComponent implements OnInit {
           alert("Não foi possivel carregar a imagem");
         }, 500);
       });
+  }
+  downloadToDevice(blob = null, fName = null) {
+    return new Promise((resolve, reject) => {
+      try {
+        var storageLocation = "";
+        switch (window['device'].platform) {
+          case "Android":
+            storageLocation = 'file:///storage/emulated/0/';
+            break;
+          case "iOS":
+            storageLocation = window['cordova'].file.documentsDirectory;
+            break;
+        }
+        var folderpath = storageLocation + "Download";
+        var filename = fName;
+        var DataBlob = blob;
+        console.log(blob, filename);
+
+        window['resolveLocalFileSystemURL'](folderpath, function (dir) {
+          dir.getFile(filename, { create: true }, function (file) {
+            file.createWriter(function (fileWriter) {
+              fileWriter.write(DataBlob);
+              //Download was succesfull
+              resolve(true);
+
+            }, function (err) {
+              // failed
+              console.log(err);
+              reject(false);
+            });
+          });
+        });
+
+      } catch (error) {
+        reject(false);
+      }
+    });
+
+  }
+  dataURItoBlob(dataURI, callback = null) {
+    var byteString = atob(dataURI.split(',')[1]);
+
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    var bb = new Blob([ab]);
+    return bb;
   }
 }
 
