@@ -238,7 +238,7 @@
 
                         self.abort();
                     }
-                    else if (status == 'InProgress' && attempts < 4) {
+                    else if (status == 'InProgress' && attempts < 6) {
                         attempts += 1;
                         self.getTimer();
                     }

@@ -25,6 +25,14 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    let b = document.querySelector('body');
+    if (b)
+      b['style']['height'] = window.innerHeight + "px";
+    window.onresize = () => {
+      let b = document.querySelector('body');
+      if (b)
+        b['style']['height'] = window.innerHeight + "px";
+    }
 
   }
 }

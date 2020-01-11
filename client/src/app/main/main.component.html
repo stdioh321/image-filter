@@ -1,7 +1,7 @@
 <div class="container-fluid" id="main">
     <div class="row" id="main-row">
 
-        <div class="col-md-9 content-wrap">
+        <div class="col-md-9 col-7 content-wrap">
             <div class="content-top" [ngClass]="{'no-current':!mainService?.current}">
                 <div class="choose-picute-wrap">
                     <label for="uploadFile" class="btn btn-primary mb-0">
@@ -27,9 +27,9 @@
                 <!-- <img id="my-image" style="max-width: 100%; max-height: 100%;"> -->
                 <router-outlet></router-outlet>
             </div>
-            <div class="saved-pictures-wrap w-100">
+            <div class="saved-pictures-wrap overflow-hidden w-100">
                 <div class="row h-100">
-                    <div class="col-md-11 col-8 h-100 overflow-hidden">
+                    <div class="col-md-11 col-10 h-100 overflow-hidden">
                         <div class="saved-pictures-preview">
                             <div class="saved-picture-item"
                                 *ngFor="let item of mainService?.picturesList;let idx = index">
@@ -40,7 +40,7 @@
                         </div>
 
                     </div>
-                    <div class="col-md-1 col-4 bt-download d-flex align-items-center justify-content-end">
+                    <div class="col-md-1 col-2 pl-0 bt-download d-flex align-items-center justify-content-end">
                         <img src="assets/images/download-green.svg" (click)="downloadAllImage()" class="pointer"
                             *ngIf="mainService?.picturesList?.length > 0">
 
@@ -48,9 +48,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-3 menu-wrap" *ngIf="mainService?.current">
+        <div class="col-md-3 col-5 menu-wrap" *ngIf="mainService?.current">
             <div class="row h-100" *ngIf="mainService?.current">
-                <div class="col-5  pr-0 h-100 overflow-auto menu-items-wrap">
+                <div class="col-md-5 col-6   pr-0 h-100 overflow-auto menu-items-wrap">
                     <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 1}"
                         (click)="changeMenu(1);onOriginalSelected()">Fitros</button>
                     <button class="btn btn-dark btn-block" [ngClass]="{'selected':currMenu == 2}"
@@ -86,7 +86,7 @@
                         (click)="changeMenu(99);openLogomarca()">Logomarca</button>
 
                 </div>
-                <div class="col-7 h-100 current-menu-wrap">
+                <div class="col-md-7 col-6 h-100 current-menu-wrap">
                     <div class="current-menu" *ngIf="currMenu==1">
                         <ul class="menu-filters">
 
