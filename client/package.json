@@ -22,6 +22,7 @@
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
+    "@ionic/angular": "^4.11.7",
     "bootstrap": "^4.4.1",
     "electron-packager": "^14.1.1",
     "fabric": "^3.5.1",

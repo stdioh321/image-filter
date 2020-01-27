@@ -4,6 +4,7 @@
         <div class="col-md-9 col-7 content-wrap">
             <div class="content-top" [ngClass]="{'no-current':!mainService?.current}">
                 <div class="choose-picute-wrap">
+                    
                     <label for="uploadFile" class="btn btn-primary mb-0">
                         <i class="fa fa-upload mr-1"></i>Upload da imagem
                         <input type="file" id="uploadFile" (change)="onPictureUpload($event)" accept="image/*"

@@ -19,6 +19,9 @@ import { ColorHueModule } from 'ngx-color/hue'; // <color-hue-picker></color-hue
 import { ColorChromeModule } from 'ngx-color/chrome'; // <color-chrome></color-chrome>
 import { ToastrModule } from 'ngx-toastr';
 
+import { IonicModule } from '@ionic/angular';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +37,8 @@ import { ToastrModule } from 'ngx-toastr';
     NgxSpinnerModule,
     UcWidgetModule,
     ColorChromeModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    IonicModule.forRoot()
   ],
   providers: [MainService, PictureFiltersService],
   bootstrap: [AppComponent]
